@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 2.4</title>
+    </head>
+<body>
+    <img id="imageDisplay" src="../images/one.png" alt="Image Viewer">
+    <br>
+    <button id="backButton">Back</button>
+    <button id="forwardButton">Forward</button>
+    <script>
+        const images = ["one.png", "two.png", "three.png", 
+                        "four.png", "five.png"];
+        let currentIndex = 0;
+
+        // Utility function to return a true modulo
+        function mod(current, length) {
+            return ((current % length) + length) % length;
+        }
+
+        // Get a reference to the img element
+        const imageDisplay = document.getElementById("imageDisplay");
+
+        // Handle clicks on the Back button
+        document.getElementById("backButton").addEventListener("click", function () {
+            // Move backward: decrement index and wrap if needed
+            currentIndex = mod(currentIndex - 1, images.length);
+            imageDisplay.src = '../images/' + images[currentIndex];
+        });
+
+        // Handle clicks on the Forward button
+        document.getElementById("forwardButton").addEventListener("click", function () {
+            // Move forward: increment index and wrap if needed
+            currentIndex = mod(currentIndex + 1, images.length);
+            imageDisplay.src = '../images/' + images[currentIndex];
+        });
+    </script>
+</body>
+</html>
