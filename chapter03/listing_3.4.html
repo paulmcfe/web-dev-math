@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.4</title>
+    <style>
+        * {
+            padding: 0.25rem;
+        }
+        body {
+            background-color: cornsilk;
+        }
+        main {
+            background-color: aquamarine;
+            width: calc(80% - 2rem);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Listing 3.4</h2>
+    </header>
+    <h3><code>&lt;body&gt;</code> width: (resize browser window to change):</h3>
+    <p id="body-output"></p>
+    <main>
+        <h3><code>&lt;main&gt;</code> width: (80% - 2rem):</h3>
+        <p id="main-output"></p>
+    </main>
+    <script>
+        // Get references to the output elements  
+        bodyOutput = document.querySelector('#body-output');
+        mainOutput = document.querySelector('#main-output');
+
+        // Get references to the body and main elements
+        elBody = document.querySelector('body');
+        elMain = document.querySelector('main');
+
+        // Write the current widths
+        bodyOutput.innerText = window.getComputedStyle(elBody).width;
+        mainOutput.innerText = window.getComputedStyle(elMain).width;
+
+        // Listen for the window changing size
+        window.addEventListener('resize', function() {
+            // Update the width outputs
+            bodyOutput.innerText = window.getComputedStyle(elBody).width;
+            mainOutput.innerText = window.getComputedStyle(elMain).width;
+        });
+    </script>
+</body>
+</html>

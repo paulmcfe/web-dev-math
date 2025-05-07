@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.5</title>
+    <style>
+        * {
+            padding: 0.25rem;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        h1 {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .fluid-text {
+            /* Font size between 16px and 32px, scaling with viewport width */
+            font-size: clamp(16px, 3vw, 32px);
+
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <h1>Listing 3.7</h2>
+        <div class="fluid-text">
+            &lt;div class="fluid-text"&gt;<br>
+            font-size: clamp(16px, 3vw, 32px)
+            <div id="output-font-size"></div>
+        </div>
+    </main>
+    <script>
+        // Get a reference to the output element
+        outputFontSize = document.querySelector('#output-font-size');
+
+        // Get a reference to the .fluid-text div
+        elFluidText = document.querySelector('.fluid-text');
+
+        // Write the current value
+        outputFontSize.innerText = 'Current font size: ' + window.getComputedStyle(elFluidText).fontSize;
+
+        // Listen for the window changing size
+        window.addEventListener('resize', function() {
+            // Update the output
+            outputFontSize.innerText = 'Current font size: ' + window.getComputedStyle(elFluidText).fontSize;
+        });
+    </script>
+</body>
+</html>

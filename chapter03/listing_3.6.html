@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.6</title>
+    <style>
+        * {
+            padding: 0.25rem;
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        article {
+            background-color: lightcyan;
+            flex-grow: 1;
+        }
+        sidebar {
+            /* Font size will be 1.5vw, but never smaller than 16px */
+            font-size: max(16px, 1.5vw);
+            
+            /* Button will be at least 200px wide, or 20% of sidebar if larger */
+            width: max(200px, 20%);
+
+            background-color: turquoise;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Listing 3.6</h2>
+        <h3><code>&lt;body&gt;</code> (parent) width: (resize browser window to change):</h3>
+    <p id="body-output"></p>
+    </article>
+    <sidebar class="sidebar">
+        <h3><code>&lt;sidebar&gt;</code> (child) font size: max(16px, 1.5vw):</h3>
+        <p id="sidebar-output-font-size"></p>
+        <h3><code>&lt;sidebar&gt;</code> (child) width: max(200px, 20%):</h3>
+        <p id="sidebar-output-width"></p>
+
+    </sidebar>
+    
+    <script>
+        // Get references to the output elements  
+        bodyOutput = document.querySelector('#body-output');
+        sidebarOutputFontSize = document.querySelector('#sidebar-output-font-size');
+        sidebarOutputWidth = document.querySelector('#sidebar-output-width');
+
+        // Get references to the body and sidebar elements
+        elBody = document.querySelector('body');
+        elSidebar = document.querySelector('sidebar');
+
+        // Write the current values
+        bodyOutput.innerText = window.getComputedStyle(elBody).width;
+        sidebarOutputFontSize.innerText = window.getComputedStyle(elSidebar).fontSize;
+        sidebarOutputWidth.innerText = window.getComputedStyle(elSidebar).width;
+
+        // Listen for the window changing size
+        window.addEventListener('resize', function() {
+            // Update the outputs
+            bodyOutput.innerText = window.getComputedStyle(elBody).width;
+            sidebarOutputFontSize.innerText = window.getComputedStyle(elSidebar).fontSize;
+            sidebarOutputWidth.innerText = window.getComputedStyle(elSidebar).width;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.8</title>
+    <script>
+        const CSSMath = {
+            // Trigonometric functions
+            acos: (x) => Math.acos(x),
+            asin: (x) => Math.asin(x),
+            atan: (x) => Math.atan(x),
+            atan2: (y, x) => Math.atan2(y, x),
+            cos: (x) => Math.cos(x),
+            sin: (x) => Math.sin(x),
+            tan: (x) => Math.tan(x),
+
+            // Exponential and logarithmic functions
+            exp: (x) => Math.exp(x),
+            log: (x) => Math.log(x), // natural logarithm (base e)
+
+            // Power and root
+            pow: (base, exponent) => Math.pow(base, exponent),
+            sqrt: (x) => Math.sqrt(x),
+
+            // Rounding
+            round: (x) => Math.round(x),
+
+            // Hypotenuse (√(a² + b² + ...))
+            hypot: (...args) => Math.hypot(...args),
+
+            // Modulus (like CSS mod — always positive result)
+            mod: (a, b) => {
+                const result = a % b;
+                return result < 0 ? result + Math.abs(b) : result;
+            },
+
+            // Remainder (like JavaScript % — can be negative)
+            rem: (a, b) => a % b,
+        };
+        console.log(CSSMath.cos(Math.PI));    // -1
+        console.log(CSSMath.pow(2, 3));       // 8
+        console.log(CSSMath.mod(-7, 4));      // 1
+        console.log(CSSMath.rem(-7, 4));      // -3
+        console.log(CSSMath.hypot(3, 4));     // 5
+    </script>
+</head>
+<body>
+</body>
+</html>

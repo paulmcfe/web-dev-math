@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.5</title>
+    <style>
+        * {
+            padding: 0.25rem;
+        }
+        body {
+            background-color: aliceblue;
+        }
+        .container {
+            /* Width will be 90% of parent, but never more than 1200px */
+            width: min(90%, 1200px);
+            
+            /* Padding will be 5% of parent width, but never more than 50px */
+            padding: min(5%, 90px);
+
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Listing 3.5</h2>
+    </header>
+    <h3><code>&lt;body&gt;</code> (parent) width: (resize browser window to change):</h3>
+    <p id="body-output"></p>
+    <div class="container">
+        <h3><code>&lt;.container&gt;</code> (child) width: min(90%, 1200px):</h3>
+        <p id="container-output-width"></p>
+        <h3><code>&lt;.container&gt;</code> (child) padding: min(5%, 90px):</h3>
+        <p id="container-output-padding"></p>
+    </main>
+    <script>
+        // Get references to the output elements  
+        bodyOutput = document.querySelector('#body-output');
+        containerOutputWidth = document.querySelector('#container-output-width');
+        containerOutputPadding = document.querySelector('#container-output-padding');
+
+        // Get references to the body and .container elements
+        elBody = document.querySelector('body');
+        elContainer = document.querySelector('.container');
+
+        // Write the current widths
+        bodyOutput.innerText = window.getComputedStyle(elBody).width;
+        containerOutputWidth.innerText = window.getComputedStyle(elContainer).width;
+        containerOutputPadding.innerText = window.getComputedStyle(elContainer).padding;
+
+        // Listen for the window changing size
+        window.addEventListener('resize', function() {
+            // Update the width outputs
+            bodyOutput.innerText = window.getComputedStyle(elBody).width;
+            containerOutputWidth.innerText = window.getComputedStyle(elContainer).width;
+            containerOutputPadding.innerText = window.getComputedStyle(elContainer).padding;
+        });
+    </script>
+</body>
+</html>

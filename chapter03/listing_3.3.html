@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.3</title>
+    <style>
+        * {
+            padding: 0.25rem;
+        }
+        .grandparent {
+            background-color: lightsteelblue;
+            width: 1000px;
+        }
+        .parent {
+            background-color: plum;
+            width: 50%;  /* 1000px × 0.5 = 500px */
+        }
+        .child {
+            background-color: skyblue;
+            width: 50%;   /* 500px × 0.5 = 250px */
+        }
+    </style>
+   </head>
+<body>
+    <header>
+        <h1>Listing 3.3</h2>
+    </header>
+    <main class="grandparent">
+        <h2>Main (.grandparent)</h2>
+        <p>
+            Width: 1000px
+        </p>
+        <article class="parent">
+            <h3>Article (.parent)</h3>
+            <p>
+                Width: 500px
+            </p>
+                <section class="child">
+                <h4>Section (.child)</h4>
+                <p>
+                    Width: 250px
+                </p>
+                    </section>
+        </article>
+    </main>
+</body>
+</html>
