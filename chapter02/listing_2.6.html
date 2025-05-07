@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 2.6 - Generating a random floating-point number between two values</title>
+    </head>
+<body>
+    <h1>Listing 2.6 - Generating a random floating-point number between two values</h1>
+    <script>
+        function randomFloat(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        console.log(randomFloat(1, 100));
+        console.log(randomFloat(0.5, 1.5));
+        console.log(randomFloat(1, 10));
+        console.log(randomFloat(100, 1000));
+        console.log(randomFloat(0, 0.1));
+        console.log(randomFloat(10, 20));
+
+    </script>
+</body>
+</html>

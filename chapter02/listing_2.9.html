@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 2.9 - Random staggered animation</title>
+    <style>
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 40px;
+            background-color: #f0f4f8;
+            font-family: sans-serif;
+        }
+
+        .stagger-item {
+            width: 100px;
+            height: 100px;
+            background-color: #4f46e5;
+            opacity: 0;
+            transform: translateY(30px);
+            border-radius: 12px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .stagger-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 10 Items to animate -->
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+    <div class="stagger-item"></div>
+
+    <script>
+        // Function to generate a random float
+        function randomFloat(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        // Get all the items
+        const items = document.querySelectorAll(".stagger-item");
+
+        // Loop through the items
+        items.forEach(item => {
+            // Get a random delay between 0 and 0.5 seconds
+            const delay = randomFloat(0, 0.5);
+
+            // Update the item’s transition-delay property
+            item.style.transitionDelay = delay + "s";
+
+            // Add the "visible" class after a short 
+            // delay to ensure the transition applies
+            setTimeout(() => {
+                item.classList.add("visible");
+            }, 100);
+        });
+    </script>
+
+</body>
+</html>

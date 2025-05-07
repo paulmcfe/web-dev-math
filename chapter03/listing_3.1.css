@@ -1,0 +1,8 @@
+/* These all compute to the same value */
+.element {
+    font-size: 16px;
+    font-size: 1rem;       /* If root font size is 16px */
+    font-size: 100%;       /* If parent font size is 16px */
+    font-size: 12pt;       /* 12pt × (96px/72pt) = 16px */
+    font-size: 0.166667in; /* 0.166667in × 96px/in = 16px */
+}

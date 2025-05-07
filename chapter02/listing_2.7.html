@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 2.7 - Generating a random integer between two values</title>
+    </head>
+<body>
+    <h1>Listing 2.7 - Generating a random integer between two values</h1>
+    <script>
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        console.log(randomInt(1, 6));
+        console.log(randomInt(2000, 2026));
+        console.log(randomInt(1, 100));
+        console.log(randomInt(100, 1000));
+        console.log(randomInt(0, 359));
+        console.log(randomInt(10, 20));
+
+    </script>
+</body>
+</html>
