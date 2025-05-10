@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.11</title>
+    <style>
+        :root {
+            --base-hue: 225deg; /* Change this to any base hue */
+            --complement-hue: mod(calc(var(--base-hue) + 180deg), 360deg);
+            --saturation: 60%;
+            --lightness: 50%;
+        }
+        body {
+            font-family: sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+        .swatch {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .original {
+            background-color: hsl(var(--base-hue), 
+                                  var(--saturation), 
+                                  var(--lightness));
+        }
+        .complement {
+            background-color: hsl(var(--complement-hue), 
+                                  var(--saturation), 
+                                  var(--lightness));
+        }
+    </style>
+</head>
+<body>
+    <div class="swatch original">
+        Base
+        <div id="base-output"></div>
+    </div>
+    <div class="swatch complement">
+        Complement
+        <div id="complement-output"></div>
+    </div>
+    <script>
+        const mod = (a, b) => Math.abs(a % b) * Math.sign(b);
+
+        const root = document.documentElement;
+        const baseHue = getComputedStyle(root).getPropertyValue('--base-hue');
+        const complementHue = mod(parseInt(baseHue) + 180, 360);
+        const saturation = getComputedStyle(root).getPropertyValue('--saturation');
+        const lightness = getComputedStyle(root).getPropertyValue('--lightness');
+        document.querySelector('#base-output').innerText = `hsl(${baseHue}, ${saturation}, ${lightness})`;
+        document.querySelector('#complement-output').innerText = `hsl(${complementHue}deg, ${saturation}, ${lightness})`;
+    </script>
+</body>
+</html>

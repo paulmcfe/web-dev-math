@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing 3.13</title>
+    <style>
+        :root {
+            --x: 0;
+            --y: 0;
+            --box-size: 50;
+            --area-width: 300;
+            --area-height: 300;
+        }
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: sans-serif;
+            background: #111;
+            color: white;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .container {
+            position: relative;
+            width: calc(var(--area-width) * 1px);
+            height: calc(var(--area-height) * 1px);
+            border: 2px solid #555;
+            border-radius: 10px;
+            background: #222;
+        }
+        .label {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .box {
+            width: calc(var(--box-size) * 1px);
+            height: calc(var(--box-size) * 1px);
+            border-radius: 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.016s linear;
+        }
+        /* The rem-box uses rem() to handle the x and y coordinates */
+        .rem-box {
+            background: #00eaff;
+            transform: translate(
+                calc(rem(var(--x), var(--area-width)) * 1px),
+                calc(rem(var(--y), var(--area-height)) * 1px)
+            );
+        }
+        /* The mod-box uses mod() to handle the x and y coordinates 
+           Notice this box's often unnatural behavior when faced with negative values */
+        .mod-box {
+            background: #ff4081;
+            transform: translate(
+                calc(mod(var(--x), var(--area-width)) * 1px),
+                calc(mod(var(--y), var(--area-height)) * 1px)
+            );
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <div class="label">rem()</div>
+        <div class="container">
+            <div class="box rem-box"></div>
+        </div>
+    </div>
+
+    <div>
+        <div class="label">mod()</div>
+        <div class="container">
+            <div class="box mod-box"></div>
+        </div>
+    </div>
+
+    <script>
+        // Get the root
+        const root = document.documentElement;
+
+        // Grab some CSS variable values
+        const boxSize = getComputedStyle(root).getPropertyValue('--box-size');
+        const areaWidth = getComputedStyle(root).getPropertyValue('--area-width');;
+        const areaHeight = getComputedStyle(root).getPropertyValue('--area-height');;
+
+        // Set the starting point of the box
+        let x = 100;
+        let y = 100;
+
+        // Specify how much x and y change with each frame
+        let deltaX = 3;
+        let delatY = 2;
+
+        // Update the next animation frame
+        function update() {
+
+            // Add the frame's x and y deltas
+            x += deltaX;
+            y += delatY;
+
+            // Where is the x-component of the box?
+            // Notice that x is allowed to go a little negative
+            if (x <= -boxSize || x >= areaWidth) {
+                // If we've reached a boundary, 
+                // reverse the horizontal direction
+                deltaX *= -1;
+            }
+
+            // Where is the y-component of the box?
+            // Notice that y is allowed to go a little negative
+            if (y <= -boxSize || y >= areaHeight) {
+                // If we've reached a boundary, 
+                // reverse the vertical direction
+                delatY *= -1;
+            }
+
+            // Store the new variable values
+            root.style.setProperty('--x', x);
+            root.style.setProperty('--y', y);
+
+            // Keep it going
+            requestAnimationFrame(update);
+        }
+
+        // Start the animation
+        requestAnimationFrame(update);
+    </script>
+
+</body>
+</html>

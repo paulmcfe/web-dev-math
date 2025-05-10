@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listing 3.9</title>
+    <style>
+        :root {
+            --blur-strength: calc(hypot(100vw, 100vh) / 100);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') no-repeat center center;
+            background-size: cover;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            backdrop-filter: blur(var(--blur-strength));
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="content">
+        <h1>Frosted Blur</h1>
+        <p>
+            This blur effect adapts to your screen size using the CSS <code>hypot()</code> function. Resize the window to see it stay smooth and proportional.
+        </p>
+    </div>
+</body>
+</html>

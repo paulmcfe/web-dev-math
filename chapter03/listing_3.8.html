@@ -4,47 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listing 3.8</title>
-    <script>
-        const CSSMath = {
-            // Trigonometric functions
-            acos: (x) => Math.acos(x),
-            asin: (x) => Math.asin(x),
-            atan: (x) => Math.atan(x),
-            atan2: (y, x) => Math.atan2(y, x),
-            cos: (x) => Math.cos(x),
-            sin: (x) => Math.sin(x),
-            tan: (x) => Math.tan(x),
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .grow {
+            width: 100px;
+            height: 100px;
+            background-color: darkmagenta;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 1rem;
+            animation: exponential-growth 2s linear infinite;
+        }
 
-            // Exponential and logarithmic functions
-            exp: (x) => Math.exp(x),
-            log: (x) => Math.log(x), // natural logarithm (base e)
-
-            // Power and root
-            pow: (base, exponent) => Math.pow(base, exponent),
-            sqrt: (x) => Math.sqrt(x),
-
-            // Rounding
-            round: (x) => Math.round(x),
-
-            // Hypotenuse (√(a² + b² + ...))
-            hypot: (...args) => Math.hypot(...args),
-
-            // Modulus (like CSS mod — always positive result)
-            mod: (a, b) => {
-                const result = a % b;
-                return result < 0 ? result + Math.abs(b) : result;
-            },
-
-            // Remainder (like JavaScript % — can be negative)
-            rem: (a, b) => a % b,
-        };
-        console.log(CSSMath.cos(Math.PI));    // -1
-        console.log(CSSMath.pow(2, 3));       // 8
-        console.log(CSSMath.mod(-7, 4));      // 1
-        console.log(CSSMath.rem(-7, 4));      // -3
-        console.log(CSSMath.hypot(3, 4));     // 5
-    </script>
+        @keyframes exponential-growth {
+            0% { transform: scale(1); }
+            50% { transform: scale(exp(1)); }  /* e */
+            100% { transform: scale(exp(2)); } /* e^2 */
+        }
+    </style>
 </head>
 <body>
+    <div class="grow">Listing 3.8</div>
 </body>
 </html>
