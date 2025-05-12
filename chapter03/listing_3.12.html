@@ -9,19 +9,16 @@
             --base-size: 1rem;
             --scale-ratio: 1.25; /* Initial ratio */
         }
-
         body {
             font-family: system-ui, sans-serif;
             padding: 2rem;
             background: ghostwhite;
             color: #333;
         }
-
         .scale {
             font-size: calc(var(--base-size) * pow(var(--scale-ratio), var(--step)));
             margin: 0 0 1rem;
         }
-
         .step-3 { --step: 3; }
         .step-2 { --step: 2; }
         .step-1 { --step: 1; }
@@ -32,12 +29,10 @@
         .slider-container {
             margin-top: 3rem;
         }
-
         input[type="range"] {
             width: 100%;
             margin-top: 1rem;
         }
-
         .label {
             font-size: 1rem;
             margin-bottom: 0.5rem;
@@ -48,9 +43,9 @@
 
     <h1 class="scale step-3">Heading (Step 3)</h1>
     <h2 class="scale step-2">Subheading (Step 2)</h2>
-    <h3 class="scale step-1">Section Title (Step 1)</h3>
-    <p class="scale step-0">Body Text (Step 0)</p>
-    <p class="scale step--1">Small Caption (Step -1)</p>
+    <h3 class="scale step-1">Section title (Step 1)</h3>
+    <p class="scale step-0">Body text (Step 0)</p>
+    <p class="scale step--1">Small caption (Step -1)</p>
     <p class="scale step--2">Footnote (Step -2)</p>
 
     <div class="slider-container">
