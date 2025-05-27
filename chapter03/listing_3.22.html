@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.22 - Fitting a child element inside a padded container</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            padding: 1rem;
+            background-color: #007bff;
+            border-radius: 8px;
+        }
+
+        .child {
+            width: calc(100% - 2rem); /* 100% - left + right padding */
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="child">
+            This child element fits exactly inside the padded container using <code>width: calc(100% - 2rem)</code>.
+        </div>
+    </div>
+
+</body>
+</html>

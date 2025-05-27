@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.19 - Percentages and the box model</title>
+    <style>
+        * {
+            box-sizing: content-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-size: 1.25rem;
+            margin: 2rem;
+            padding: 1rem;
+        }
+
+        .parent {
+            background-color: hsl(180  65% 81%);
+            border: 1px solid black;
+            padding: 1rem;
+            width: 50vw;
+        }
+
+        .child {
+            background-color: hsl(120 100% 97%);
+            border: 1px solid black;
+            width: 50%;
+            padding: 5%;
+            margin: 10%;
+        }
+
+        .note {
+            color: #333;
+            font-size: 0.9rem;
+            margin-top: 1rem;;
+        }
+
+    </style>
+</head>
+<body>
+    <article class="parent">
+        <h2>
+            Parent
+        </h2>
+        <p>
+            Width: <code>50vw (<span id="parent-width-output">500px</span>)</code>
+        </p>
+        <section class="child">
+            <h3>
+                Child
+            </h3>
+            <p>
+                Width: <code>50% (<span id="child-width-output"></span>)</code><br>
+                Padding: <code>5% (<span id="child-padding-output"></span>)</code><br>
+                Margin: <code>10% (<span id="child-margin-output"></span>)</code>
+            </p>
+        </section>
+    </article>
+    <p class="note">
+        Resize the browser window width to change the parent element width.
+    </p>
+
+    <script>
+        const parent = document.querySelector('.parent');
+        const parentWidthOutput = document.querySelector('#parent-width-output');
+        const child = document.querySelector('.child');
+        const childWidthOutput = document.querySelector('#child-width-output');
+        const childPaddingOutput = document.querySelector('#child-padding-output');
+        const childMarginOutput = document.querySelector('#child-margin-output');
+
+        function updateStyles() {
+            const parentStyle = getComputedStyle(parent);
+            const childStyle = getComputedStyle(child);
+            parentWidthOutput.textContent = parentStyle.width; 
+            childWidthOutput.textContent = childStyle.width; 
+            childPaddingOutput.textContent = childStyle.padding; 
+            childMarginOutput.textContent = childStyle.margin; 
+        }
+        updateStyles();
+
+        window.addEventListener('resize', updateStyles);
+
+    </script>
+</html>

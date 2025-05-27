@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.x</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 1em;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 100px 200px 100px;
+            grid-template-rows: 100px 150px;
+        }
+
+        .item {
+            padding: .2em;
+            border: 5px solid black;
+            color: white;
+            font-family: "Verdana";
+            font-size: 4em;
+            text-align: center;
+            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .item-1 {
+            background-color: crimson;
+        }
+        .item-2 {
+            background-color: indigo;
+        }
+        .item-3 {
+            background-color: navy;
+        }
+        .item-4 {
+            background-color: yellow;
+        }
+
+        .item-5 {
+            grid-column: 2 / 4; /* Between vertical lines 2 and 3 */
+            grid-row: 2 / 3;    /* Between horizontal lines 1 and 2 */
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item item-1">1</div>
+        <div class="item item-2">2</div>
+        <div class="item item-3">3</div>
+        <div class="item item-4">4</div>
+        <div class="item item-5">5</div>
+    </div>
+</body>
+</html>

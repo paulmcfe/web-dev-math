@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2.14</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        p {
+            border-bottom: 1px solid black;
+            padding-bottom: 1rem;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        #colorBox {
+            width: 200px;
+            height: 200px;
+            background-color: lightgray;
+            margin: 1rem auto;
+            border: 2px solid #333;
+            transition: background-color 0.3s ease;
+        }
+
+        #output {
+            font-family: monospace;
+            text-align: center;
+            margin-bottom: 1rem;;
+        }
+
+        #changeColorBtn {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+     </style>
+</head>
+<body>
+
+    <h2>Exercise 2.14</h2>
+    <p>
+        Build a function <code>getRandomColor()</code> that returns a random RGB color string, such as <code>"rgb(123, 45, 67)"</code>.
+    </p>
+
+    <div id="colorBox"></div>
+    <div id="output">rgb(211, 211, 211)</div>
+    <button id="changeColorBtn">Change Color</button>
+
+    <script src="exercise_2.14.js"></script>
+    <script>
+        const box = document.getElementById("colorBox");
+        const output = document.getElementById("output");
+        const button = document.getElementById("changeColorBtn");
+
+        button.addEventListener("click", () => {
+            const rgb = getRandomColor();
+            output.textContent = rgb;
+            box.style.backgroundColor = rgb;
+        });
+
+    </script>
+</body>
+</html>

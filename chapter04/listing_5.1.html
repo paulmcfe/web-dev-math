@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.1 - The flex-grow calculation</title>
+    <style>
+        body {
+            margin: 1em;
+        }
+
+        .container {
+            margin-top: 3em;
+            display: flex;
+            flex-direction: row;
+            outline: 3px solid orange;
+            width: 1200px;
+        }
+
+        .item {
+            padding: .1em;
+            color: white;
+            font-family: "Verdana";
+            font-size: 4em;
+            text-align: center;
+            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .item-1 {
+            background-color: crimson;
+            flex-grow: 1;
+            flex-basis: 100px;
+        }
+        .item-2 {
+            background-color: indigo;
+            flex-grow: 3;
+            flex-basis: 100px;
+        }
+        .item-3 {
+            background-color: navy;
+            flex-grow: 4;
+            flex-basis: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item item-1">1</div>
+        <div class="item item-2">2</div>
+        <div class="item item-3">3</div>
+    </div>
+</body>
+</html>

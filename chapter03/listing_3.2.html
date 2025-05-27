@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.2</title>
+    <title>Listing 3.2 - The compounding effect of em units</title>
     <style>
         html {
             font-size: 16px;
         }
         .parent {
-            font-size: 1.5em;  /* 16 × 1.5 = 24px */
+            font-size: 1.5em;  /* 16 * 1.5 = 24px */
         }
         .child {
-            font-size: 1.2em;   /* 24 × 1.2 = 28.8px */
+            font-size: 1.2em;   /* 24 * 1.2 = 28.8px */
         }
     </style>
 </head>
 <body>
-    <h1>Listing 3.2</h2>
     <p>
-        16px text
+        This is regular paragraph text set at 16px.
     </p>
     <article class="parent">
-        <h2>Article (.parent)</h2>
         <p>
-            24px text
+            This is parent text set at 1.5em.
         </p>
         <section class="child">
-            <h3>Section (.child)</h3>
             <p>
-                28.8px text
+                This is child text set at 1.2em.
             </p>
         </section>
     </article>

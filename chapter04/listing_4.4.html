@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.4 - When a fr track resolves to 0px</title>
+    <style>
+        * {
+                box-sizing: border-box;
+            }
+
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 200px 100px 1fr;
+            margin-bottom: 5rem;
+        }
+
+        .box {
+            padding: 1rem;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .container > div:first-child {
+            background-color: orange;
+        }
+
+        .container > div:nth-child(2) {
+            background-color: red;
+        }
+
+        .container > div:last-child {
+            background-color: blueviolet;
+        }
+
+        .narrow-container {
+            width: 300px; /* Smae as the sum of the fixed columns (300px) */
+        }
+
+        .wide-container {
+            width: 500px; /* Enough room for all the columns */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>Narrow Container</h2>
+
+    <div class="container narrow-container">
+        <div class="box">200px</div>
+        <div class="box">100px</div>
+        <div class="box">1fr (0px)</div>
+    </div>
+
+    <h2>Wide Container</h2>
+
+    <div class="container wide-container">
+        <div class="box">200px</div>
+        <div class="box">100px</div>
+        <div class="box">1fr (200px)</div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.5 - minmax()</title>
+    <style>
+        * {
+                box-sizing: border-box;
+            }
+
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 3fr minmax(250px, 1fr);
+            margin-bottom: 5rem;
+        }
+
+        .box {
+            padding: 1rem;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .container > div:first-child {
+            background-color: brown;
+        }
+
+        .container > div:last-child {
+            background-color: blue;
+        }
+
+        .wide-container {
+            width: 1200px;
+        }
+
+        .narrow-container {
+            width: 800px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>Wide Container</h2>
+
+    <div class="container wide-container">
+        <div class="box">900px</div>
+        <div class="box">300px</div>
+    </div>
+
+    <h2>Narrow Container</h2>
+
+    <div class="container narrow-container">
+        <div class="box">550px</div>
+        <div class="box">250px</div>
+    </div>
+
+
+</body>
+</html>

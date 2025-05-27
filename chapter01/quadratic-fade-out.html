@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quadratic Fade Out</title>
+    <style>
+        #box {
+            width: 200px;
+            height: 200px;
+            background-color: teal;
+            margin: 100px auto;
+            transition: none; /* We're handling opacity manually */
+        }
+
+        #message {
+            text-align: center;
+            font-family: sans-serif;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="box"></div>
+    <div id="message">Click the box to fade it out</div>
+
+    <script>
+        const box = document.getElementById("box");
+        let startTime;
+        const duration = 1000; // milliseconds (1 second)
+
+        box.addEventListener("click", () => {
+            startTime = performance.now();
+
+            function animateFade(timeNow) {
+                const time = timeNow - startTime;
+                const normalizedTime = Math.min(time / duration, 1);
+
+                const opacity = 1 - Math.pow(normalizedTime, 2); // Quadratic easing out
+                box.style.opacity = opacity;
+
+                if (time < duration) {
+                    requestAnimationFrame(animateFade);
+                } else {
+                    box.style.opacity = 0;
+                }
+            }
+
+            requestAnimationFrame(animateFade);
+        });
+    </script>
+</body>
+</html>

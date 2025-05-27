@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2.5</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        h2 {
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background-color: #e0e0e0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+     </style>
+</head>
+<body>
+
+    <h2>Exercise 2.5</h2>
+    <p>
+        The following code prompts for a restaurant bill total, calculates a 
+        15 percent tip, then calculates and displays the total of the bill:
+    </p>
+    <pre>
+let input = prompt("Enter the restaurant bill amount:");
+let tip = input * 1.15;
+let billTotal = input + tip;  
+console.log(billTotal);</pre>
+    <p>
+        If the user enters 20, here’s the total that’s displayed in the console:
+    </p>
+<pre>
+2023</pre>
+    <p>
+        Can you spot the problem?
+    </p>
+    <script src="exercise_2.5.js"></script>
+</body>
+</html>

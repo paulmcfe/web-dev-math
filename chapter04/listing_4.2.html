@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.2 - Placing an item as the last row of the grid container</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+            background-color: #f5f5f5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .inventory {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows:
+                auto            /* Title row */
+                auto            /* Header row */
+                repeat(4, auto); /* Product rows */
+            gap: 1px;
+            background-color: #ccc;
+        }
+
+        .inventory > div {
+            padding: 0.75rem 1rem;
+            background: white;
+        }
+
+        .title-row {
+            grid-column: 1 / -1;   /* Span every column in the row */
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .header {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="inventory">
+        <!-- Title -->
+        <div class="title-row">Table 4.2 - Inventory</div>
+
+        <!-- Header -->
+        <div class="header">Product Name</div>
+        <div class="header">Code</div>
+        <div class="header">Quantity</div>
+
+        <!-- Products -->
+        <div>Notebook</div>
+        <div>NB-001</div>
+        <div>12</div>
+
+        <div>Pen</div>
+        <div>PN-002</div>
+        <div>24</div>
+
+        <div>Backpack</div>
+        <div>BP-003</div>
+        <div>7</div>
+
+        <div>Calculator</div>
+        <div>CL-004</div>
+        <div>5</div>
+    </div>
+
+</body>
+</html>

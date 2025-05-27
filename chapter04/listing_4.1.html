@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.1 - A grid container</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 1em;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 100px 200px 100px;
+            grid-template-rows: 50px 150px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: "Humanist521 BT";
+            font-size: 1em;
+            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
+            width: 100%;
+            height: 100%;
+        }
+
+        .item-1 {
+            background-color: crimson;
+        }
+        .item-2 {
+            background-color: indigo;
+        }
+        .item-3 {
+            background-color: navy;
+        }
+        .item-4 {
+            background-color: darkgoldenrod;
+        }
+        .item-5 {
+            background-color: green;
+        }
+        .item-6 {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item item-1">Cell(1,1)</div>
+        <div class="item item-2">Cell(1,2)</div>
+        <div class="item item-3">Cell(1,3)</div>
+        <div class="item item-4">Cell(2,1)</div>
+        <div class="item item-5">Cell(2,2)</div>
+        <div class="item item-6">Cell(2,3)</div>
+    </div>
+</body>
+</html>

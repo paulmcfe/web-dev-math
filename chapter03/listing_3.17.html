@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.17 - Inheritance and percentages</title>
+    <style>
+        body {
+            width: 1000px;
+        }
+        article {
+            width: 600px;
+            padding: 10%;
+        }
+        section {
+            padding: inherit;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <section>
+            <p>Hello world</p>
+        </section>
+    </article>
+<script>
+    const section = document.querySelector("section");
+    const style = getComputedStyle(section);
+    console.log(style.paddingTop); 
+</script>
+</body>
+</html>

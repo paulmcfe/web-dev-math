@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Horizontally Centered Element</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            background: #f0f0f0;
+        }
+
+        .container {
+            position: relative;
+            width: 50vw;
+            height: 50vh;
+            background: #e0e0e0;
+            border: 2px dashed #999;
+            margin: 2rem;;
+        }
+
+        .centered {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 10rem;
+            width: 10rem;;
+            background: #007bff;
+            color: white;
+            padding: 0 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="centered"></div>
+    </div>
+
+</body>
+</html>

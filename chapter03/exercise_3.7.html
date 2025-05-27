@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3.7</title>
+    <style>
+        body {
+            width: 1000px;
+        }
+        article {
+            margin: 5%;
+        }
+        section {
+            margin: inherit;
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <section>
+            <p>Hello world</p>
+        </section>
+    </article>
+<script>
+    const section = document.querySelector("section");
+    const style = getComputedStyle(section);
+    console.log(style.marginTop); 
+</script>
+</body>
+</html>

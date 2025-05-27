@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3.5</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            padding: 2rem;
+            background: #f9f9f9;
+        }
+        .container {
+            width: 90vw;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .column {
+            width: calc((100% - 30px) / 3);
+            margin-right: 15px;
+            background-color: #3498db;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        
+        .column:last-child {
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Three Column Layout</h1>
+    <div class="container">
+        <div class="column">Column 1</div>
+        <div class="column">Column 2</div>
+        <div class="column">Column 3</div>
+    </div>
+</body>
+</html>

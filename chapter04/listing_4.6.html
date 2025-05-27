@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.6 - Using minmax() to constrain a product card grid</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            max-width: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .product-card h3 {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .product-card p {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .product-card button {
+            margin-top: auto;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .product-card button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Featured Products</h1>
+
+    <div class="product-grid">
+        <div class="product-card">
+            <img src="https://placehold.co/150" alt="Product 1">
+            <h3>Notebook</h3>
+            <p>Premium hardcover notebook with 200 pages.</p>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://placehold.co/150" alt="Product 2">
+            <h3>Wireless Mouse</h3>
+            <p>Ergonomic mouse with 2.4GHz wireless connection.</p>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://placehold.co/150" alt="Product 3">
+            <h3>Backpack</h3>
+            <p>Durable backpack with padded laptop compartment.</p>
+            <button>Add to Cart</button>
+        </div>
+
+        <div class="product-card">
+            <img src="https://placehold.co/150" alt="Product 4">
+            <h3>USB-C Charger</h3>
+            <p>Fast-charging USB-C wall adapter (60W).</p>
+            <button>Add to Cart</button>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -3,49 +3,250 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.4</title>
+    <title>Listing 3.4 - Using calc() to size a dialog overlay</title>
     <style>
         * {
-            padding: 0.25rem;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
         body {
-            background-color: cornsilk;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            padding: 40px 20px;
         }
-        main {
-            background-color: aquamarine;
-            width: calc(80% - 2rem);
+
+        .page-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .user-info h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: #666;
+        }
+
+        .settings-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+        }
+
+        .settings-button:hover {
+            background: #0056b3;
+        }
+
+        /* Dialog styles */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .dialog {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: calc(100vw - 40px);
+            max-width: 500px;
+            max-height: calc(100vh - 40px);
+            overflow: hidden;
+        }
+
+        .dialog-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .dialog-title {
+            font-size: 20px;
+            color: #333;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            margin-left: auto;
+        }
+
+        .dialog-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .dialog-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Listing 3.4</h2>
-    </header>
-    <h3><code>&lt;body&gt;</code> width: (resize browser window to change):</h3>
-    <p id="body-output"></p>
-    <main>
-        <h3><code>&lt;main&gt;</code> width: (80% - 2rem):</h3>
-        <p id="main-output"></p>
-    </main>
+    <div class="page-container">
+        <h1>Account Dashboard</h1>
+        
+        <div class="user-card">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+                <h2>John Doe</h2>
+                <p>john.doe@company.com</p>
+                <p>Product Manager</p>
+            </div>
+            <button class="settings-button" onclick="openSettings()">Edit Profile</button>
+        </div>
+
+        <h3>Recent Activity</h3>
+        <p>Last login: Today at 2:30 PM</p>
+        <p>Password last changed: 2 weeks ago</p>
+        <p>Two-factor authentication: Enabled</p>
+    </div>
+
+    <div class="dialog-overlay" id="settingsDialog" onclick="closeSettings()">
+        <div class="dialog" onclick="event.stopPropagation()">
+            <div class="dialog-header">
+                <h2 class="dialog-title">Edit Profile</h2>
+                <button class="close-btn" onclick="closeSettings()">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="form-group">
+                    <label for="firstName">First name</label>
+                    <input type="text" id="firstName" value="John">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last name</label>
+                    <input type="text" id="lastName" value="Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" value="john.doe@company.com">
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department">
+                        <option>Product Management</option>
+                        <option>Engineering</option>
+                        <option>Design</option>
+                        <option>Marketing</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="btn btn-cancel" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-save" onclick="closeSettings()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Get references to the output elements  
-        bodyOutput = document.querySelector('#body-output');
-        mainOutput = document.querySelector('#main-output');
+        function openSettings() {
+            document.getElementById('settingsDialog').style.display = 'flex';
+        }
 
-        // Get references to the body and main elements
-        elBody = document.querySelector('body');
-        elMain = document.querySelector('main');
-
-        // Write the current widths
-        bodyOutput.innerText = window.getComputedStyle(elBody).width;
-        mainOutput.innerText = window.getComputedStyle(elMain).width;
-
-        // Listen for the window changing size
-        window.addEventListener('resize', function() {
-            // Update the width outputs
-            bodyOutput.innerText = window.getComputedStyle(elBody).width;
-            mainOutput.innerText = window.getComputedStyle(elMain).width;
-        });
+        function closeSettings() {
+            document.getElementById('settingsDialog').style.display = 'none';
+        }
     </script>
 </body>
 </html>

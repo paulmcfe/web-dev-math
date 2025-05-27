@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3.2</title>
+    <style>
+        .grandparent {
+            font-size: 16px;
+        }
+        .parent {
+            font-size: 1.25em;  /* 16px * 1.25 = 20px */
+        }
+        .child {
+            font-size: 1.25em;   /* 20px * 1.25 = 25px */
+        }
+        .grandchild {
+            font-size: 1.25em;   /* 25px * 1.25 = 31.25x */
+        }
+    </style>
+</head>
+<body class="grandparent">
+    <p>
+        This is grandparent text set at 16px.
+    </p>
+    <article class="parent">
+        <p>
+            This is parent text set at 1.25em.
+        </p>
+        <section class="child">
+            <p>
+                This is child text set at 1.25em.
+            </p>
+            <sidebar class="grandchild">
+                <p>
+                    This is grandchild text set at 1.25em.
+                </p>
+            </sidebar>
+        </section>
+    </article>
+</body>
+</html>

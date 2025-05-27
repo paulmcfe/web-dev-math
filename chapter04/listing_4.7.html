@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.7 - CSS Grid auto column with min-width and max-width</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+    
+            body {
+                margin: 0;
+                font-family: sans-serif;
+            }
+    
+            .layout {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                height: 100vh;
+            }
+
+            .sidebar {
+                background: #2c3e50;
+                color: white;
+                padding: 1rem;
+                min-width: 150px;
+                max-width: 300px;
+            }
+    
+            .content {
+                background: #ecf0f1;
+                padding: 2rem;
+            }
+    
+            .nav-item {
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 4px;
+            }
+    
+            .nav-item:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+    
+            h1 {
+                margin-top: 0;
+            }
+    
+            @media (max-width: 500px) {
+                .sidebar {
+                    font-size: 0.9rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+    
+        <div class="layout">
+            <div class="sidebar">
+                <h2>Menu</h2>
+                <p>Welcome to your Admin Console! Please choose a function to get started:</p>
+                <div class="nav-item">Dashboard</div>
+                <div class="nav-item">Reports</div>
+                <div class="nav-item">Users</div>
+                <div class="nav-item">Settings</div>
+                <div class="nav-item">Logout</div>
+            </div>
+            <div class="content">
+                <h1>Admin Console</h1>
+                <p>Welcome to the Admin Console, your centralized interface for 
+                    managing the tools, data, and settings that keep your 
+                    operation running smoothly. This console provides quick 
+                    access to essential controls such as reports, user 
+                    permissions, and system preferences.
+                </p><p>
+                    Whether you're monitoring performance metrics, configuring 
+                    settings, or reviewing user activity, the Admin Console gives 
+                    you the flexibility and structure to stay in control. The 
+                    left-hand sidebar provides a consistent navigation anchor 
+                    that gives you quick access to the tools you need.</p>
+            </div>
+        </div>
+    
+    </body>
+    </html>

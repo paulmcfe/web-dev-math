@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Golden Ratio Type Scale</title>
+    <style>
+        :root {
+            --base-size: 1rem;          /* 16px */
+            --ratio: 1.618;             /* Golden Ratio */
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 1000px;
+            padding: 0 1rem;
+            color: #333;
+        }
+
+        .scale {
+            --step: 0;
+            font-size: calc(var(--base-size) * pow(var(--ratio), var(--step)));
+        }
+
+        .step-4  { --step: 4; }
+        .step-3  { --step: 3; }
+        .step-2  { --step: 2; }
+        .step-1  { --step: 1; }
+        .step0   { --step: 0; }
+        .step--1 { --step: -1; }
+
+        h1, h2, h3, h4, p {
+            margin: 0 0 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 class="scale step-4">Heading 1</h1>
+
+    <h2 class="scale step-3">Heading 2</h2>
+
+    <h3 class="scale step-2">Heading 3</h3>
+
+    <p class="scale step0">
+        Regular pragraph text.
+    </p>
+
+    <p class="scale step--1">
+        Footnote or caption text.
+    </p>
+
+</body>
+</html>

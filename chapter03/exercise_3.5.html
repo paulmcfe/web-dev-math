@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 3.5</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(40px, 7vw, 72px);
+            margin-bottom: 2rem;
+        }
+
+        textarea {
+            border: 0;
+            width: 300px;
+            height: 3rem;
+            font-family: monospace;
+            font-size: 1rem;
+            resize: none;
+            text-align: center;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="heading">Exercise 3.5</h1>
+    <textarea id="output" readonly></textarea>
+    <p>(Resize the viewport width to see the <code>h1</code> font size change smoothly between 40px and 72px.)</p>
+
+    <script>
+        const heading = document.getElementById('heading');
+        const output = document.getElementById('output');
+
+        function updateFontSize() {
+            const size = window.getComputedStyle(heading).fontSize;
+            output.value = `font-size: ${size}`;
+        }
+
+        updateFontSize();
+        window.addEventListener('resize', updateFontSize);
+    </script>
+
+</body>
+</html>

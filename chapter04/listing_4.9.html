@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 4.9 - auto-fill vs auto-fit in CSS Grid</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 2rem;
+            font-family: sans-serif;
+            background: #f0f0f0;
+        }
+
+        .label {
+            font-weight: bold;
+            margin: 2rem 0 0.5rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-auto-rows: 100px;
+            background: #ddd;
+            width: 850px;
+        }
+
+        .auto-fill-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .auto-fit-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #aaa;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="label">Grid with <code>auto-fill</code></div>
+    <div class="grid-container auto-fill-grid">
+        <div class="card">Item A</div>
+        <div class="card">Item B</div>
+    </div>
+
+    <div class="label">Grid with <code>auto-fit</code></div>
+    <div class="grid-container auto-fit-grid">
+        <div class="card">Item A</div>
+        <div class="card">Item B</div>
+    </div>
+
+</body>
+</html>

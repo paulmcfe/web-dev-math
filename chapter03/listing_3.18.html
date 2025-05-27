@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 3.18 - Margin collapsing</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            padding: 2rem;
+            width: 400px;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightsteelblue;
+            border: 1px solid black;
+            font-size: 2rem;
+            min-height: 200px;
+        }
+
+        .box1 {
+            margin-bottom: 30px;
+        }
+
+        .box2 {
+            margin-top: 20px;
+        }
+
+        .note {
+            color: #333;
+            font-size: 0.9rem;
+            margin-top: 1rem;;
+        }
+        
+        code {
+            color: #333;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1">
+        Box 1
+    </div>
+    <div class="box2">
+        Box 2
+    </div>
+    <p class = "note">Use your browser's devtools to adjust the .box2 
+        <code>margin-top</code> value up or down. Notice that the space 
+        between the boxes doesn't change until you increase <code>margin-top</code> 
+        beyond <code>30px</code>.
+    </p>
+</html>
