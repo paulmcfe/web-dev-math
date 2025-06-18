@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 4.3</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-auto-rows: 100px;
+            padding: 1rem;
+            gap: 1rem;
+            background-color: #f0f0f0;
+        }
+
+        .item {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            grid-column: 1 / -1;
+            grid-row: -2 / -1; /* this fails if implicit rows are added before it */
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid">
+        <!-- Implicitly placed items -->
+        <div class="item">Product A</div>
+        <div class="item">Product B</div>
+        <div class="item">Product C</div>
+        <div class="item">Product D</div>
+        <div class="item">Product E</div>
+        <div class="item">Product F</div>
+        <div class="item">Product G</div>
+        <div class="item">Product H</div>
+        <!-- Footer using negative row index -->
+        <div class="footer">Footer</div>
+    </div>
+
+</body>
+</html>

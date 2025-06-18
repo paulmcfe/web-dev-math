@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radial Menu Example</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+        }
+        .menu {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #3498db;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            position: absolute;
+            left: 80px;
+            top: 80px;
+            height: 40px;
+            width: 40px;
+            transition: all 0.3s ease;
+        }
+        .menu-button {
+            position: absolute;
+            top: 80px;
+            left: 80px;
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu" id="menu">
+        <div class="menu-button" id="menuButton">+</div>
+    </div>
+
+    <script>
+        const menu = document.getElementById('menu');
+        const button = document.getElementById('menuButton');
+        const totalItems = 6;
+        const radius = 70;
+        const centerX = 100;
+        const centerY = 100;
+        let expanded = false;
+
+        for (let i = 0; i < totalItems; i++) {
+            const item = document.createElement('div');
+            item.className = 'menu-item';
+            item.textContent = i + 1;
+            menu.appendChild(item);
+        }
+
+        const items = document.querySelectorAll('.menu-item');
+
+        button.addEventListener('click', () => {
+            items.forEach((item, i) => {
+                const angle = (2 * Math.PI / totalItems) * i;
+                console.log(`Angle: ${angle}; cos(angle): ${Math.cos(angle)}; sin(angle): ${Math.sin(angle)}`);
+                const x = expanded ? 80 : centerX + radius * Math.cos(angle) - 20;
+                const y = expanded ? 80 : centerY + radius * Math.sin(angle) - 20;
+                item.style.left = `${x}px`;
+                item.style.top = `${y}px`;
+            });
+            expanded = !expanded;
+        });
+    </script>
+</body>
+</html>

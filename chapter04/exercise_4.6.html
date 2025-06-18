@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 4.6</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+           
+        body {
+            margin: 2rem;
+            font-family: sans-serif;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 300px 200px 1fr;
+            gap: 1px;
+            background-color: black;
+            border: 1px solid black;
+            width: 503px;
+        }
+
+        .item {
+            background-color: white;
+        }
+        
+        .final {
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid">
+        <div class="item final">Product A</div>
+        <div class="item final">Product B</div>
+        <div class="item provisional"></div>
+    </div>
+
+</body>
+</html>
