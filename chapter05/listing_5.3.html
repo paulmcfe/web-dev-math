@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 5.1 - The flex-basis calculation</title>
+    <title>Listing 5.3 - The flex-shrink calculation</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             margin: 1em;
         }
@@ -13,7 +16,7 @@
             display: flex;
             flex-direction: row;
             outline: 3px solid rgb(99, 99, 99);
-            width: 600px;
+            width: 1200px;
         }
         .item {
             font-family: sans-serif;
@@ -23,15 +26,19 @@
         }
         .item-1 {
             background-color: rgb(166, 166, 166);
-            flex-basis: 100px;
+            flex-shrink: 1;
+            flex-basis: 300px;
         }
         .item-2 {
             background-color: rgb(219, 219, 219);
-            flex-basis: 200px;
+            flex-shrink: 3;
+            flex-basis: 300px;
             width: 100px;
         }
         .item-3 {
             background-color: rgb(166, 166, 166);
+            flex-shrink: 3;
+            flex-basis: 900px;
         }
     </style>
 </head>

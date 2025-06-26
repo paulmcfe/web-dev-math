@@ -3,44 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 4.2 - The flex-shrink calculation</title>
+    <title>Listing 5.2 - The flex-grow calculation</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
         body {
             margin: 1em;
         }
-
         .container {
             margin-top: 3em;
             display: flex;
             flex-direction: row;
-            width: 1200px;
+            outline: 3px solid rgb(99, 99, 99);
+            width: 600px;
         }
-
         .item {
-            color: white;
-            font-family: "Verdana";
+            font-family: sans-serif;
             font-size: 4em;
+            padding: .1em;
             text-align: center;
-            text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
         }
-
         .item-1 {
-            background-color: crimson;
-            flex-shrink: 1;
-            flex-basis: 300px;
+            background-color: rgb(166, 166, 166);
+            flex-grow: 1;
+            flex-basis: 100px;
         }
         .item-2 {
-            background-color: indigo;
-            flex-shrink: 2;
-            flex-basis: 300px;
+            background-color: rgb(219, 219, 219);
+            flex-grow: 3;
+            flex-basis: 200px;
+            width: 100px;
         }
         .item-3 {
-            background-color: navy;
-            flex-shrink: 3;
-            flex-basis: 900px;
+            background-color: rgb(166, 166, 166);
+            flex-grow: 4;
+            flex-basis: 100px;
         }
     </style>
 </head>
