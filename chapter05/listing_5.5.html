@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 5.5 - A flex-shrink example</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                margin: 0;
+                font-family: sans-serif;
+                background: #f9f9f9;
+                padding: 2rem;
+            }
+            .toolbar {
+                display: flex;
+                gap: 0.75rem;
+                border: 2px solid #ccc;
+                padding: 1rem;
+                width: 650px;
+                margin: 0 auto;
+                background: white;
+                overflow: hidden;
+            }
+            .action {
+                flex: 0 1 160px;   
+                padding: 0.75rem 1rem;
+                background: rgb(157, 0, 100);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                font-size: 1rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
+    </head>
+    <body>
+        <h3>Navigation bar</h3>
+        <div class="toolbar">
+            <button class="action">Dashboard</button>
+            <button class="action">Analytics</button>
+            <button class="action">Users</button>
+            <button class="action">Settings</button>
+            <button class="action">Account</button>
+        </div>
+    </body>
+    </html>
+    

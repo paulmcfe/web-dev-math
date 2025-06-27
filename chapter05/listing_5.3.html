@@ -3,48 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 5.3 - The flex-shrink calculation</title>
+    <title>Listing 5.3 - A flex-grow example</title>
     <style>
         * {
             box-sizing: border-box;
         }
         body {
-            margin: 1em;
+            margin: 0;
+            font-family: sans-serif;
+            background: rgb(219, 219, 219);
+            padding: 2rem;
         }
         .container {
-            margin-top: 3em;
             display: flex;
-            flex-direction: row;
-            outline: 3px solid rgb(99, 99, 99);
-            width: 600px;
+            width: 750px;
+            margin: 0 auto;
+            gap: 1rem;
         }
-        .item {
-            font-family: sans-serif;
-            font-size: 4em;
+        .card {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            border: 2px solid #ccc;
             text-align: center;
         }
-        .item-1 {
-            background-color: rgb(166, 166, 166);
-            flex-shrink: 1;
-            flex-basis: 450px;
+        .card-basic {
+            flex-grow: 1;
+            flex-basis: 200px;
         }
-        .item-2 {
-            background-color: rgb(219, 219, 219);
-            flex-shrink: 2;
-            flex-basis: 450px;
+        .card-pro {
+            flex-grow: 2;
+            flex-basis: 200px;
+            border-color: #0077cc;
         }
-        .item-3 {
-            background-color: rgb(166, 166, 166);
-            flex-shrink: 3;
-            flex-basis: 450px;
+        .card-enterprise {
+            flex-grow: 1;
+            flex-basis: 200px;
+        }
+        h2 {
+            margin-top: 0;
+        }
+        p.price {
+            font-size: 1.5rem;
+            color: #0077cc;
         }
     </style>
 </head>
 <body>
+    <h1>Pricing Plans</h1>
     <div class="container">
-        <div class="item item-1">1</div>
-        <div class="item item-2">2</div>
-        <div class="item item-3">3</div>
+        <div class="card card-basic">
+            <h2>Basic</h2>
+            <p class="price">$9/mo</p>
+            <p>Good for personal projects</p>
+        </div>
+        <div class="card card-pro">
+            <h2>Pro</h2>
+            <p class="price">$29/mo</p>
+            <p>Best for freelancers and small teams</p>
+        </div>
+        <div class="card card-enterprise">
+            <h2>Enterprise</h2>
+            <p class="price">$99/mo</p>
+            <p>Ideal for large organizations</p>
+        </div>
     </div>
 </body>
 </html>
