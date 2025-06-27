@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 5.6 - The sum of the flex-grow values is greater than or equal to 1</title>
+    <title>Listing 5.9 - Using max-width to limit growing</title>
     <style>
         body {
             margin: 1em;
@@ -19,10 +19,11 @@
             font-family: sans-serif;
             font-size: 4em;
             text-align: center;
+            max-width: 220px;
         }
         .item-1 {
             background-color: rgb(166, 166, 166);
-            flex-grow: 0.5;
+            flex-grow: 1;
             flex-basis: 100px;
         }
         .item-2 {
@@ -32,7 +33,7 @@
         }
         .item-3 {
             background-color: rgb(166, 166, 166);
-            flex-grow: 3.5;
+            flex-grow: 3;
             flex-basis: 100px;
         }
     </style>
