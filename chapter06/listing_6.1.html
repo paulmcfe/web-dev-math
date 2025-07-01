@@ -13,10 +13,11 @@
         }
         body {
             display: grid;
-            grid-template-rows: 100px 1fr 100px;
-            width: 960px;
+            grid-template-rows: 75px 1fr 60px;
             font-family: Georgia, serif;
-            line-height: 1.4;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            width: 960px;
         }
         header {
             padding: 16px;
@@ -41,37 +42,27 @@
             padding: 12px;
             width: 320px;  
         }
-        h3 {
-            font-size: 1.25rem;
-        }
         aside div {
             padding-bottom: 8px;
-        }
-        aside a {
-            color: indigo;
         }
         footer {
             padding: 16px;
         }
-
+        a {
+            text-decoration: none;
+        }
         /* BACKGROUND COLORS */
         header {
-            background-color: #6fa8dc;
-            background-image: linear-gradient(to bottom, #cfe2f3 0%, #6fa8dc 100%);
-        }
-        nav {
-            background-color: #e06666;
-            background-image: linear-gradient(to bottom, #f4cccc 0%, #e06666 100%);
+            background-color: rgb(197, 223, 239);
         }
         article {
             background-color: white;
         }
         aside, main {
-            background-color: #b4a7d6;
+            background-color: rgb(219, 219, 219);
         }
         footer {
-            background-color: #b6d7a8;
-            background-image: linear-gradient(to bottom, #d9ead3 0%, #b6d7a8 100%);
+            background-color: rgb(128, 194, 29);
         }
     </style>
 </head>
@@ -92,7 +83,7 @@
                 </p>        
             </article>
             <aside>
-                <h3>Links</h3>
+                <h2>Links</h2>
                 <div>
                     <a href="https://www.w3.org/TR/WCAG20-TECHS/G146.html">Liquid layouts (W3C)</a>
                 </div>
