@@ -10,12 +10,19 @@
             --main-color: hsl(var(--base-hue) 100% 50%);
             --comp-color: hsl(calc(var(--base-hue) + 180) 100% 50%);
         }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            padding: 2rem;
+            margin-top: 1rem;
+            padding-left: 1rem;
         }
         label {
             display: inline-block;
+            margin-top: 1rem;
             width: max-content;
         }
         .swatches-container {
@@ -26,7 +33,7 @@
         .swatch-container {
             display: flex;
             flex-direction: column;
-            margin-top: 2rem;
+            margin-top: 1rem;
             max-width: max-content;
         }
         .swatch {
@@ -92,7 +99,7 @@
             const l = (max + min) / 2;
             
             if (diff === 0) {
-                return {h: 0, s: 0, l: l * 100};
+                return {h: 0, s: 0, l: Math.round(l * 100)};
             }
             
             const s = diff / (1 - Math.abs(2 * l - 1));

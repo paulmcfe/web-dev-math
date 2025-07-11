@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listing 7.2 - Converting RGB to HSL</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            padding: 2rem;
-        }
-        .input-group {
-            margin-bottom: 1rem;
+            margin-top: 1rem;
+            padding-left: 1rem;
         }
         label {
             display: inline-block;
+            margin-top: 1rem;
             width: max-content;
         }
         .swatches-container {
@@ -24,7 +28,7 @@
         .swatch-container {
             display: flex;
             flex-direction: column;
-            margin-top: 2rem;
+            margin-top: 1rem;
             max-width: max-content;
         }
         .swatch {
@@ -84,7 +88,7 @@
             const l = (max + min) / 2;
             
             if (diff === 0) {
-                return {h: 0, s: 0, l: l * 100};
+                return {h: 0, s: 0, l: Math.round(l * 100)};
             }
             
             const s = diff / (1 - Math.abs(2 * l - 1));

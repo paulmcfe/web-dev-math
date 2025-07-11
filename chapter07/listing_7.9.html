@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 7.9 - Switching between light mode and dark mode</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --bg-light: hsl(240, 20%, 95%);
+            --text-light: hsl(240, 30%, 20%);
+
+            --bg-dark: hsl(240, 10%, 10%);
+            --text-dark: hsl(240, 20%, 90%);
+        }
+        body {
+            font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+            padding: 1rem;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .toggle {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            border-radius: 0.5rem;;
+            margin-top: 1rem;
+            padding: 0.5rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .toggle.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <h1>HSL Dark Mode Tester</h1>
+    <p>Original HSL: <span id="hsl-original"></span></p>
+    <p>Dark Mode HSL: <span id="hsl-dark"></span></p>
+    <div class="color-box" id="color-box"></div>
+    <button class="toggle" id="toggle-btn">Toggle Dark Mode</button>
+
+    <script>
+        function transformToDarkMode(h, s, l, hueShift = 15, saturationFactor = 0.8) {
+            const newH = (h + hueShift) % 360;
+            const newS = Math.round(s * saturationFactor);
+            const newL = 100 - l;
+            return [newH, newS, newL];
+        }
+
+        const original = [240, 30, 80];
+        const dark = transformToDarkMode(...original);
+
+        const originalStr = `hsl(${original[0]}, ${original[1]}%, ${original[2]}%)`;
+        const darkStr = `hsl(${dark[0]}, ${dark[1]}%, ${dark[2]}%)`;
+
+        document.getElementById("hsl-original").textContent = originalStr;
+        document.getElementById("hsl-dark").textContent = darkStr;
+        document.getElementById("color-box").style.backgroundColor = originalStr;
+
+        const toggleBtn = document.getElementById("toggle-btn");
+        toggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            document.getElementById('toggle-btn').classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            document.getElementById("color-box").style.backgroundColor = isDark ? darkStr : originalStr;
+        });
+    </script>
+</body>
+</html>

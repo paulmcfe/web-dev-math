@@ -7,13 +7,16 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         body {
             font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
-            padding: 2rem;
+            padding: 1rem;
         }
         label {
             display: inline-block;
+            margin-top: 1rem;
             width: max-content;
         }
         .swatches-container {
@@ -24,13 +27,14 @@
         .swatch-container {
             display: flex;
             flex-direction: column;
-            margin-top: 2rem;
+            margin-top: 1rem;
             max-width: max-content;
         }
         .swatch {
-            width: 300px;
+            width: 320px;
             height: 200px;
             border: 1px solid #ccc;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -54,7 +58,7 @@
     </style>
 </head>
 <body>
-    <h1>Contrast Ratio</h1>
+    <h1>Contrast Ratio Calculator</h1>
     <label for="text-color-picker">Pick a text color:</label>
     <input type="color" id="text-color-picker" value="#000000">
     <label for="bg-color-picker">Pick a background color:</label>
@@ -86,7 +90,7 @@
             const l = (max + min) / 2;
             
             if (diff === 0) {
-                return {h: 0, s: 0, l: l * 100};
+                return {h: 0, s: 0, l: Math.round(l * 100)};
             }
             
             const s = diff / (1 - Math.abs(2 * l - 1));

@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listing 7.3 - Converting HSL to RGB</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            padding: 2rem;
-        }
-        .input-group {
-            margin-bottom: 1rem;
+            padding: 1rem;
         }
         label {
             display: inline-block;
+            margin-top: 1rem;
             width: max-content;
         }
         input[type="number"] {
-            width: 3rem;
+            width: 3.5rem;
             padding: 0.3rem;
             margin-right: 0.5rem;
         }
@@ -29,7 +33,7 @@
         .swatch-container {
             display: flex;
             flex-direction: column;
-            margin-top: 2rem;
+            margin-top: 1rem;
             max-width: max-content;
         }
         .swatch {
