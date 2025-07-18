@@ -3,26 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.10 - mix-blend-mode</title>
+    <title>Listing 7.8 - Calculating Contrast Ratios</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        .container {
-            background-color: rgb(255, 0, 0);
-            padding: 16px;
-            width: 544px;
+        body {
+            font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
+            padding: 1rem;
         }
-        .blended-image {
-            mix-blend-mode: darken;
+        label {
+            display: inline-block;
+            margin-top: 1rem;
+            width: max-content;
+        }
+        .swatches-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .swatch-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 1rem;
+            max-width: max-content;
+        }
+        .swatch {
+            width: 320px;
+            height: 200px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 1.1rem;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        #mainColorSwatch {
+            background-color: var(--main-color);
+        }
+        #splitCompColor1Swatch {
+            background-color: var(--split-comp-color-1);
+        }
+        #splitCompColor2Swatch {
+            background-color: var(--split-comp-color-2);
+        }
+        .function-text {
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-    <img src="/images/pink-flamingo.png" alt="Photo" class="blended-image">
+    <h1>Contrast Ratio Calculator</h1>
+    <label for="text-color-picker">Pick a text color:</label>
+    <input type="color" id="text-color-picker" value="#000000">
+    <label for="bg-color-picker">Pick a background color:</label>
+    <input type="color" id="bg-color-picker" value="#ffffff">
+
+    <div class="swatches-container">
+        <div class="swatch-container">
+            <div class="swatch" id="swatch">
+                <span class="swatch-text">“The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect.” –Tim Berners-Lee</span>
+            </div>
+            <div class="function-text" id="text-color-text"></div>
+            <div class="function-text" id="bg-color-text"></div>
+            <div class="function-text" id="contrast-ratio-text"></div>
+        </div>
     </div>
+    <script>
+        const swatch = document.getElementById('swatch');
+        const textColorText = document.getElementById('text-color-text');
+        const bgColorText = document.getElementById('bg-color-text');
+        const crText = document.getElementById('contrast-ratio-text');
+
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const diff = max - min;
+            const l = (max + min) / 2;
+            
+            if (diff === 0) {
+                return {h: 0, s: 0, l: Math.round(l * 100)};
+            }
+            
+            const s = diff / (1 - Math.abs(2 * l - 1));
+
+            let h;
+            switch (max) {
+                case r:
+                    h = ((g - b) / diff) + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / diff + 2;
+                    break;
+                case b:
+                    h = (r - g) / diff + 4;
+                    break;
+            }
+            h *= 60;
+            if (h < 0) h += 360;
+            
+            return {
+                h: Math.round(h),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
+            };
+        }
+        
+        // Convert a hex color code to an {r,g,b} object
+        function hexToRgb(hex) {
+            hex = hex.replace(/^#/, "");
+            if (hex.length === 3) { // shorthand like "#abc"
+                hex = hex.split("").map(ch => ch + ch).join("");
+            }
+            const num = parseInt(hex, 16);
+            return {
+                r: (num >> 16) & 255,   // extract red byte
+                g: (num >> 8) & 255,    // extract green byte
+                b: num & 255           // extract blue byte
+            };
+        }
+
+        // Calculate relative luminance of an RGB color
+        function relativeLuminance(r, g, b) {
+            // Normalize to [0,1]
+            let R_n = r / 255, G_n = g / 255, B_n = b / 255;
+            // Linearize each component
+            const toLinear = (c) => 
+                c <= 0.04045 ? 
+                c / 12.92 : 
+                ((c + 0.055) / 1.055) ** 2.4;
+            const R_l = toLinear(R_n);
+            const G_l = toLinear(G_n);
+            const B_l = toLinear(B_n);
+            // Return the weighted sum
+            return 0.2126 * R_l + 0.7152 * G_l + 0.0722 * B_l;
+        }
+
+        // Calculate the contrast ratio between two hex colors
+        function getContrastRatio(color1, color2) {
+            const rgb1 = hexToRgb(color1);
+            const rgb2 = hexToRgb(color2);
+            const L1 = relativeLuminance(rgb1.r, rgb1.g, rgb1.b);
+            const L2 = relativeLuminance(rgb2.r, rgb2.g, rgb2.b);
+            // ensure L1 is the luminance of lighter color
+            const lighter = Math.max(L1, L2);
+            const darker = Math.min(L1, L2);
+            // compute contrast ratio
+            const ratio = (lighter + 0.05) / (darker + 0.05);
+            return ratio;
+        }
+
+        // Function to check whether the passed contrast ratio
+        // meets the WACG contrast thresholds
+        function checkCompliance(cr, isLargeText = false) {
+            const thresholds = {
+                aa: { normal: 4.5, large: 3.0 },
+                aaa: { normal: 7.0, large: 4.5 }
+            };
+            
+            const textType = isLargeText ? 'large' : 'normal';
+            
+            return {
+                aa: cr >= thresholds.aa[textType],
+                aaa: cr >= thresholds.aaa[textType]
+            };
+        }
+
+        function updateSwatch() {
+            const textHexString = document.getElementById('text-color-picker').value;
+            let { r, g, b } = hexToRgb(textHexString);
+            let { h, s, l } = rgbToHsl(r, g, b);
+            let hslString = `hsl(${h} ${s}% ${l}%)`;
+            swatch.style.color = hslString;
+            textColorText.textContent = `Text color: ${hslString}`;
+
+            const bgHexString = document.getElementById('bg-color-picker').value;
+            ({ r, g, b } = hexToRgb(bgHexString));
+            ({ h, s, l } = rgbToHsl(r, g, b));
+            hslString = `hsl(${h} ${s}% ${l}%)`;
+            swatch.style.backgroundColor = hslString;
+            bgColorText.textContent = `Background color: ${hslString}`;
+
+            const contrastRatio = getContrastRatio(textHexString, bgHexString).toFixed(2);
+            const wacg = checkCompliance(contrastRatio, false);
+
+            // Build a string to show the results of the compliance check
+            const result = Object.entries(wacg)
+                .map(([key, value]) => `${value ? '✅' : '❌'} ${key.toUpperCase()}`)
+                .join(', ');
+            crText.textContent = `Contrast ratio: ${contrastRatio}: ${result}`;
+        }
+
+        // Listen for inputs and changes on the color pickers
+        document.getElementById('text-color-picker').addEventListener('input', updateSwatch);
+        document.getElementById('text-color-picker').addEventListener('change', updateSwatch);
+        document.getElementById('bg-color-picker').addEventListener('input', updateSwatch);
+        document.getElementById('bg-color-picker').addEventListener('change', updateSwatch);
+
+        // Initial load
+        updateSwatch();
+    </script>
 </body>
 </html>

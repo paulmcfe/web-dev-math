@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.7 - Split-Complementary Color Scheme</title>
+    <title>Listing 7.5 - Analagous Color Scheme</title>
     <style>
         :root {
             --base-hue: 30;
             --main-color: hsl(var(--base-hue) 100% 50%);
-            --split-comp-color-1: hsl(calc(var(--base-hue) + 150) 100% 50%);
-            --split-comp-color-2: hsl(calc(var(--base-hue) + 210) 100% 50%);
+            --analagous-color-1: hsl(calc(var(--base-hue) + 30) 100% 50%);
+            --analagous-color-2: hsl(calc(var(--base-hue) - 30) 100% 50%);
         }
         * {
             box-sizing: border-box;
@@ -50,11 +50,11 @@
         #mainColorSwatch {
             background-color: var(--main-color);
         }
-        #splitCompColor1Swatch {
-            background-color: var(--split-comp-color-1);
+        #analogousColor1Swatch {
+            background-color: var(--analagous-color-1);
         }
-        #splitCompColor2Swatch {
-            background-color: var(--split-comp-color-2);
+        #analogousColor2Swatch {
+            background-color: var(--analagous-color-2);
         }
         .swatch-text {
             display: inline-block;
@@ -69,7 +69,7 @@
     </style>
 </head>
 <body>
-    <h1>Split-Complementary Colors</h1>
+    <h1>Analogous Colors</h1>
     <label for="color-picker">Pick a color:</label>
     <input type="color" id="color-picker" value="#ffa600">
 
@@ -81,25 +81,25 @@
             <div class="function-text" id="mainColorText"></div>
         </div>
         <div class="swatch-container">
-            <div class="swatch" id="splitCompColor1Swatch">
-                <span class="swatch-text">Split Comp 1</span>
+            <div class="swatch" id="analogousColor1Swatch">
+                <span class="swatch-text">Analogous 1</span>
             </div>
-            <div class="function-text" id="splitCompColor1Text"></div>
+            <div class="function-text" id="analogousColor1Text"></div>
         </div>
         <div class="swatch-container">
-            <div class="swatch" id="splitCompColor2Swatch">
-                <span class="swatch-text">Split Comp 2</span>
+            <div class="swatch" id="analogousColor2Swatch">
+                <span class="swatch-text">Analogous 2</span>
             </div>
-            <div class="function-text" id="splitCompColor2Text"></div>
+            <div class="function-text" id="analogousColor2Text"></div>
         </div>
     </div>
     <script>
         const mainColorSwatch = document.getElementById('mainColorSwatch');
-        const splitCompColor1Swatch = document.getElementById('splitCompColor1Swatch');
-        const splitCompColor2Swatch = document.getElementById('splitCompColor2Swatch');
+        const analogousColor1Swatch = document.getElementById('analogousColor1Swatch');
+        const analogousColor2Swatch = document.getElementById('analogousColor2Swatch');
         const mainColorText = document.getElementById('mainColorText');
-        const splitCompColor1Text = document.getElementById('splitCompColor1Text');
-        const splitCompColor2Text = document.getElementById('splitCompColor2Text');
+        const analogousColor1Text = document.getElementById('analogousColor1Text');
+        const analogousColor2Text = document.getElementById('analogousColor2Text');
 
         function mod(dividend, divisor) {
             return ((dividend % divisor) + divisor) % divisor;
@@ -141,6 +141,7 @@
                 l: Math.round(l * 100)
             };
         }
+
         // Convert a hex color code to an {r,g,b} object
         function hexToRgb(hex) {
             hex = hex.replace(/^#/, "");
@@ -163,14 +164,14 @@
             mainColorSwatch.style.backgroundColor = hslString;
             mainColorText.textContent = hslString;
 
-            const splitComp1H = (h + 150) % 360;
-            const splitCompColor1String = `hsl(${splitComp1H} ${s} ${l})`;
-            splitCompColor1Swatch.style.backgroundColor = splitCompColor1String;
-            splitCompColor1Text.textContent = splitCompColor1String;
-            const splitComp2H = (h + 210) % 360;
-            const splitCompColor2String = `hsl(${splitComp2H} ${s} ${l})`;
-            splitCompColor2Swatch.style.backgroundColor = splitCompColor2String;
-            splitCompColor2Text.textContent = splitCompColor2String;
+            const analogous1H = (h + 30) % 360;
+            const analogousColor1String = `hsl(${analogous1H} ${s} ${l})`;
+            analogousColor1Swatch.style.backgroundColor = analogousColor1String;
+            analogousColor1Text.textContent = analogousColor1String;
+            const analogous2H = mod(h - 30, 360);
+            const analogousColor2String = `hsl(${analogous2H} ${s} ${l})`;
+            analogousColor2Swatch.style.backgroundColor = analogousColor2String;
+            analogousColor2Text.textContent = analogousColor2String;
         }
 
         // Listen for input on the color picker

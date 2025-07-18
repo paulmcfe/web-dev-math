@@ -3,110 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.9 - Switching between light mode and dark mode</title>
+    <title>Listing 7.7 - Split-Complementary Color Scheme</title>
     <style>
+        :root {
+            --base-hue: 30;
+            --main-color: hsl(var(--base-hue) 100% 50%);
+            --split-comp-color-1: hsl(calc(var(--base-hue) + 150) 100% 50%);
+            --split-comp-color-2: hsl(calc(var(--base-hue) + 210) 100% 50%);
+        }
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        :root {
-            --bg-light: hsl(240, 20%, 95%);
-            --text-light: hsl(240, 30%, 20%);
-
-            --bg-dark: hsl(240, 10%, 10%);
-            --text-dark: hsl(240, 20%, 90%);
-        }
         body {
-            font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
-            padding: 1rem;
-            background-color: var(--bg-light);
-            color: var(--text-light);
-            transition: background-color 0.3s, color 0.3s;
+            font-family: Arial, sans-serif;
+            margin-top: 1rem;
+            padding-left: 1rem;
         }
-        body.dark-mode {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
+        label {
+            display: inline-block;
+            margin-top: 1rem;
+            width: max-content;
         }
-        .accent-box {
+        .swatches-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .swatch-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            background-color: hsl;
-            border-radius: 0.5rem;
-            width: fit-content;
-            height: 100px;
-            line-height: 1.5;
-            margin: 1rem 0;
-            padding: 1rem;
-            transition: background-color 0.3s;
-        }
-        .toggle {
-            background-color: var(--bg-light);
-            color: var(--text-light);
-            border-radius: 0.5rem;;
             margin-top: 1rem;
-            padding: 0.5rem;
-            transition: background-color 0.3s, color 0.3s;
+            max-width: max-content;
         }
-        .toggle.dark-mode {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
+        .swatch {
+            width: 150px;
+            height: 150px;
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 0.9rem;
+        }
+        #mainColorSwatch {
+            background-color: var(--main-color);
+        }
+        #splitCompColor1Swatch {
+            background-color: var(--split-comp-color-1);
+        }
+        #splitCompColor2Swatch {
+            background-color: var(--split-comp-color-2);
+        }
+        .swatch-text {
+            display: inline-block;
+            background-color: hsl(0 0 100% / 0.25);
+            padding: 0.25rem;
+        }
+        .function-text {
+            margin-top: 10px;
+            text-align: center;
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
-    <h1>HSL Dark Mode Tester</h1>
-    <div class="accent-box" id="accent-box">
-        <h4>Accent colors:</h4>
-        <p>Original HSL: <span id="hsl-original"></span></p>
-        <p>Dark mode HSL: <span id="hsl-dark"></span></p>
-    </div>
-    <button class="toggle" id="toggle-btn">Toggle Dark Mode</button>
+    <h1>Split-Complementary Colors</h1>
+    <label for="color-picker">Pick a color:</label>
+    <input type="color" id="color-picker" value="#ffa600">
 
+    <div class="swatches-container">
+        <div class="swatch-container">
+            <div class="swatch" id="mainColorSwatch">
+                <span class="swatch-text">Main</span>
+            </div>
+            <div class="function-text" id="mainColorText"></div>
+        </div>
+        <div class="swatch-container">
+            <div class="swatch" id="splitCompColor1Swatch">
+                <span class="swatch-text">Split Comp 1</span>
+            </div>
+            <div class="function-text" id="splitCompColor1Text"></div>
+        </div>
+        <div class="swatch-container">
+            <div class="swatch" id="splitCompColor2Swatch">
+                <span class="swatch-text">Split Comp 2</span>
+            </div>
+            <div class="function-text" id="splitCompColor2Text"></div>
+        </div>
+    </div>
     <script>
+        const mainColorSwatch = document.getElementById('mainColorSwatch');
+        const splitCompColor1Swatch = document.getElementById('splitCompColor1Swatch');
+        const splitCompColor2Swatch = document.getElementById('splitCompColor2Swatch');
+        const mainColorText = document.getElementById('mainColorText');
+        const splitCompColor1Text = document.getElementById('splitCompColor1Text');
+        const splitCompColor2Text = document.getElementById('splitCompColor2Text');
+
         function mod(dividend, divisor) {
             return ((dividend % divisor) + divisor) % divisor;
-        } 
-
-        function shiftHue(hue, amount) {
-            return mod(hue + amount, 360);
         }
 
-        function transformToDarkMode(h, s, l) {
-            const newL = 100 - l;
-            const newS = s * 0.8;
-            const newH = shiftHue(h, 15);
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            const diff = max - min;
+            const l = (max + min) / 2;
+            
+            if (diff === 0) {
+                return {h: 0, s: 0, l: Math.round(l * 100)};
+            }
+            
+            const s = diff / (1 - Math.abs(2 * l - 1));
+
+            let h;
+            switch (max) {
+                case r:
+                    h = ((g - b) / diff) + (g < b ? 6 : 0);
+                    break;
+                case g:
+                    h = (b - r) / diff + 2;
+                    break;
+                case b:
+                    h = (r - g) / diff + 4;
+                    break;
+            }
+            h *= 60;
+            if (h < 0) h += 360;
+            
             return {
-                h: newH,
-                s: newS,
-                l: newL
+                h: Math.round(h),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
             };
         }
-        // Accent color calculations are handled by JavaScript
-        const originalAccentColor = [240, 30, 80];    // h, s, l
-        const darkAccentColor = transformToDarkMode(...originalAccentColor);
+        // Convert a hex color code to an {r,g,b} object
+        function hexToRgb(hex) {
+            hex = hex.replace(/^#/, "");
+            if (hex.length === 3) {
+                hex = hex.split("").map(ch => ch + ch).join("");
+            }
+            const num = parseInt(hex, 16);
+            return {
+                r: (num >> 16) & 255,   // extract red byte
+                g: (num >> 8) & 255,    // extract green byte
+                b: num & 255           // extract blue byte
+            };
+        }
 
-        // Build the accent color strings
-        const originalStr = `hsl(${originalAccentColor[0]}, ${originalAccentColor[1]}%, ${originalAccentColor[2]}%)`;
-        const darkStr = `hsl(${darkAccentColor.h}, ${darkAccentColor.s}%, ${darkAccentColor.l}%)`;
+        function updateSwatches() {
+            const hexString = document.getElementById('color-picker').value;
+            const { r, g, b } = hexToRgb(hexString);
+            const { h, s, l } = rgbToHsl(r, g, b);
+            const hslString = `hsl(${h} ${s}% ${l}%)`;
+            mainColorSwatch.style.backgroundColor = hslString;
+            mainColorText.textContent = hslString;
 
-        // Display the strings and set the accent box background color
-        document.getElementById("hsl-original").textContent = originalStr;
-        document.getElementById("hsl-dark").textContent = darkStr;
-        document.getElementById("accent-box").style.backgroundColor = originalStr;
+            const splitComp1H = (h + 150) % 360;
+            const splitCompColor1String = `hsl(${splitComp1H} ${s} ${l})`;
+            splitCompColor1Swatch.style.backgroundColor = splitCompColor1String;
+            splitCompColor1Text.textContent = splitCompColor1String;
+            const splitComp2H = (h + 210) % 360;
+            const splitCompColor2String = `hsl(${splitComp2H} ${s} ${l})`;
+            splitCompColor2Swatch.style.backgroundColor = splitCompColor2String;
+            splitCompColor2Text.textContent = splitCompColor2String;
+        }
 
-        // Listen for clicks on the toggle button
-        const toggleBtn = document.getElementById("toggle-btn");
-        toggleBtn.addEventListener("click", () => {
-            // Toggle the dark-mode class on the body and the button
-            document.body.classList.toggle("dark-mode");
-            document.getElementById('toggle-btn').classList.toggle("dark-mode");
+        // Listen for input on the color picker
+        document.getElementById('color-picker').addEventListener('input', updateSwatches);
 
-            // Handle the mode switch for the accent box background color
-            const isDark = document.body.classList.contains("dark-mode");
-            document.getElementById("accent-box").style.backgroundColor = isDark ? darkStr : originalStr;
-        });
+        // Initial load
+        updateSwatches();
     </script>
 </body>
 </html>
