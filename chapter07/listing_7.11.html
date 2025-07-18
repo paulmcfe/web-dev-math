@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 7.11 - background-blend-mode</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: rgb(255, 165, 0);
+            background-image: url("/images/pink-flamingo.png"), url("/images/texture.png");
+            background-blend-mode: screen, multiply;
+            width: 512px;
+            height: 768px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+</div>
+</body>
+</html>

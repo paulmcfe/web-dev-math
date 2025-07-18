@@ -3,66 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 6.3 - Setting flex-basis dynamically</title>
+    <title>Listing 6.2 - A liquid layout</title>
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 2rem;
-        }
-        .dashboard {
-            display: flex;
-            gap: 1rem;
-        }
-        .widget {
-            background: #f0f0f0;
-            border: 1px solid #ccc;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            min-width: 100px;
-            padding: 1rem;
-            text-align: center;
-            transition: flex-basis 0.3s;
+            font-size: 100%;
+        }
+        body {
+            display: grid;
+            grid-template-rows: 75px 1fr 60px;
+            font-family: Georgia, serif;
+            font-size: 1.25rem;
+            line-height: 1.5;
+            max-width: 960px;
+        }
+        header {
+            padding: 1.67%;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        main {
+            display: flex;
+        }
+        article {
+            padding: 1.67%;
+            width: 66.67%;
+        }
+        h2 {
+            font-size: 1.5rem;
+        }
+        article p {
+            margin-bottom: 1rem;
+        }
+        aside {
+            padding: 1.25%;
+            width: 33.33%;  
+        }
+        aside div {
+            padding-bottom: 0.833%;
+        }
+        footer {
+            padding: 1.67%;
+        }
+        a {
+            text-decoration: none;
+        }
+        /* BACKGROUND COLORS */
+        header {
+            background-color: rgb(197, 223, 239);
+        }
+        article {
+            background-color: white;
+        }
+        aside, main {
+            background-color: rgb(219, 219, 219);
+        }
+        footer {
+            background-color: rgb(128, 194, 29);
         }
     </style>
 </head>
 <body>
-    <h2>Dashboard</h2>
-    <div class="dashboard" id="dashboard"></div>
-    <script>
-        // Example dashboard data
-        const widgetData = [
-            { name: 'Widget A', weight: 2 },
-            { name: 'Widget B', weight: 1 },
-            { name: 'Widget C', weight: 3 },
-            { name: 'Widget D', weight: 4 },
-        ];
-
-        const dash = document.getElementById('dashboard');
-        const gap = parseFloat(getComputedStyle(dash).gap) || 0;
-
-        // Create widgets and append them
-        widgetData.forEach(widget => {
-            const el = document.createElement('div');
-            el.className = 'widget';
-            el.textContent = widget.name;
-            dash.appendChild(el);
-        });
-
-        const widgets = dash.querySelectorAll('.widget');
-        const totalWeight = widgetData.reduce((sum, w) => 
-                            sum + w.weight, 0);
-        const widgetCount = widgets.length;
-
-        // Calculate total gap space in pixels
-        const totalGapWidth = gap * (widgetCount - 1);
-        const containerWidth = dash.clientWidth;
-        const usableWidth = containerWidth - totalGapWidth;
-
-        // Set flex-basis for each widget based on weight
-        widgets.forEach((widget, i) => {
-            const weight = widgetData[i].weight;
-            const width = (weight / totalWeight) * usableWidth;
-            widget.style.flexBasis = `${width}px`;
-        });
-    </script>
+        <header>
+            <h1>Responsive Web Design</h1>
+        </header>
+        <main>
+            <article>
+                <h2>
+                    A Brief History
+                </h2>
+                <p>
+                    Early in the new millennium, it was becoming apparent that people were soon going to be surfing the web on devices other than desktop and laptop computers. The smartphone was still years away, but folks were starting to talk about accessing the web using PDAs (personal digital assistants), ebook readers, video game consoles, and even TVs. Obviously, any website was going to look very different when accessed from a device a few inches wide versus one that was a few feet wide. Some smart folks started wondering whether it was possible to make a web page flexible enough to adapt to this wide range of device screens.
+                </p>
+                <p>
+                    By 2008, the World Wide Web Consortium (W3C) was talking about <a href="https://www.w3.org/TR/WCAG20-TECHS/G146.html">“liquid” layouts</a> that use percentages instead of fixed widths expressed in pixels. In early 2009, the W3C presented <a href="https://www.w3.org/TR/2009/CR-css3-mediaqueries-20090423/"><i>media queries</i></a>—a mechanism that enables a designer to write code that targets specific device characteristics, such as viewport width—as a Candidate Recommendation. The next year, web designer Ethan Marcotte coined the term <a href="https://alistapart.com/article/responsive-web-design"><i>responsive web design</i></a> in his famous article in <i>A List Apart</i> magazine. The concept took off from there and has been a staple of modern web design ever since.
+                </p>        
+            </article>
+            <aside>
+                <h2>Links</h2>
+                <div>
+                    <a href="https://www.w3.org/TR/WCAG20-TECHS/G146.html">Liquid layouts (W3C)</a>
+                </div>
+                <div>
+                    <a href="https://www.w3.org/TR/2009/CR-css3-mediaqueries-20090423/">Media queries (W3C)</a>
+                </div>
+                <div>
+                    <a href="https://alistapart.com/article/responsive-web-design">Responsive Web Design (A List Apart)</a>
+                </div>
+                <div>
+                    <a href="https://experiencinginformation.com/2012/07/22/the-first-responsive-design-website-audi-circa-2002/">The First Responsive Design Website: Audi (circa 2002)</a>
+                </div>
+                <div>
+                    <a href="http://mashable.com/2012/12/11/responsive-web-design/#IotvMnZKusq4">Why 2013 Is the Year of Responsive Web Design (Mashable)</a>
+                </div>
+            </aside>
+        </main>
+        <footer>
+            <p>
+                &copy; Logophilia Limited
+            </p>
+        </footer>
 </body>
 </html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 7.10 - mix-blend-mode</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: rgb(255, 0, 0);
+            padding: 16px;
+            width: 544px;
+        }
+        .blended-image {
+            mix-blend-mode: darken;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <img src="/images/pink-flamingo.png" alt="Photo" class="blended-image">
+    </div>
+</body>
+</html>
