@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Listing 6.4 - The 100vh overflow bug</title>
+    <title>Listing 6.5 - The 100dvh overflow fix</title>
     <style>
         /* Make sure we start from zero and let height:100vh do its thing */
         html, body {
@@ -14,7 +14,7 @@
         }
 
         .fullscreen {
-            /* Here’s the culprit */
+            /* Here’s the fix */
             height: 100dvh;
 
             /* Styling to center the header and pin the bottom text */
@@ -39,7 +39,7 @@
 </head>
 <body>
     <div class="fullscreen">
-        <h1>The 100vh overflow bug</h1>
+        <h1>The 100dvh overflow fix</h1>
         <!-- this line should sit flush at the bottom of the blue box -->
         <p class="bottom">IMPORTANT! Please read before continuing!</p>
     </div>

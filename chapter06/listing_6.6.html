@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 6.5 - Setting flex-basis dynamically</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+        }
+        .dashboard {
+            display: flex;
+            gap: 1rem;
+        }
+        .widget {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            min-width: 100px;
+            padding: 1rem;
+            text-align: center;
+            transition: flex-basis 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h2>Dashboard</h2>
+    <div class="dashboard" id="dashboard"></div>
+    <script>
+        // Example dashboard data
+        const widgetData = [
+            { name: 'Widget A', weight: 2 },
+            { name: 'Widget B', weight: 1 },
+            { name: 'Widget C', weight: 3 },
+            { name: 'Widget D', weight: 4 },
+        ];
+
+        const dash = document.getElementById('dashboard');
+        const gap = parseFloat(getComputedStyle(dash).gap) || 0;
+
+        // Create widgets and append them
+        widgetData.forEach(widget => {
+            const el = document.createElement('div');
+            el.className = 'widget';
+            el.textContent = widget.name;
+            dash.appendChild(el);
+        });
+
+        const widgets = dash.querySelectorAll('.widget');
+        const totalWeight = widgetData.reduce((sum, w) => 
+                            sum + w.weight, 0);
+        const widgetCount = widgets.length;
+
+        // Calculate total gap space in pixels
+        const totalGapWidth = gap * (widgetCount - 1);
+        const containerWidth = dash.clientWidth;
+        const usableWidth = containerWidth - totalGapWidth;
+
+        // Set flex-basis for each widget based on weight
+        widgets.forEach((widget, i) => {
+            const weight = widgetData[i].weight;
+            const width = (weight / totalWeight) * usableWidth;
+            widget.style.flexBasis = `${width}px`;
+        });
+    </script>
+</body>
+</html>
