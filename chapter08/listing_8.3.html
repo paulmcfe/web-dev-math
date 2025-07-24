@@ -4,14 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 8.1 </title>
+    <title>Listing 8.3 </title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        :root {
+            --base-line-height: 1.45;
+            --base-font-value: 16;
+        }
+        article {
+            --article-line-height: 1.37;
+            line-height: var(--article-line-height);
+            font-size: calc((var(--base-font-value) - ((var(--article-line-height) - var(--base-line-height)) * 100)) * 1px);
+            max-width: clamp(480px, (var(--article-line-height) - 1) * 1600px, 960px);
+        }
         h1,
         p {
             margin: 1rem;
