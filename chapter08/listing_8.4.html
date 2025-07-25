@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 8.3 - When you know the line height you want to use</title>
+    <title>Listing 8.4 - When you know the line length you want to use</title>
     <style>
         * {
             margin: 0;
@@ -19,10 +19,10 @@
         }
 
         article {
-            --article-line-height: 1.37;
-            line-height: var(--article-line-height);
-            font-size: calc((var(--base-font-value) - ((var(--article-line-height) - var(--base-line-height)) * 100)) * 1px);
-            max-width: calc((var(--base-width) + (var(--base-line-height) - var(--article-line-height)) * 3000) * 1px);
+            --article-width: 600;
+            max-width: calc(var(--article-width) * 1px);
+            font-size: calc((var(--base-font-value) + ((var(--article-width) - var(--base-width)) / 30)) * 1px);
+            line-height: calc(var(--base-line-height) - (var(--article-width) - var(--base-width)) / 3000);
         }
 
         h1,

@@ -4,23 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 8.2 </title>
+    <title>Listing 8.2 - When you know the font-size you want to use</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         :root {
+            --base-font-value: 1;
+            /* Representes a rem value */
             --base-line-height: 1.45;
-            --base-font-value: 16;
+            --base-width: calc(var(--base-font-value) * 480);
         }
+
         article {
-            --article-font-value: 24;
-            font-size: calc(var(--article-font-value) * 1px);
-            line-height: clamp(1.3, calc(var(--base-line-height) - (var(--article-font-value) - var(--base-font-value)) / 100), 1.6);    
-            max-width: clamp(480px, var(--article-font-value) * 30px, 960px);
+            --article-font-value: 1.25;
+            /* Representes a rem value */
+            font-size: calc(var(--article-font-value) * 1rem);
+            line-height: calc(var(--base-line-height) - (var(--article-font-value) - var(--base-font-value)) / 6.67);
+            max-width: calc((var(--base-width) + (var(--article-font-value) - var(--base-font-value)) * 480) * 1px);
         }
+
         h1,
         p {
             margin: 1rem;
@@ -35,7 +41,8 @@
             What is leading and how did it originate? Let’s take a look.
         </p>
         <p>
-            The term <i>leading</i> (pronounced “LED-ing”) comes from the practice in hand‑set metal type of inserting thin
+            The term <i>leading</i> (pronounced “LED-ing”) comes from the practice in hand‑set metal type of inserting
+            thin
             strips of lead between lines of type to increase vertical spacing. Early printers in the 15th and 16th
             centuries adjusted spacing by eye, but as books became more complex, standardized lead strips—often 1pt,
             2pt, or more in thickness—were cut and cataloged for consistent use.

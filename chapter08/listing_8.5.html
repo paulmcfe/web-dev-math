@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 8.5 - A landing page with a hero image</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body,
+        html {
+            height: 100%;
+        }
+
+        .hero {
+            height: 100vh;
+            background: url('/images/hero.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            color: hsl(23 100% 40%);
+            font-family: Rockwell, 'Rockwell Nova', 'Roboto Slab', serif;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 5px 5px 5px hsl(30 33% 12% / 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="hero">
+        <h1>Are You Ready to See Toronto in an Entirely New Way?</h1>
+    </section>
+
+</body>
+
+</html>
