@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 8.2a - When you know the line height you want to use</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --base-line-height: 1.45;
+            --base-font-value: 16;
+            --base-width: calc(var(--base-font-value) * 30);
+        }
+
+        article {
+            --article-line-height: 1.37;
+            line-height: var(--article-line-height);
+            font-size: calc((var(--base-font-value) - ((var(--article-line-height) - var(--base-line-height)) * 100)) * 1px);
+            max-width: calc((var(--base-width) + (var(--base-line-height) - var(--article-line-height)) * 3000) * 1px);
+        }
+
+        h1,
+        p {
+            margin: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>A Brief History of Leading</h1>
+    <article>
+        <p>
+            What is leading and how did it originate? Let’s take a look.
+        </p>
+        <p>
+            The term <i>leading</i> (pronounced “LED-ing”) comes from the practice in hand‑set metal type of inserting
+            thin
+            strips of lead between lines of type to increase vertical spacing. Early printers in the 15th and 16th
+            centuries adjusted spacing by eye, but as books became more complex, standardized lead strips—often 1pt,
+            2pt, or more in thickness—were cut and cataloged for consistent use.
+        </p>
+        <p>
+            With the advent of Linotype and Monotype machines in the late 19th century, leading remained integral.
+            Operators specified extra space by selecting slugs—fixed metal spacers—much as they did in manual
+            typesetting. This allowed for systematic control over readability and aesthetics, especially in newspaper
+            columns and book interiors.
+        </p>
+        <p>
+            In the mid‑20th century, phototypesetting replaced metal. Type was exposed on film or paper, and leading was
+            controlled by rotating a dial or entering numerical values, rather than physically inserting strips.
+            Designers could preview tighter or looser spacing more quickly, and film fonts often included built‑in
+            metrics suggesting a default leading of roughly 20% of the point size.
+        </p>
+        <p>
+            With desktop publishing from the 1980s onward, leading migrated into software as a numerical “line spacing”
+            value. Applications like Adobe InDesign and QuarkXPress let users set leading in points (e.g., 12pt text on
+            14pt leading). On the web, CSS introduced the <code>line-height</code> property, enabling scalable, relative
+            spacing
+            (e.g., <code>line-height: 1.5</code>). Today, leading remains a vital tool for legibility, aesthetic
+            balance, and establishing a document’s rhythm.
+        </p>
+    </article>
+</body>
+
+</html>
