@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 8.3 - A modular scale based on the golden ratio (1.618)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ratio: 1.414;
+            --base: 1.25;
+            --step-1: calc(var(--base) / var(--ratio));
+            --step-2: calc(var(--step-1) / var(--ratio));
+            --step1: calc(var(--base) * var(--ratio));
+            --step2: calc(var(--step1) * var(--ratio));
+            --step3: calc(var(--step2) * var(--ratio));
+        }
+
+        body {
+            margin: 1rem;
+        }
+
+        h1 {
+            font-size: calc(var(--step3) * 1rem);
+            line-height: calc(var(--step-2));
+        }
+
+        h2 {
+            font-size: calc(var(--step2) * 1rem);
+            line-height: calc(var(--step-1));
+        }
+
+        h3 {
+            font-size: calc(var(--step1) * 1rem);
+            line-height: calc(var(--base));
+        }
+
+        p {
+            font-size: calc(var(--base) * 1rem);
+            line-height: calc(var(--step1));
+        }
+
+        h4 {
+            font-size: calc(var(--step-1) * 1rem);
+            line-height: calc(var(--step2));
+        }
+
+        h5 {
+            font-size: calc(var(--step-2) * 1rem);
+            line-height: calc(var(--step3));
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Typograhy Ipsum</h1>
+    <p>
+        Ligature ipsum dolor sit amet, kerning consectetur baseline. Tracking elit serif, ascender do eiusmod tempor
+        incididunt ut labore et spacing dolore magna glyph. Descender enim ligature minim veniam, quis nostrud typeface
+        exercitation ullamco laboris nisi ut aliquip ex x-height commodo. Baseline grid nostrud kerning ut aliquip em
+        dash.
+    </p>
+    <h2>The Art of Hierarchy</h2>
+    <p>
+        Font-weight ut typographic hierarchy. Italic reprehenderit in bold type dolore eu fugiat nulla letterpress.
+        Display fonts velit esse cillum typographer eu sans-serif. Serif spacing elit, slab-serif proident, drop cap
+        veniam, exercitation lorem type foundry.
+    </p>
+    <h3>Rhythm & Contrast</h3>
+    <p>
+        Cap height magna aliqua. Leading ut enim ad minim veniam, quis baseline rhythm nostrud exercitation ullamco.
+        Letter-spacing laboris nisi ut aliquip ligature ex ea commodo baseline. Widows and orphans in culpa qui officia
+        typographica. Lorem ipsum dolor sit amet counter aperture glyph.
+    </p>
+    <h3>Print vs. Screen</h3>
+    <p>
+        Serif typefaces sunt in culpa qui officia resolution. CMYK nulla pariatur. Excepteur sint occaecat screen DPI
+        non proident, sunt in culpa qui officia lorem ipsum. Webfonts tempor incididunt ut spacing and leading.
+        Grayscale type compositors excepteur pixel hinting sans.
+    </p>
+</body>
+
+</html>

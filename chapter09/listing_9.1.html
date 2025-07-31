@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 9.1 - Circular menu with JavaScript</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f0f0f0;
+            margin: 2rem;
+        }
+
+        .menu {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: hsl(322, 100%, 31%);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            position: absolute;
+            left: 80px;
+            top: 80px;
+            height: 90px;
+            width: 90px;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="menu">
+        <div class="menu-item">Home</div>
+        <div class="menu-item">Products</div>
+        <div class="menu-item">Blog</div>
+        <div class="menu-item">Contact</div>
+        <div class="menu-item">About</div>
+        <div class="menu-item">Help</div>
+    </nav>
+
+    <script>
+        function generateCircularMenu(items, centerX, centerY, radius) {
+            // Calculate the angle change between each item
+            const angleStep = (2 * Math.PI) / items.length;
+
+            // Run through the items
+            items.forEach((item, index) => {
+                // Calculate the item's angle
+                const angle = angleStep * index;
+
+                // Use trig to calculate the item's (x, y) point on the circle
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                // Position the element on the circle
+                item.style.left = x + 'px';
+                item.style.top = y + 'px';
+            });
+        }
+
+        const items = document.querySelectorAll('.menu-item');
+        const radius = 100;
+        const centerX = 100;
+        const centerY = 100;
+
+        generateCircularMenu(items, centerX, centerY, radius);
+
+    </script>
+</body>
+
+</html>
