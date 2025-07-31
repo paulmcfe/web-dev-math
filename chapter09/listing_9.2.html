@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 9.2 - Circular menu with CSS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --total-items: 6;
+            --radius: 100px;
+            --centerX: 150px;
+            --centerY: 150px;
+            --angle-step: calc(360deg / var(--total-items));
+        }
+
+        body {
+            background: #f0f0f0;
+            margin: 2rem;
+        }
+
+        .menu {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: hsl(322, 100%, 31%);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            position: absolute;
+            left: 105px;
+            top: 105px;
+            height: 90px;
+            width: 90px;
+            transform: translate(-50%, -50%);
+        }
+
+        .menu-item:nth-child(1) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 0));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 0));
+        }
+
+        .menu-item:nth-child(2) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 1));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 1));
+        }
+
+        .menu-item:nth-child(3) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 2));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 2));
+        }
+
+        .menu-item:nth-child(4) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 3));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 3));
+        }
+
+        .menu-item:nth-child(5) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 4));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 4));
+        }
+
+        .menu-item:nth-child(6) {
+            left: calc(var(--centerX) + var(--radius) * cos(var(--angle-step) * 5));
+            top: calc(var(--centerY) + var(--radius) * sin(var(--angle-step) * 5));
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="menu">
+        <div class="menu-item">Home</div>
+        <div class="menu-item">Products</div>
+        <div class="menu-item">Blog</div>
+        <div class="menu-item">Contact</div>
+        <div class="menu-item">About</div>
+        <div class="menu-item">Help</div>
+    </nav>
+
+</body>
+
+</html>
