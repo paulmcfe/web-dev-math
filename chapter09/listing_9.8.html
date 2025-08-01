@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 9.8 - Animating along a pendulum path</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .swing {
+            position: absolute;
+            transform-origin: center center;
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: #f90;
+            color: #fff;
+            font-size: 32px;
+            font-family: sans-serif;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="swing" id="pendulum">Swing Into Summer!</div>
+
+    <script>
+        const pendulumElement = document.getElementById("pendulum");
+
+        // Pendulum parameters
+        const maxAngle = 45 * Math.PI / 180; // 45 degrees maximum swing
+        const speed = 1.5; // Oscillation speed
+        const pivotX = window.innerWidth / 2;
+        const pivotY = 0;
+        const amplitude = 200;
+
+        let t = 0;
+
+        function animate() {
+            t += 0.02;
+
+            // Calculate the current swing angle using cosine for pendulum motion
+            const currentAngle = maxAngle * Math.cos(speed * t);
+
+            // Calculate the bob position at the end of the string
+            const bobX = pivotX + amplitude * Math.sin(currentAngle);
+            const bobY = pivotY + amplitude * Math.cos(currentAngle);
+
+            // Position the pendulum bob
+            pendulumElement.style.left = `${bobX}px`;
+            pendulumElement.style.top = `${bobY}px`;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+    </script>
+</body>
+
+</html>

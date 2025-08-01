@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 9.9 - Animating along a pendulum path</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            cursor: crosshair;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 30px solid hsl(84 74% 44%);
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            position: relative;
+            transform-origin: center;
+            transition: transform 0.1s ease-out;
+        }
+
+        .arrow::before {
+            content: '';
+            position: absolute;
+            left: -50px;
+            top: -8px;
+            width: 20px;
+            height: 16px;
+            background-color: hsl(84 74% 44%);
+        }
+
+        .instruction {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: black;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .angle-output {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="instruction">Move your mouse around<br>
+        <span class="angle-output"></span>
+    </div>
+    <div class="arrow" id="pointer"></div>
+
+    <script>
+        function getAngle(x1, y1, x2, y2) {
+            const deltaY = y2 - y1;
+            const deltaX = x2 - x1;
+            const angleRadians = Math.atan2(deltaY, deltaX);
+            const angleDegrees = angleRadians * (180 / Math.PI);
+
+            return angleDegrees;
+        }
+
+        function pointAtCursor(element) {
+            document.addEventListener('mousemove', (e) => {
+                // Recalculate element center on each mouse move
+                const rect = element.getBoundingClientRect();
+                const elCenterX = rect.left + rect.width / 2;
+                const elCenterY = rect.top + rect.height / 2;
+
+                const degrees = getAngle(elCenterX, elCenterY, e.clientX, e.clientY);
+
+                element.style.transform = `rotate(${degrees}deg)`;
+                document.querySelector('.angle-output').textContent = `Current angle: ${degrees.toFixed(1)}°`;
+            });
+        }
+
+        // Initialize the arrow to point at the cursor
+        const arrow = document.getElementById('pointer');
+        pointAtCursor(arrow);
+    </script>
+</body>
+
+</html>

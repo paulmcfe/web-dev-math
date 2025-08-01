@@ -41,7 +41,7 @@
                 let time = 0;
 
                 function animate() {
-                    time += 0.02;
+                    time += 0.25;
                     const offset = amplitude * Math.sin(time * frequency + index * 0.5);
 
                     letter.style.transform = `translateY(${offset}px)`;
@@ -67,7 +67,7 @@
         });
 
         // Start the wave animation
-        waveText(letters, 20, 3);
+        waveText(letters, 20, 0.3);
     </script>
 </body>
 
