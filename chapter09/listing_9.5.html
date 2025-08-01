@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 9.5 - Animated spinner</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+        }
+
+        .spinner-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .spinner-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #3498db;
+            border-radius: 50%;
+            margin: -6px 0 0 -6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner-container" id="spinner-container"></div>
+
+    <script>
+        let dots = [];
+        let rotationAngle = 0;
+        const centerX = 100; // Half of container width
+        const centerY = 100; // Half of container height
+
+        function createSpinner(container, dotCount, radius) {
+            const angleStep = (2 * Math.PI) / dotCount;
+            
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'spinner-dot';
+                
+                // Store dot info for animation
+                const dotInfo = {
+                    element: dot,
+                    baseAngle: angleStep * i,
+                    radius: radius
+                };
+                
+                dots.push(dotInfo);
+                container.appendChild(dot);
+            }
+        }
+
+        function animateSpinner() {
+            // Update rotation angle
+            rotationAngle += 0.05; // Speed of rotation
+            
+            // Update each dot's position using trigonometry
+            dots.forEach(dotInfo => {
+                const currentAngle = dotInfo.baseAngle + rotationAngle;
+                const x = centerX + dotInfo.radius * Math.cos(currentAngle);
+                const y = centerY + dotInfo.radius * Math.sin(currentAngle);
+                
+                dotInfo.element.style.left = x + 'px';
+                dotInfo.element.style.top = y + 'px';
+            });
+            
+            // Continue animation
+            requestAnimationFrame(animateSpinner);
+        }
+
+        // Initialize spinner
+        const container = document.getElementById('spinner-container');
+        createSpinner(container, 8, 60);
+        animateSpinner();
+    </script>
+</body>
+</html>

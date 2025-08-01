@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 9.3 - Circular path animation with JavaScript</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #111;
+        }
+
+        #orbiting-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #f00;
+            border-radius: 50%;
+            transform: translate(0, 0);
+        }
+
+        #center-point {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 50%;
+            transform: translate(-3px, -3px);
+        }
+    </style>
+</head>
+<body>
+    <div id="center-point"></div>
+    <div id="orbiting-element"></div>
+
+    <script>
+        function animateInACircle(element, centerX, centerY, radius, speed) {
+            let angle = 0;
+
+            function animate() {
+                angle += speed;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                element.style.transform = `translate(${x}px, ${y}px)`;
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        const orbitingElement = document.getElementById('orbiting-element');
+        const centerPoint = document.getElementById('center-point');
+
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+        centerPoint.style.left = `${centerX}px`;
+        centerPoint.style.top = `${centerY}px`;
+
+        animateInACircle(orbitingElement, centerX, centerY, 100, 0.05);
+    </script>
+</body>
+</html>
