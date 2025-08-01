@@ -24,43 +24,57 @@
 
         .spinner-container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 100px;
+            height: 100px;
         }
 
         .spinner-dot {
             position: absolute;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background-color: #3498db;
             border-radius: 50%;
-            margin: -6px 0 0 -6px;
+            margin: -5px 0 0 -5px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="spinner-container" id="spinner-container"></div>
 
     <script>
         let dots = [];
         let rotationAngle = 0;
-        const centerX = 100; // Half of container width
-        const centerY = 100; // Half of container height
+        const centerX = 50; // Half of container width
+        const centerY = 50; // Half of container height
 
         function createSpinner(container, dotCount, radius) {
             const angleStep = (2 * Math.PI) / dotCount;
-            
+
             for (let i = 0; i < dotCount; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'spinner-dot';
-                
+
                 // Store dot info for animation
                 const dotInfo = {
                     element: dot,
                     baseAngle: angleStep * i,
                     radius: radius
                 };
-                
+
                 dots.push(dotInfo);
                 container.appendChild(dot);
             }
@@ -69,25 +83,26 @@
         function animateSpinner() {
             // Update rotation angle
             rotationAngle += 0.05; // Speed of rotation
-            
+
             // Update each dot's position using trigonometry
             dots.forEach(dotInfo => {
                 const currentAngle = dotInfo.baseAngle + rotationAngle;
                 const x = centerX + dotInfo.radius * Math.cos(currentAngle);
                 const y = centerY + dotInfo.radius * Math.sin(currentAngle);
-                
+
                 dotInfo.element.style.left = x + 'px';
                 dotInfo.element.style.top = y + 'px';
             });
-            
+
             // Continue animation
             requestAnimationFrame(animateSpinner);
         }
 
         // Initialize spinner
         const container = document.getElementById('spinner-container');
-        createSpinner(container, 8, 60);
+        createSpinner(container, 10, 20);
         animateSpinner();
     </script>
 </body>
+
 </html>

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 9.3 - Circular path animation with JavaScript</title>
+    <title>Exercise 9.3 - Inward spiral animation</title>
     <style>
         * {
             box-sizing: border-box;
@@ -50,12 +50,17 @@
 
             function animate() {
                 angle += speed;
+                radius += -0.25;
+                if (radius === 0) {
+                    cancelAnimationFrame(animationId);
+                    return;
+                }
                 const x = centerX + radius * Math.cos(angle);
                 const y = centerY + radius * Math.sin(angle);
 
                 element.style.transform = `translate(${x}px, ${y}px)`;
 
-                requestAnimationFrame(animate);
+                animationId = requestAnimationFrame(animate);
             }
 
             animate();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 9.3 - Circular path animation with JavaScript</title>
+    <title>Exercise 9.4 - Elliptical path animation with JavaScript</title>
     <style>
         * {
             box-sizing: border-box;
@@ -45,17 +45,17 @@
     <div id="orbiting-element"></div>
 
     <script>
-        function animateInACircle(element, centerX, centerY, radius, speed) {
+        function animateInACircle(element, centerX, centerY, radiusX, radiusY, speed) {
             let angle = 0;
 
             function animate() {
                 angle += speed;
-                const x = centerX + radius * Math.cos(angle);
-                const y = centerY + radius * Math.sin(angle);
+                const x = centerX + radiusX * Math.cos(angle);
+                const y = centerY + radiusY * Math.sin(angle);
 
                 element.style.transform = `translate(${x}px, ${y}px)`;
 
-                requestAnimationFrame(animate);
+                animationId = requestAnimationFrame(animate);
             }
 
             animate();
@@ -69,7 +69,7 @@
         centerPoint.style.left = `${centerX}px`;
         centerPoint.style.top = `${centerY}px`;
 
-        animateInACircle(orbitingElement, centerX, centerY, 100, 0.05);
+        animateInACircle(orbitingElement, centerX, centerY, 250, 100, 0.05);
     </script>
 </body>
 

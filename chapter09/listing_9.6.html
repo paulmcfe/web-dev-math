@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 9.7 - Arranging letters along a wave shape</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: system-ui, Arial, sans-serif;
+        }
+
+        #wave-text {
+            font-size: 3rem;
+            color: hsl(23 100% 44%);
+        }
+
+        .letter {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wave-text">ARE YOU READY TO MAKE WAVES?</div>
+
+    <script>
+        // Get the text and clear the element
+        const textElement = document.getElementById('wave-text');
+        const text = textElement.textContent;
+        textElement.innerHTML = '';
+
+        // Split the text into letter spans
+        const letters = text.split('').map(char => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.classList.add('letter');
+            textElement.appendChild(span);
+            return span;
+        });
+
+        // Set up the sine wave parameters
+        const amplitude = 30;
+        const frequency = 0.25;
+
+        // Write the letters as a wave using Math.sin()
+        letters.forEach((letter, index) => {
+            const offset = amplitude * Math.sin(frequency * index);
+            letter.style.transform = `translateY(${offset}px)`;
+        });
+
+    </script>
+</body>
+
+</html>
