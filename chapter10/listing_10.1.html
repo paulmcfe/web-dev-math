@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 10.1 - Circular menu with JavaScript</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 100px;
+            margin: 0;
+        }
+
+        .demo-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .demo-button:hover {
+            background: #45a049;
+        }
+
+        .tooltip {
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            position: absolute;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+        }
+
+        .tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <button id="demoButton" class="demo-button">
+        Do NOT click!
+    </button>
+    
+    <div id="tooltip" class="tooltip">
+        Seriously, don't even think about it.
+    </div>
+
+    <script>
+
+        const button = document.getElementById('demoButton');
+        const tooltip = document.getElementById('tooltip');
+
+        function positionTooltip() {
+            const buttonRect = button.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+            
+            // Align the horizontal centers
+            const buttonCenterX = (buttonRect.left + buttonRect.right) / 2;
+            tooltip.style.left = buttonCenterX - tooltipRect.width / 2 + 'px';
+            
+            // Position vertically above the button
+            tooltip.style.top = buttonRect.top - tooltipRect.height - 8 + 'px'; // 8px margin
+        }
+
+        button.addEventListener('mouseenter', () => {
+            tooltip.classList.add('visible');
+            positionTooltip();
+        });
+
+        button.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
