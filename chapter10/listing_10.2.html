@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 10.2 - Geometric hover effects</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .geometric-hover {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card {
+            text-align: center;
+        }
+
+        .card h3 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .button-style {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .icon-style {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            min-height: 150px;
+        }
+
+        .text-style {
+            background: linear-gradient(45deg, #a8edea, #fed6e3);
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 120px;
+        }
+
+        .instruction {
+            color: white;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            opacity: 0.9;
+        }
+
+        /* Add some visual depth indicators */
+        .geometric-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .geometric-hover > * {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Geometric hover effects with math</h1>
+    
+    <div class="demo-container">
+        <div class="geometric-hover card">
+            <h3>DOM Geometry</h3>
+            <p>All the hover effects begin with getBoundingClientRect(), which is used to calculate the center point of each element and how far the cursor is from that point.</p>
+        </div>
+
+        <div class="geometric-hover card">
+            <h3>Pythagorean Theorem</h3>
+            <p>The distance calculation uses the Pythagorean theorem to determine how far your mouse is from the element's center.</p>
+        </div>
+
+        <div class="geometric-hover card">
+            <h3>Two-Element Arctangent</h3>
+            <p>The code uses Math.atan2() to calculate the angle between the mouse and the element center.</p>
+        </div>
+
+        <div class="geometric-hover card">
+            <h3>Trigonometry in action</h3>
+            <p>Given that angle, the effect then applies rotations using Math.sin() and Math.cos().</p>
+        </div>
+
+        <div class="geometric-hover card">
+            <h3>3D transformations</h3>
+            <p>CSS perspective and rotateX/rotateY properties create the illusion of depth as you move your mouse around.</p>
+        </div>
+
+        <div class="geometric-hover card">
+            <h3>Responsive!</h3>
+            <p>If the size of the viewport changes, the code makes a new call the getBoundingClientRect() to account for each element's new size. </p>
+        </div>
+    </div>
+
+    <p class="instruction">Move your mouse over the elements above to see geometric math in action!</p>
+
+    <script>
+        class GeometricHoverEffect {
+            constructor(element) {
+                this.element = element;
+                this.rect = element.getBoundingClientRect();
+                this.setUpEventListeners();
+            }
+            
+            setUpEventListeners() {
+                this.element.addEventListener('mousemove', (event) => {
+                    this.handleMouseMove(event);
+                });
+                
+                this.element.addEventListener('mouseleave', () => {
+                    this.reset();
+                });
+            }
+            
+            handleMouseMove(event) {
+                // Calculate mouse position relative to element center
+                const centerX = this.rect.left + this.rect.width / 2;
+                const centerY = this.rect.top + this.rect.height / 2;
+                
+                const mouseX = event.clientX - centerX;
+                const mouseY = event.clientY - centerY;
+                
+                // Calculate angle and distance
+                const angle = Math.atan2(mouseY, mouseX);
+                const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
+                const maxDistance = Math.sqrt(
+                    (this.rect.width / 2) ** 2 + (this.rect.height / 2) ** 2
+                );
+                
+                // Apply geometric transformation based on mouse position
+                const tiltIntensity = Math.min(distance / maxDistance, 1) * 20;
+                const rotationX = Math.sin(angle) * tiltIntensity;
+                const rotationY = Math.cos(angle) * tiltIntensity;
+                
+                this.element.style.transform = `
+                    perspective(1000px)
+                    rotateX(${-rotationX}deg)
+                    rotateY(${rotationY}deg)
+                    scale(${1 + distance / maxDistance * 0.05})
+                `;
+            }
+            
+            reset() {
+                this.element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+            }
+            
+            updateRect() {
+                this.rect = this.element.getBoundingClientRect();
+            }
+        }
+
+        // Apply to elements
+        document.querySelectorAll('.geometric-hover').forEach(element => {
+            new GeometricHoverEffect(element);
+        });
+
+        // Update element rectangles on window resize
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.geometric-hover').forEach(element => {
+                if (element.geometricHoverEffect) {
+                    element.geometricHoverEffect.updateRect();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
