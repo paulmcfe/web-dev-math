@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 10.1 - Centering a tooltip</title>
+    <title>Exercise 10.1 - Aligning a tooltip to the bottom-right</title>
     <style>
         * {
             box-sizing: border-box;
@@ -14,29 +14,28 @@
 
         body {
             font-family: Arial, sans-serif;
-            padding: 6rem;
+            padding: 5rem;
+            margin: 0;
         }
 
         .demo-button {
-            background: hsl(23 100% 30%);
+            background: hsl(84 75% 30%);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
             font-size: 1.25rem;
-            border-radius: 6px;
             cursor: pointer;
         }
 
         .demo-button:hover {
-            background: hsl(23 100% 40%);
+            background: hsl(84 75% 40%);
         }
 
         .tooltip {
-            background: hsl(0 0% 31%);
+            background: hsl(203 50% 30%);
             color: white;
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
             white-space: nowrap;
             opacity: 0;
             position: absolute;
@@ -54,11 +53,11 @@
 
 <body>
     <button id="demoButton" class="demo-button">
-        Do NOT click!
+        Hover me
     </button>
 
     <div id="tooltip" class="tooltip">
-        Seriously, don't even think about it.
+        When all you have is a hammer, everything looks like a nail.
     </div>
 
     <script>
@@ -70,12 +69,10 @@
             const buttonRect = button.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
 
-            // Align the horizontal centers
-            const buttonCenterX = (buttonRect.left + buttonRect.right) / 2;
-            tooltip.style.left = buttonCenterX - tooltipRect.width / 2 + 'px';
+            // Align the tooltip to the bottom-right corner of the button
+            tooltip.style.left = buttonRect.right + 'px';
+            tooltip.style.top = buttonRect.bottom + 'px';
 
-            // Position vertically above the button
-            tooltip.style.top = buttonRect.top - tooltipRect.height - 8 + 'px'; // 8px margin
         }
 
         button.addEventListener('mouseenter', () => {

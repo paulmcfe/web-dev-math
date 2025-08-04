@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 10.4 - Dynamic positioning with vectors</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        #demoArea {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .follower {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: hsl(84 74% 44%);
+            border-radius: 50%;
+            transform: translate(0, 0);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="demoArea">
+        <div class="follower"></div>
+    </div>
+
+    <script>
+        class Vector2 {
+            constructor(x = 0, y = 0) {
+                this.x = x;
+                this.y = y;
+            }
+
+            add(vector) {
+                return new Vector2(this.x + vector.x, this.y + vector.y);
+            }
+
+            subtract(vector) {
+                return new Vector2(this.x - vector.x, this.y - vector.y);
+            }
+
+            multiply(scalar) {
+                return new Vector2(this.x * scalar, this.y * scalar);
+            }
+
+            magnitude() {
+                return Math.sqrt(this.x * this.x + this.y * this.y);
+            }
+
+            normalize() {
+                const mag = this.magnitude();
+                return mag > 0 ? new Vector2(this.x / mag, this.y / mag) : new Vector2(0, 0);
+            }
+
+            // Convert to CSS transform string
+            toCSSTranslate() {
+                return `translate(${this.x}px, ${this.y}px)`;
+            }
+        }
+        const demoArea = document.getElementById('demoArea');
+        const follower = document.querySelector('.follower');
+        const offset = new Vector2(10, 10);
+
+        demoArea.addEventListener('mousemove', event => {
+            const rect = demoArea.getBoundingClientRect();
+            const mousePos = new Vector2(
+                event.clientX - rect.left,
+                event.clientY - rect.top
+            );
+
+            const dir = mousePos.add(offset);
+            follower.style.transform = dir.toCSSTranslate();
+        });
+    </script>
+</body>
+
+</html>

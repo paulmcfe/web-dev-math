@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 10.5 - Dynamic positioning with vectors</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            font-size: 18px;
+        }
+
+        .demo-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .demo-area {
+            position: relative;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .follower {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            top: 0px;
+            left: 0px;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .draggable {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #4ecdc4;
+            border-radius: 15px;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .draggable:hover {
+            background: #45b7b8;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #feca57;
+        }
+
+        .info-panel {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-top: 15px;
+        }
+
+        .vector-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .vector-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .vector-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #feca57;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Vector2 and Element Positioning Demo</h1>
+        <p class="subtitle">Interactive demonstrations of 2D vector mathematics in web development</p>
+
+        <div class="demo-section">
+            <h2>Demo 1: Mouse follower with vectors</h2>
+            <div class="instructions">
+                <strong>Instructions:</strong> Move your mouse around the demo area below. The red circle will follow
+                your mouse using vector calculations to determine direction and movement.
+            </div>
+
+            <div class="demo-area" id="followerArea">
+                <div class="follower" id="follower">👁️</div>
+            </div>
+
+            <div class="info-panel">
+                <div class="vector-display">
+                    <div class="vector-item">
+                        <div class="vector-label">Mouse Position</div>
+                        <div id="mousePos">Vector2(0, 0)</div>
+                    </div>
+                    <div class="vector-item">
+                        <div class="vector-label">Element Position</div>
+                        <div id="elementPos">Vector2(100, 50)</div>
+                    </div>
+                    <div class="vector-item">
+                        <div class="vector-label">Direction Vector</div>
+                        <div id="directionVector">Vector2(0, 0)</div>
+                    </div>
+                    <div class="vector-item">
+                        <div class="vector-label">Distance</div>
+                        <div id="distance">0.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Demo 2: Click-to-move with smooth animation</h2>
+            <div class="instructions">
+                <strong>Instructions:</strong> Click anywhere in the demo area below. The blue square will smoothly
+                animate to that position using vector-based easing.
+            </div>
+
+            <div class="demo-area" id="clickArea">
+                <div class="draggable" id="draggable">📦</div>
+            </div>
+
+            <div class="info-panel">
+                <div class="vector-display">
+                    <div class="vector-item">
+                        <div class="vector-label">Current Position</div>
+                        <div id="currentPos">Vector2(0, 0)</div>
+                    </div>
+                    <div class="vector-item">
+                        <div class="vector-label">Target Position</div>
+                        <div id="targetPos">Vector2(0, 0)</div>
+                    </div>
+                    <div class="vector-item">
+                        <div class="vector-label">Animation Progress</div>
+                        <div id="animProgress">Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Vector2 {
+            constructor(x = 0, y = 0) {
+                this.x = x;
+                this.y = y;
+            }
+
+            add(other) {
+                return new Vector2(this.x + other.x, this.y + other.y);
+            }
+
+            subtract(other) {
+                return new Vector2(this.x - other.x, this.y - other.y);
+            }
+
+            multiply(scalar) {
+                return new Vector2(this.x * scalar, this.y * scalar);
+            }
+
+            magnitude() {
+                return Math.sqrt(this.x * this.x + this.y * this.y);
+            }
+
+            normalize() {
+                const mag = this.magnitude();
+                return mag > 0 ? new Vector2(this.x / mag, this.y / mag) : new Vector2(0, 0);
+            }
+
+            // Added clone method for ElementPositioner
+            clone() {
+                return new Vector2(this.x, this.y);
+            }
+
+            // Convert to CSS transform string
+            toCSSTranslate() {
+                return `translate(${this.x}px, ${this.y}px)`;
+            }
+
+            // Helper method for display
+            toString() {
+                return `Vector2(${this.x.toFixed(1)}, ${this.y.toFixed(1)})`;
+            }
+        }
+
+        class ElementPositioner {
+            constructor(element) {
+                this.element = element;
+                this.position = new Vector2(0, 0);
+                this.velocity = new Vector2(0, 0);
+                this.target = new Vector2(0, 0);
+                this.isAnimating = false;
+            }
+
+            moveTo(x, y, smooth = false) {
+                this.target.x = x;
+                this.target.y = y;
+
+                if (smooth) {
+                    this.animateToTarget();
+                } else {
+                    this.position = this.target.clone();
+                    this.updateElementPosition();
+                }
+            }
+
+            animateToTarget() {
+                this.isAnimating = true;
+
+                const animate = () => {
+                    const direction = this.target.subtract(this.position);
+                    const distance = direction.magnitude();
+
+                    // Update display
+                    document.getElementById('currentPos').textContent = this.position.toString();
+                    document.getElementById('targetPos').textContent = this.target.toString();
+                    document.getElementById('animProgress').textContent = `Distance: ${distance.toFixed(1)}px`;
+
+                    if (distance > 1) {
+                        // Ease towards target
+                        this.position = this.position.add(direction.multiply(0.1));
+                        this.updateElementPosition();
+                        requestAnimationFrame(animate);
+                    } else {
+                        this.position = this.target.clone();
+                        this.updateElementPosition();
+                        this.isAnimating = false;
+                        document.getElementById('animProgress').textContent = 'Animation Complete';
+                    }
+                };
+
+                animate();
+            }
+
+            updateElementPosition() {
+                this.element.style.transform = `translate(${this.position.x}px, ${this.position.y}px)`;
+            }
+        }
+
+        // Demo 1: Mouse follower
+        const followerArea = document.getElementById('followerArea');
+        const follower = document.getElementById('follower');
+        const elementPosition = new Vector2(0, 0);
+
+        followerArea.addEventListener('mousemove', (event) => {
+            const rect = followerArea.getBoundingClientRect();
+            const mousePosition = new Vector2(
+                event.clientX - rect.left,
+                event.clientY - rect.top
+            );
+
+            const direction = mousePosition.subtract(elementPosition);
+            const distance = direction.magnitude();
+
+            // Update the follower position
+            follower.style.transform = direction.toCSSTranslate();
+
+            // Update display info
+            document.getElementById('mousePos').textContent = mousePosition.toString();
+            document.getElementById('elementPos').textContent = elementPosition.toString();
+            document.getElementById('directionVector').textContent = direction.toString();
+            document.getElementById('distance').textContent = distance.toFixed(2) + 'px';
+        });
+
+        // Demo 2: Click to move
+        const clickArea = document.getElementById('clickArea');
+        const draggableElement = document.getElementById('draggable');
+        const positioner = new ElementPositioner(draggableElement);
+
+        // Initialize position in center of demo area
+        const clickAreaRect = clickArea.getBoundingClientRect();
+        const initialPos = new Vector2(
+            clickAreaRect.width / 2 - 30,  // Center horizontally, offset by half element width
+            clickAreaRect.height / 2 - 30  // Center vertically, offset by half element height
+        );
+        positioner.position = initialPos.clone();
+        positioner.target = initialPos.clone();
+        positioner.updateElementPosition(); // Apply initial position
+
+        // Update initial display
+        document.getElementById('currentPos').textContent = positioner.position.toString();
+        document.getElementById('targetPos').textContent = positioner.target.toString();
+
+        clickArea.addEventListener('click', (event) => {
+            const rect = clickArea.getBoundingClientRect();
+            const clickX = event.clientX - rect.left - 30; // Offset for element center (30px = half of 60px width)
+            const clickY = event.clientY - rect.top - 30;  // Offset for element center (30px = half of 60px height)
+
+            positioner.moveTo(clickX, clickY, true);
+        });
+
+        // Initialize displays
+        document.getElementById('mousePos').textContent = 'Vector2(0, 0)';
+        document.getElementById('elementPos').textContent = elementPosition.toString();
+        document.getElementById('directionVector').textContent = 'Vector2(0, 0)';
+        document.getElementById('distance').textContent = '0.00px';
+        document.getElementById('animProgress').textContent = 'Ready - Click to move!';
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 10.3 - Parallax scrolling</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .content {
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .feature {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .final {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            width: 120%;
+            height: 120%;
+            opacity: 0.1;
+            z-index: 1;
+            left: -10%;
+            top: -10%;
+        }
+
+        .parallax-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: 20%;
+            left: 10%;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 70%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .math-explanation {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            text-align: left;
+            margin: 1rem 0;
+        }
+
+        .toggle-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .toggle-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .toggle-button:hover {
+            background: #5a6fd8;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+
+        .parallax-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            color: #333;
+        }
+
+        ul {
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            .parallax-card {
+                margin: 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .toggle-controls {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toggle-controls">
+        <button class="toggle-button" data-parallax-toggle>Disable Parallax</button>
+        <div style="font-size: 0.8rem; margin-top: 0.5rem; color: #666;">
+            Accessibility Control
+        </div>
+    </div>
+
+    <section class="section hero">
+        <div class="parallax-bg" data-parallax="0.3">
+            <div class="parallax-shape shape-1" data-parallax="0.2"></div>
+            <div class="parallax-shape shape-2" data-parallax="0.4"></div>
+            <div class="parallax-shape shape-3" data-parallax="0.6"></div>
+        </div>
+
+        <div class="content-wrapper" data-parallax="0.85">
+            <h1>Listing 10.3 - Parallax scrolling</h1>
+            <p>Experience modern parallax scrolling with mathematical precision, accessibility-first design, and
+                performance optimizations.</p>
+
+            <div class="math-explanation">
+                <h3>The math behind the magic</h3>
+                <p>Background elements and content sections move at different speeds:</p>
+                <div class="code-snippet">
+                    parallaxOffset = scrollTop × (1 - depth)
+                </div>
+                <p><strong>Background shapes:</strong> 0.2 - 0.6 depth (fast movement)<br>
+                    <strong>Content sections:</strong> 0.8 - 0.95 depth (slow movement)<br>
+                    <strong>Normal scroll:</strong> 1.0 depth (no parallax effect)
+                </p>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            ↓ Scroll to explore ↓
+        </div>
+    </section>
+
+    <section class="section content">
+        <div class="parallax-bg" data-parallax="0.2">
+            <div class="parallax-shape shape-1" data-parallax="0.3" style="background: rgba(102, 126, 234, 0.1);"></div>
+        </div>
+
+        <div class="content-wrapper" data-parallax="0.9">
+            <h2>Accessibility first design</h2>
+
+            <div class="parallax-card">
+                <h3>Reduced motion support</h3>
+                <p>The code automatically detects and respects the user's <code>prefers-reduced-motion</code> setting,
+                    disabling all parallax effects when needed.</p>
+            </div>
+
+            <div class="parallax-card">
+                <h3>Performance optimized</h3>
+                <p>Uses requestAnimationFrame throttling and viewport culling to ensure smooth scrolling on all devices.
+                </p>
+            </div>
+
+            <div class="parallax-card">
+                <h3>Mobile considerations</h3>
+                <p>Scaling effects are disabled on mobile devices to prevent usability issues on touch interfaces.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section feature">
+        <div class="parallax-bg" data-parallax="0.2">
+            <div class="parallax-shape shape-2" data-parallax="0.4" style="background: rgba(255, 255, 255, 0.1);"></div>
+            <div class="parallax-shape shape-3" data-parallax="0.5" style="background: rgba(255, 255, 255, 0.05);">
+            </div>
+        </div>
+
+        <div class="content-wrapper" data-parallax="0.9">
+            <h2>Mathematical precision</h2>
+
+            <div class="math-explanation">
+                <h3>Coordinate system calculations</h3>
+                <p>The parallax effect uses the viewport coordinate system where (0,0) is the top-left corner.</p>
+                <div class="code-snippet">
+                    elementTop = initialY - scrollTop<br>
+                    viewportCenter = windowHeight / 2<br>
+                    distanceFromCenter = |elementCenter - viewportCenter|
+                </div>
+            </div>
+
+            <div class="math-explanation">
+                <h3>Perspective scaling (desktop only)</h3>
+                <p>Elements farther from the viewport center appear slightly smaller, creating depth:</p>
+                <div class="code-snippet">
+                    scale = 1 + (distanceFromCenter / windowHeight) × 0.02 × depth
+                </div>
+                <p>Maximum scale is capped at 1.05 for subtle, non-jarring effects.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section final">
+        <div class="parallax-bg" data-parallax="0.4">
+            <div class="parallax-shape shape-1" data-parallax="0.25" style="background: rgba(255, 255, 255, 0.08);">
+            </div>
+            <div class="parallax-shape shape-2" data-parallax="0.35" style="background: rgba(255, 255, 255, 0.06);">
+            </div>
+            <div class="parallax-shape shape-3" data-parallax="0.15" style="background: rgba(255, 255, 255, 0.04);">
+            </div>
+        </div>
+
+        <div class="content-wrapper" data-parallax="0.95">
+            <h2>Modern parallax done right</h2>
+            <p>This implementation follows modern best practices: subtle effects, accessibility-first design,
+                performance
+                optimization, and mathematical precision.</p>
+
+            <div class="math-explanation">
+                <h3>Key improvements over traditional parallax</h3>
+                <ul>
+                    <li>requestAnimationFrame throttling prevents scroll jank</li>
+                    <li>Automatic reduced-motion detection and respect</li>
+                    <li>Viewport culling optimizes performance</li>
+                    <li>Mobile-specific optimizations</li>
+                    <li>Subtle scaling effects (max 5% growth)</li>
+                    <li>User control toggle for accessibility</li>
+                    <li>Content groups move together for readability</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        class GeometricParallax {
+            constructor() {
+                // Check for reduced motion preference
+                this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                // Check if we're on mobile for performance considerations
+                this.isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+                // Skip initialization if user prefers reduced motion
+                if (this.prefersReducedMotion) {
+                    console.log('Parallax effects disabled due to user motion preferences');
+                    return;
+                }
+
+                this.layers = this.initializeLayers();
+                this.setUpEventListeners();
+                this.isScrolling = false;
+            }
+
+            initializeLayers() {
+                return Array.from(document.querySelectorAll('[data-parallax]')).map(element => {
+                    const depth = parseFloat(element.dataset.parallax) || 1;
+                    const rect = element.getBoundingClientRect();
+
+                    return {
+                        element: element,
+                        depth: depth,
+                        initialY: rect.top + window.scrollY,
+                        initialX: rect.left
+                    };
+                });
+            }
+
+            setUpEventListeners() {
+                // Throttled scroll handler using requestAnimationFrame
+                window.addEventListener('scroll', () => {
+                    if (!this.isScrolling) {
+                        requestAnimationFrame(() => {
+                            this.updateParallax();
+                            this.isScrolling = false;
+                        });
+                        this.isScrolling = true;
+                    }
+                }, { passive: true });
+
+                // Handle window resize with debouncing
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        this.isMobile = window.innerWidth <= 768;
+                        this.layers = this.initializeLayers();
+                    }, 250);
+                });
+
+                // Listen for changes to motion preferences
+                const motionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+                motionMediaQuery.addEventListener('change', (e) => {
+                    this.prefersReducedMotion = e.matches;
+                    if (this.prefersReducedMotion) {
+                        this.resetAllTransforms();
+                    }
+                });
+            }
+
+            updateParallax() {
+                // Skip if user prefers reduced motion
+                if (this.prefersReducedMotion) {
+                    return;
+                }
+
+                const scrollTop = window.scrollY;
+                const windowHeight = window.innerHeight;
+
+                this.layers.forEach(layer => {
+                    const elementTop = layer.initialY - scrollTop;
+                    const elementBottom = elementTop + layer.element.offsetHeight;
+
+                    // Only animate elements in or near viewport
+                    if (elementBottom >= -windowHeight && elementTop <= windowHeight * 2) {
+                        // Calculate parallax offset based on depth
+                        const parallaxOffset = scrollTop * (1 - layer.depth);
+
+                        // Much more subtle scaling effect
+                        let transform = `translate3d(0, ${parallaxOffset}px, 0)`;
+
+                        // Apply scaling only on desktop and with reduced intensity
+                        if (!this.isMobile) {
+                            const viewportCenter = windowHeight / 2;
+                            const elementCenter = elementTop + layer.element.offsetHeight / 2;
+                            const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+
+                            // Reduced scaling factor from 0.1 to 0.02 for subtlety
+                            const scale = 1 + (distanceFromCenter / windowHeight) * 0.02 * layer.depth;
+
+                            // Cap scaling at 1.05 instead of 1.2 for more subtle effect
+                            transform += ` scale(${Math.min(scale, 1.05)})`;
+                        }
+
+                        layer.element.style.transform = transform;
+                    }
+                });
+            }
+
+            // Method to reset all transforms (useful for accessibility)
+            resetAllTransforms() {
+                this.layers.forEach(layer => {
+                    layer.element.style.transform = '';
+                });
+            }
+
+            // Public method to disable/enable parallax
+            setEnabled(enabled) {
+                if (!enabled) {
+                    this.resetAllTransforms();
+                }
+                this.prefersReducedMotion = !enabled;
+            }
+        }
+
+        // Initialize parallax system with safety checks
+        document.addEventListener('DOMContentLoaded', () => {
+            const parallax = new GeometricParallax();
+
+            // Add toggle button functionality
+            const toggleButton = document.querySelector('[data-parallax-toggle]');
+            if (toggleButton) {
+                toggleButton.addEventListener('click', () => {
+                    const isCurrentlyEnabled = !parallax.prefersReducedMotion;
+                    parallax.setEnabled(!isCurrentlyEnabled);
+                    toggleButton.textContent = isCurrentlyEnabled ? 'Enable Parallax' : 'Disable Parallax';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
