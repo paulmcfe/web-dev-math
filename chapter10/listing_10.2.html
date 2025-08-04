@@ -11,11 +11,12 @@
             margin: 0;
             padding: 0;
         }
+
         body {
             margin: 0;
             padding: 40px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, hsl(322, 100%, 31%) 0%, hsl(322, 100%, 69%) 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -118,49 +119,67 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
             pointer-events: none;
             z-index: 1;
         }
 
-        .geometric-hover > * {
+        .geometric-hover>* {
             position: relative;
             z-index: 2;
         }
     </style>
 </head>
+
 <body>
     <h1>Geometric hover effects with math</h1>
-    
+
     <div class="demo-container">
         <div class="geometric-hover card">
             <h3>DOM Geometry</h3>
-            <p>All the hover effects begin with getBoundingClientRect(), which is used to calculate the center point of each element and how far the cursor is from that point.</p>
+            <p>
+                All the hover effects begin with <code>getBoundingClientRect()</code>, which is used to calculate the
+                center point of each element and how far the cursor is from that point.
+            </p>
         </div>
 
         <div class="geometric-hover card">
             <h3>Pythagorean Theorem</h3>
-            <p>The distance calculation uses the Pythagorean theorem to determine how far your mouse is from the element's center.</p>
+            <p>
+                The distance calculation uses the Pythagorean theorem to determine how far your mouse is from the
+                element's center.
+            </p>
         </div>
 
         <div class="geometric-hover card">
             <h3>Two-Element Arctangent</h3>
-            <p>The code uses Math.atan2() to calculate the angle between the mouse and the element center.</p>
+            <p>
+                The code uses <code>Math.atan2()</code> to calculate the angle between the mouse and the element center.
+            </p>
         </div>
 
         <div class="geometric-hover card">
             <h3>Trigonometry in action</h3>
-            <p>Given that angle, the effect then applies rotations using Math.sin() and Math.cos().</p>
+            <p>
+                Given that angle, the effect then applies rotations using <code>Math.sin()</code> and
+                <code>Math.cos()</code>.
+            </p>
         </div>
 
         <div class="geometric-hover card">
             <h3>3D transformations</h3>
-            <p>CSS perspective and rotateX/rotateY properties create the illusion of depth as you move your mouse around.</p>
+            <p>
+                CSS <code>perspective</code> and the <code>rotateX</code> and <code>rotateY</code> properties create the
+                illusion of depth as you move your mouse around.
+            </p>
         </div>
 
         <div class="geometric-hover card">
             <h3>Responsive!</h3>
-            <p>If the size of the viewport changes, the code makes a new call the getBoundingClientRect() to account for each element's new size. </p>
+            <p>
+                If the viewport size changes, the code makes a new call to <code>getBoundingClientRect()</code> to
+                account for each element's new size.
+            </p>
         </div>
     </div>
 
@@ -173,37 +192,37 @@
                 this.rect = element.getBoundingClientRect();
                 this.setUpEventListeners();
             }
-            
+
             setUpEventListeners() {
                 this.element.addEventListener('mousemove', (event) => {
                     this.handleMouseMove(event);
                 });
-                
+
                 this.element.addEventListener('mouseleave', () => {
                     this.reset();
                 });
             }
-            
+
             handleMouseMove(event) {
                 // Calculate mouse position relative to element center
                 const centerX = this.rect.left + this.rect.width / 2;
                 const centerY = this.rect.top + this.rect.height / 2;
-                
+
                 const mouseX = event.clientX - centerX;
                 const mouseY = event.clientY - centerY;
-                
+
                 // Calculate angle and distance
                 const angle = Math.atan2(mouseY, mouseX);
                 const distance = Math.sqrt(mouseX * mouseX + mouseY * mouseY);
                 const maxDistance = Math.sqrt(
                     (this.rect.width / 2) ** 2 + (this.rect.height / 2) ** 2
                 );
-                
+
                 // Apply geometric transformation based on mouse position
                 const tiltIntensity = Math.min(distance / maxDistance, 1) * 20;
                 const rotationX = Math.sin(angle) * tiltIntensity;
                 const rotationY = Math.cos(angle) * tiltIntensity;
-                
+
                 this.element.style.transform = `
                     perspective(1000px)
                     rotateX(${-rotationX}deg)
@@ -211,11 +230,11 @@
                     scale(${1 + distance / maxDistance * 0.05})
                 `;
             }
-            
+
             reset() {
                 this.element.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
             }
-            
+
             updateRect() {
                 this.rect = this.element.getBoundingClientRect();
             }
@@ -236,4 +255,5 @@
         });
     </script>
 </body>
+
 </html>
