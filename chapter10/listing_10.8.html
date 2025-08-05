@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listing 10.7 - Circular path animation with CSS</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            height: 100vh;
+        }
+
+        .container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .orbiting-element {
+            width: 20px;
+            height: 20px;
+            background-color: #f00;
+            border-radius: 50%;
+            offset-path: border-box;
+            animation: move 3s infinite linear;
+        }
+
+        @keyframes move {
+            from {
+                offset-distance: 0%;
+            }
+
+            to {
+                offset-distance: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="orbiting-element"></div>
+    </div>
+</body>
+
+</html>

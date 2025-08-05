@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercise 10.6 - Diamond motion path</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+            height: 300px;
+            border: 2px solid #ccc;
+        }
+
+        .mover {
+            width: 20px;
+            height: 20px;
+            background-color: #f00;
+            border-radius: 50%;
+            offset-path: polygon(50% 0%,
+                    100% 50%,
+                    50% 100%,
+                    0% 50%);
+            animation: move 4s infinite linear;
+        }
+
+        @keyframes move {
+            from {
+                offset-distance: 0%;
+            }
+
+            to {
+                offset-distance: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="mover"></div>
+    </div>
+</body>
+
+</html>
