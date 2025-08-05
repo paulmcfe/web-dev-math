@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Listing 10.6 - Drag and drop with vectors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listing 10.6 - Dragging with a geometric constraint</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        body, html {
+
+        body,
+        html {
             width: 100vw;
             height: 100vh;
             display: flex;
@@ -18,36 +21,40 @@
             justify-content: center;
             background: #f7f7f7;
         }
+
         /* The container within which you can drag */
-        .drag-area {
+        .game-board {
             position: relative;
             width: 400px;
             height: 300px;
             border: 2px solid #888;
             background: #fff;
         }
-        /* The draggable square */
-        .draggable {
+
+        /* The game-piece square */
+        .game-piece {
             position: absolute;
             width: 50px;
             height: 50px;
             background: hsl(322, 100%, 31%);
             cursor: grab;
             transform: translate(0, 0);
-            user-select: none;
+            /* user-select: none; */
         }
-        .draggable:active {
+
+        .game-piece:active {
             cursor: grabbing;
         }
     </style>
 </head>
+
 <body>
-    <div class="drag-area" id="area">
-        <div class="draggable" id="box"></div>
+    <div class="game-board" id="game-board">
+        <div class="game-piece" id="game-piece"></div>
     </div>
 
     <script>
-       class Vector2 {
+        class Vector2 {
             constructor(x = 0, y = 0) {
                 this.x = x;
                 this.y = y;
@@ -84,52 +91,46 @@
             }
         }
 
-        const areaEl = document.getElementById('area');
-        const boxEl = document.getElementById('box');
+        const board = document.getElementById('game-board');
+        const piece = document.getElementById('game-piece');
+
+        const boardRect = board.getBoundingClientRect();
+        const pieceRect = piece.getBoundingClientRect();
+
+        const min = new Vector2(boardRect.left, boardRect.top);
+        const max = new Vector2(
+            boardRect.left + boardRect.width - pieceRect.width - 4,
+            boardRect.top + boardRect.height - pieceRect.height - 4
+        );
 
         let dragging = false;
-        let pointerOffset = new Vector2();
-        let boxPos = new Vector2(0, 0);
+        let pointerOffset;
+        let piecePos;
 
-        // clamp a vector within [min,max] for x and y
-        function clamp(pos, min, max) {
-            return new Vector2(
-                Math.min(Math.max(pos.x, min.x), max.x),
-                Math.min(Math.max(pos.y, min.y), max.y)
-            );
-        }
-
-        boxEl.addEventListener('mousedown', e => {
+        piece.addEventListener('mousedown', e => {
             dragging = true;
-            // calculate offset = boxPos - pointerPos
-            const rect = boxEl.getBoundingClientRect();
-            const pointer = new Vector2(e.clientX, e.clientY);
-            const boxTopLeft = new Vector2(rect.left, rect.top);
-            pointerOffset = boxTopLeft.subtract(pointer);
+            // Calculate offset = piecePos - pointerPos
+            const pieceRect = piece.getBoundingClientRect();
+            const pieceTopLeft = new Vector2(pieceRect.left, pieceRect.top);
+            const pointerPos = new Vector2(e.clientX, e.clientY);
+            pointerOffset = pieceTopLeft.subtract(pointerPos);
             document.body.style.cursor = 'grabbing';
         });
 
         window.addEventListener('mousemove', e => {
             if (!dragging) return;
 
-            const pointer = new Vector2(e.clientX, e.clientY);
-            // desired top-left = pointer + offset
-            let desired = pointer.add(pointerOffset);
+            const pointerPos = new Vector2(e.clientX, e.clientY);
+            // Requested top-left = pointerPos + pointerOffset
+            let reqPos = pointerPos.add(pointerOffset);
 
-            // get area bounds
-            const areaRect = areaEl.getBoundingClientRect();
-            const boxRect = boxEl.getBoundingClientRect();
-            const min = new Vector2(areaRect.left, areaRect.top);
-            const max = new Vector2(
-                areaRect.left + areaRect.width  - boxRect.width - 4,
-                areaRect.top  + areaRect.height - boxRect.height - 4
-            );
+            // Constrain the request to within the board's max and min
+            reqPos.x = Math.min(Math.max(reqPos.x, min.x), max.x);
+            reqPos.y = Math.min(Math.max(reqPos.y, min.y), max.y);
 
-            // clamp in page coords, then convert to area-relative pos
-            desired = clamp(desired, min, max);
-            boxPos = desired.subtract(new Vector2(areaRect.left, areaRect.top));
-
-            boxEl.style.transform = boxPos.toCSSTranslate();
+            // Convert to a board-relative vector
+            piecePos = reqPos.subtract(new Vector2(boardRect.left, boardRect.top));
+            piece.style.transform = piecePos.toCSSTranslate();
         });
 
         window.addEventListener('mouseup', () => {
@@ -140,5 +141,5 @@
         });
     </script>
 </body>
-</html>
 
+</html>

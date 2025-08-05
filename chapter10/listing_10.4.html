@@ -75,6 +75,7 @@
 
         demoArea.addEventListener('mousemove', event => {
             const rect = demoArea.getBoundingClientRect();
+            console.log(event.clientX, event.clientY);
             const mousePos = new Vector2(
                 event.clientX - rect.left,
                 event.clientY - rect.top
