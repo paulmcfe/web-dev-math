@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Listing 10.6 - Drag and drop with vectors</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f7f7f7;
+        }
+        /* The container within which you can drag */
+        .drag-area {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            border: 2px solid #888;
+            background: #fff;
+        }
+        /* The draggable square */
+        .draggable {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #4ecdc4;
+            cursor: grab;
+            transform: translate(0, 0);
+            user-select: none;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <div class="drag-area" id="area">
+        <div class="draggable" id="box"></div>
+    </div>
+
+    <script>
+       class Vector2 {
+            constructor(x = 0, y = 0) {
+                this.x = x;
+                this.y = y;
+            }
+
+            add(vector) {
+                return new Vector2(this.x + vector.x, this.y + vector.y);
+            }
+
+            subtract(vector) {
+                return new Vector2(this.x - vector.x, this.y - vector.y);
+            }
+
+            multiply(scalar) {
+                return new Vector2(this.x * scalar, this.y * scalar);
+            }
+
+            magnitude() {
+                return Math.hypot(this.x, this.y);
+            }
+
+            normalize() {
+                const m = this.magnitude();
+                return m > 0
+                    ? new Vector2(this.x / m, this.y / m)
+                    : new Vector2(0, 0);
+            }
+            clone() {
+                return new Vector2(this.x, this.y);
+            }
+
+            toCSSTranslate() {
+                return `translate(${this.x}px, ${this.y}px)`;
+            }
+        }
+
+        const areaEl = document.getElementById('area');
+        const boxEl = document.getElementById('box');
+
+        let dragging = false;
+        let pointerOffset = new Vector2();
+        let boxPos = new Vector2(0, 0);
+
+        // clamp a vector within [min,max] for x and y
+        function clamp(pos, min, max) {
+            return new Vector2(
+                Math.min(Math.max(pos.x, min.x), max.x),
+                Math.min(Math.max(pos.y, min.y), max.y)
+            );
+        }
+
+        boxEl.addEventListener('mousedown', e => {
+            dragging = true;
+            // calculate offset = boxPos - pointerPos
+            const rect = boxEl.getBoundingClientRect();
+            const pointer = new Vector2(e.clientX, e.clientY);
+            const boxTopLeft = new Vector2(rect.left, rect.top);
+            pointerOffset = boxTopLeft.subtract(pointer);
+            document.body.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+
+            const pointer = new Vector2(e.clientX, e.clientY);
+            // desired top-left = pointer + offset
+            let desired = pointer.add(pointerOffset);
+
+            // get area bounds
+            const areaRect = areaEl.getBoundingClientRect();
+            const boxRect = boxEl.getBoundingClientRect();
+            const min = new Vector2(areaRect.left, areaRect.top);
+            const max = new Vector2(
+                areaRect.left + areaRect.width  - boxRect.width - 4,
+                areaRect.top  + areaRect.height - boxRect.height - 4
+            );
+
+            // clamp in page coords, then convert to area-relative pos
+            desired = clamp(desired, min, max);
+            boxPos = desired.subtract(new Vector2(areaRect.left, areaRect.top));
+
+            boxEl.style.transform = boxPos.toCSSTranslate();
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (dragging) {
+                dragging = false;
+                document.body.style.cursor = '';
+            }
+        });
+    </script>
+</body>
+</html>
+
