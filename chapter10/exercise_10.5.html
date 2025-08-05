@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exercose 10.5 - Clip-path</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            gap: 5rem;
+            margin: 5rem;
+        }
+
+        .shape {
+            width: 200px;
+            height: 200px;
+            background-color: hsl(322 100% 31%);
+            clip-path: polygon(30% 0%,
+                    70% 0%,
+                    100% 30%,
+                    100% 70%,
+                    70% 100%,
+                    30% 100%,
+                    0% 70%,
+                    0% 30%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shape">
+    </div>
+</body>
+
+</html>
