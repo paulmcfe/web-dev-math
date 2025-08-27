@@ -1,2 +1,2 @@
 # web-dev-math
-Code repository for the book Smarter Web Layouts and Interfaces with Math.
+Code repository for the book *Math for Frontend Web Dev*.
