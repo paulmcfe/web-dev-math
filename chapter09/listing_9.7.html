@@ -37,20 +37,18 @@
 
     <script>
         function waveText(letters, amplitude, frequency) {
-            letters.forEach((letter, index) => {
-                let time = 0;
+            let time = 0;
 
-                function animate() {
-                    time += 0.25;
+            function animate() {
+                time += 0.25;
+                letters.forEach((letter, index) => {
                     const offset = amplitude * Math.sin(time * frequency + index * 0.5);
-
                     letter.style.transform = `translateY(${offset}px)`;
+                });
+                requestAnimationFrame(animate);
+            }
 
-                    requestAnimationFrame(animate);
-                }
-
-                animate();
-            });
+            animate();
         }
 
         // Split text into letter spans

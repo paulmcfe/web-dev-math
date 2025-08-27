@@ -51,7 +51,7 @@
             function animate() {
                 angle += speed;
                 radius += -0.25;
-                if (radius === 0) {
+                if (radius <= 0) {
                     cancelAnimationFrame(animationId);
                     return;
                 }

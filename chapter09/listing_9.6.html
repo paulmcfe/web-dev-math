@@ -39,7 +39,7 @@
         // Get the text and clear the element
         const textElement = document.getElementById('wave-text');
         const text = textElement.textContent;
-        textElement.innerHTML = '';
+        textElement.textContent = '';
 
         // Split the text into letter spans
         const letters = text.split('').map(char => {
