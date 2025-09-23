@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 12.5 - Applying the velocity equation with timestamps for frame-rate independence</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        #notification {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            background: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            font-weight: bold;
+            white-space: nowrap;
+            z-index: 1000;
+            transform: translateX(-100%);
+            transition: none;
+        }
+
+        .controls {
+            margin-top: 30px;
+        }
+
+        button {
+            background: #4ecdc4;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Velocity with Timestamps</h1>
+
+        <div id="notification">NOTE: The velocity appears here!</div>
+
+        <div class="controls">
+            <button onclick="restartAnimation()">Restart Animation</button>
+        </div>
+    </div>
+
+    <script>
+        const notification = document.getElementById('notification');
+        const velocity = 200; // Pixels per second
+        notification.textContent = `NOTE: The velocity is ${velocity} pixels per second!`;
+        const notificationWidth = notification.offsetWidth;
+        let position = -notificationWidth;
+        const centerPosition = (window.innerWidth / 2) - (notificationWidth / 2);
+        let lastTime = 0;
+
+
+        function animate() {
+            const currentTime = performance.now();
+            if (lastTime === 0) lastTime = currentTime;
+            const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+            lastTime = currentTime;
+            position += velocity * deltaTime;
+            notification.style.transform = `translateX(${position}px)`;
+
+            // Stop the animation when the notification gets to the center
+            if (position <= centerPosition) {
+                requestAnimationFrame(animate);
+            }
+        }
+
+        requestAnimationFrame(animate);
+
+        function restartAnimation() {
+            position = -notification.offsetWidth;
+            notification.style.transform = `translateX(${position})px`;
+            lastTime = 0;
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+
+</html>

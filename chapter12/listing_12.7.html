@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liting 12.7 - A bouncing ball animation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #ball {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: none;
+        }
+
+        .floor {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #2c3e50, #34495e);
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .info {
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        button {
+            background: #4ecdc4;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="title">Bouncing Ball Physics</h1>
+
+    <div class="container">
+        <div id="ball"></div>
+        <div class="floor"></div>
+    </div>
+
+    <div class="info">
+        <p>Watch the ball bounce with realistic physics!</p>
+        <p>Gravity: 0.5 | Bounce Factor: 70% energy retention</p>
+        <div class="controls">
+            <button onclick="restartAnimation()">Restart Animation</button>
+        </div>
+    </div>
+
+    <script>
+        const ball = document.getElementById('ball');
+        const floor = 490; // The y-position of the top of the floor
+        let y = 0;
+        let vy = 0; // Vertical velocity
+        const gravity = 0.5; // The force of gravity
+        const bounceFactor = 0.3; // Energy retained after a bounce (70%)
+        let animationId = null;
+
+        function animate() {
+            // Apply gravity to vertical velocity
+            vy += gravity;
+            // Apply velocity to position
+            y += vy;
+
+            // Check for collision with the floor
+            if (y > floor) {
+                y = floor;
+                // Reverse and reduce velocity to create a bounce
+                vy *= -bounceFactor;
+            }
+
+            ball.style.transform = `translateX(-50%) translateY(${y}px)`;
+            animationId = requestAnimationFrame(animate);
+        }
+
+        animationId = requestAnimationFrame(animate);
+
+        function restartAnimation() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            y = 0;
+            vy = 0;
+            animationId = requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+
+</html>

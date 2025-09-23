@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liting 12.9 - Simulating weight and elasticity</title>
+
+    <style>
+        .container {
+            border-bottom: 2px solid black;
+            width: 150px;
+            height: 400px;
+            float: left;
+            margin-right: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .heavy-ball {
+            background: navy;
+        }
+
+        .light-ball {
+            background: skyblue;
+        }
+
+        .bouncy-ball {
+            background: limegreen;
+        }
+
+        .dull-ball {
+            background: darkolivegreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="heavyBall" class="ball heavy-ball"></div>
+    </div>
+    <div class="container">
+        <div id="lightBall" class="ball light-ball"></div>
+    </div>
+    <div class="container">
+        <div id="bouncyBall" class="ball bouncy-ball"></div>
+    </div>
+    <div class="container">
+        <div id="dullBall" class="ball dull-ball"></div>
+    </div>
+
+    <script>
+        function createBallAnimator(elementId, gravity, bounceFactor) {
+            const ball = document.getElementById(elementId);
+            const floor = 360; // container height - ball height
+            let y = 0;
+            let vy = 0;
+
+            function animate() {
+                vy += gravity;
+                y += vy;
+
+                if (y > floor) {
+                    y = floor;
+                    vy *= -bounceFactor;
+                }
+
+                ball.style.transform = `translateY(${y}px)`;
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Heavy vs. Light: Different gravity, same elasticity
+        createBallAnimator('heavyBall', 0.8, 0.7);
+        createBallAnimator('lightBall', 0.2, 0.7);
+
+        // Bouncy vs. Dull: Same gravity, different elasticity
+        createBallAnimator('bouncyBall', 0.5, 0.9);
+        createBallAnimator('dullBall', 0.5, 0.3);
+    </script>
+
+</body>
+
+</html>

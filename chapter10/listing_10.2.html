@@ -190,6 +190,7 @@
                 this.element = element;
                 this.rect = element.getBoundingClientRect();
                 this.setUpEventListeners();
+                element.geometricHoverEffect = this;
             }
 
             setUpEventListeners() {

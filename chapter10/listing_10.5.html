@@ -11,15 +11,18 @@
             margin: 0;
             padding: 0;
         }
-        body, html {
+
+        body,
+        html {
             width: 100vw;
-            height: 100vh; 
-            overflow: hidden; 
+            height: 100vh;
+            overflow: hidden;
         }
 
         .chaser {
             position: absolute;
-            width: 30px; height: 30px;
+            width: 30px;
+            height: 30px;
             background: hsl(84 74% 44%);
             border-radius: 50%;
             transform: translate(0, 0);
@@ -27,6 +30,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="chaser"></div>
 
@@ -72,6 +76,7 @@
         const chaserEl = document.querySelector('.chaser');
         let position = new Vector2(50, 50);
         chaserEl.style.transform = position.toCSSTranslate();
+        let target;
 
         // On click, set new target
         document.addEventListener('click', e => {
@@ -101,4 +106,5 @@
 
     </script>
 </body>
+
 </html>

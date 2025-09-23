@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 11.2 - Using the ease function to animate a mobile menu.</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: #f4f4f4;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-button {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 250px;
+            background: #444;
+            padding: 2rem 1rem;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        nav.open {
+            transform: translateX(0);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin: 1rem 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        main {
+            padding: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>My App</h1>
+        <button class="menu-button" id="menuToggle">&#9776;</button>
+    </header>
+
+    <nav id="sideMenu">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <p>Try tapping the ☰ icon in the top-right corner to see the <code>ease</code> function in action.</p>
+    </main>
+
+    <script>
+        const toggleButton = document.getElementById('menuToggle');
+        const sideMenu = document.getElementById('sideMenu');
+
+        toggleButton.addEventListener('click', () => {
+            sideMenu.classList.toggle('open');
+        });
+    </script>
+</body>
+
+</html>

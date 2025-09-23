@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 12.2 - Animating a dialog onto the screen with an ease-out curve</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 50px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        #dialog {
+            position: fixed;
+            left: 50%;
+            top: -300px;
+            transform: translateX(-50%);
+            width: 400px;
+            background: #eee;
+            border: 1px solid black;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="openDialog()">Open Dialog</button>
+
+    <div id="dialog">
+        <h3>Dialog</h3>
+        <p>This dialog animates using an ease-out curve.</p>
+        <button onclick="closeDialog()">Close</button>
+    </div>
+
+    <script>
+        let isAnimating = false;
+
+        function openDialog() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            let dialog = document.getElementById('dialog');
+            let start = -300;
+            let end = (window.innerHeight / 2) - (dialog.offsetHeight / 2); // Account for dialog height
+            let distance = end - start;
+            let duration = 1000;
+            let startTime = Date.now();
+
+            function animate() {
+                let elapsed = Date.now() - startTime;
+                let progress = elapsed / duration;
+
+                if (progress >= 1) {
+                    isAnimating = false;
+                    return;
+                }
+                // Ease-out: fast start, gradual deceleration
+                const eased = 1 - Math.pow(1 - progress, 3);
+                let currentTop = start + eased * distance;
+                dialog.style.top = currentTop + 'px';
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        function closeDialog() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            let dialog = document.getElementById('dialog');
+            let start = (window.innerHeight / 2) - (dialog.offsetHeight / 2);
+            let end = -300;
+            let distance = end - start;
+            let duration = 1000;
+            let startTime = Date.now();
+
+            dialog.style.transform = 'translateX(-50%)';
+
+            function animate() {
+                let elapsed = Date.now() - startTime;
+                let progress = elapsed / duration;
+
+                if (progress >= 1) {
+                    isAnimating = false;
+                    return;
+                }
+
+                // Ease-out: fast start, gradual deceleration
+                const eased = 1 - Math.pow(1 - progress, 3);
+                let currentTop = start + eased * distance;
+                dialog.style.top = currentTop + 'px';
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+</body>
+
+</html>

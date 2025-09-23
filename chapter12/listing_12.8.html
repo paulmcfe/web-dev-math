@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liting 12.8 - Simulating a pendulum</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            padding-top: 100px;
+        }
+
+        #pendulum {
+            width: 20px;
+            height: 200px;
+            background: #333;
+            border-radius: 10px;
+            transform-origin: top center;
+            /* Set the pivot point to the top */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pendulum"></div>
+
+    <script>
+        const pendulum = document.getElementById('pendulum');
+
+        let angle = 0;
+        const speed = 0.05; // How fast the pendulum swings
+        const amplitude = 45; // How far it swings in degrees
+
+        function animate() {
+            // Get the oscillating value from Math.sin() and scale it
+            const rotation = amplitude * Math.sin(angle);
+
+            // Apply the rotation to the element
+            pendulum.style.transform = `rotate(${rotation}deg)`;
+
+            // Increment the angle for the next frame
+            angle += speed;
+
+            requestAnimationFrame(animate);
+        }
+
+        requestAnimationFrame(animate);
+    </script>
+</body>
+
+</html>

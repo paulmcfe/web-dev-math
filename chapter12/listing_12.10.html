@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liting 12.10 - Applying simulated spring motion when clicking a button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            font-family: sans-serif;
+        }
+
+        button {
+            padding: 1em 2em;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 8px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transform: scale(1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <button id="springBtn">Click Me</button>
+
+    <script>
+        const button = document.getElementById("springBtn");
+
+        // Initialize the physics parameters
+        let scale = 1;
+        let velocity = 0;
+        const target = 1;         // The target scale
+        const k = 0.1;            // The spring stiffness
+        const damping = 0.9;      // How quickly it settles
+
+        let animating = false;
+
+        function animate() {
+            if (!animating) return;
+
+            let x = scale - target; // Calculate displacement from rest
+            let force = -k * x;     // Apply Hooke’s law: F = -k * x
+            velocity += force;      // Add force to velocity
+            velocity *= damping;    // Apply damping
+            scale += velocity;
+
+            button.style.transform = `scale(${scale})`;
+
+            // stop if close enough to target
+            if (Math.abs(scale - target) < 0.001 && Math.abs(velocity) < 0.001) {
+                scale = target;
+                velocity = 0;
+                animating = false;
+                button.style.transform = `scale(${scale})`;
+                return;
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        button.addEventListener("click", () => {
+            // "compress" button
+            scale = 0.85;  // initial squish
+            velocity = 0;
+            animating = true;
+            requestAnimationFrame(animate);
+        });
+    </script>
+
+</body>
+
+</html>

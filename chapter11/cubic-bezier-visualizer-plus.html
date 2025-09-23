@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubic Bezier Curve Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 32px;
+            font-size: 1.1rem;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .css-output {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 1.1rem;
+            border: 1px solid #2d3748;
+        }
+
+        .css-output .property {
+            color: #63b3ed;
+        }
+
+        .css-output .value {
+            color: #68d391;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        canvas {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .preset-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .preset-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Cubic bezier curve generator</h1>
+        <p class="subtitle">Visualize and experiment with CSS cubic-bezier() timing functions</p>
+
+        <div class="controls">
+            <div class="input-group">
+                <label for="x1">X1 (First control point X)</label>
+                <input type="number" id="x1" min="0" max="1" step="0.01" value="0.25">
+            </div>
+            <div class="input-group">
+                <label for="y1">Y1 (First control point Y)</label>
+                <!-- allow -1.0 .. 2.0 -->
+                <input type="number" id="y1" min="-1" max="2" step="0.01" value="0.1">
+            </div>
+            <div class="input-group">
+                <label for="x2">X2 (Second control point X)</label>
+                <input type="number" id="x2" min="0" max="1" step="0.01" value="0.25">
+            </div>
+            <div class="input-group">
+                <label for="y2">Y2 (Second control point Y)</label>
+                <!-- allow -1.0 .. 2.0 -->
+                <input type="number" id="y2" min="-1" max="2" step="0.01" value="1">
+            </div>
+        </div>
+
+        <div class="css-output">
+            <span class="property">transition-timing-function:</span> <span class="value"
+                id="css-value">cubic-bezier(0.25, 0.1, 0.25, 1)</span>;
+        </div>
+
+        <div class="preset-buttons">
+            <button class="preset-btn" onclick="setPreset(0.25, 0.1, 0.25, 1)">ease (default)</button>
+            <button class="preset-btn" onclick="setPreset(0.42, 0, 1, 1)">ease-in</button>
+            <button class="preset-btn" onclick="setPreset(0, 0, 0.58, 1)">ease-out</button>
+            <button class="preset-btn" onclick="setPreset(0.42, 0, 0.58, 1)">ease-in-out</button>
+            <button class="preset-btn" onclick="setPreset(0.68, -0.55, 0.265, 1.55)">back</button>
+            <button class="preset-btn" onclick="setPreset(0.175, 0.885, 0.32, 1.275)">bounce</button>
+        </div>
+
+        <div class="canvas-container">
+            <canvas id="bezierCanvas" width="600" height="600"></canvas>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #667eea;"></div>
+                <span>Bezier curve</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #e53e3e;"></div>
+                <span>Control points</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #38a169;"></div>
+                <span>Start/End points</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #cbd5e0;"></div>
+                <span>Guide lines</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bezierCanvas');
+        const ctx = canvas.getContext('2d');
+        const inputs = {
+            x1: document.getElementById('x1'),
+            y1: document.getElementById('y1'),
+            x2: document.getElementById('x2'),
+            y2: document.getElementById('y2')
+        };
+        const cssValue = document.getElementById('css-value');
+
+        // Canvas dimensions and padding
+        const canvasSize = 600;
+        const padding = 60;
+        const graphSize = canvasSize - (padding * 2);
+
+        // Y range expanded to accept -1.0 .. 2.0
+        const yMin = -1.0;
+        const yMax = 2.0;
+
+        // Convert graph coordinates to canvas coordinates
+        function graphToCanvas(x, y) {
+            return {
+                x: padding + (x * graphSize),
+                // map y in [yMin, yMax] to canvas Y: padding..padding+graphSize (top..bottom)
+                y: padding + ((yMax - y) / (yMax - yMin)) * graphSize
+            };
+        }
+
+        // Calculate a point on the cubic bezier curve
+        function cubicBezier(t, p0, p1, p2, p3) {
+            const oneMinusT = 1 - t;
+            const oneMinusTCubed = oneMinusT * oneMinusT * oneMinusT;
+            const oneMinusTSquared = oneMinusT * oneMinusT;
+            const tSquared = t * t;
+            const tCubed = t * t * t;
+
+            return {
+                x: oneMinusTCubed * p0.x +
+                    3 * oneMinusTSquared * t * p1.x +
+                    3 * oneMinusT * tSquared * p2.x +
+                    tCubed * p3.x,
+                y: oneMinusTCubed * p0.y +
+                    3 * oneMinusTSquared * t * p1.y +
+                    3 * oneMinusT * tSquared * p2.y +
+                    tCubed * p3.y
+            };
+        }
+
+        function drawGrid() {
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+
+            // Draw grid lines
+            for (let i = 0; i <= 10; i++) {
+                const x = padding + (i / 10) * graphSize;
+                const y = padding + (i / 10) * graphSize;
+
+                // Vertical lines
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, padding + graphSize);
+                ctx.stroke();
+
+                // Horizontal lines
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + graphSize, y);
+                ctx.stroke();
+            }
+
+            // Draw main axes
+            ctx.strokeStyle = '#cbd5e0';
+            ctx.lineWidth = 2;
+
+            // X axis
+            ctx.beginPath();
+            ctx.moveTo(padding, padding + graphSize);
+            ctx.lineTo(padding + graphSize, padding + graphSize);
+            ctx.stroke();
+
+            // Y axis
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, padding + graphSize);
+            ctx.stroke();
+
+            // Add labels
+            ctx.fillStyle = '#64748b';
+            ctx.font = '16px sans-serif';
+
+            // Y-axis labels (use yMin..yMax)
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 10; i += 2) {
+                const frac = i / 10;
+                const value = (yMax - frac * (yMax - yMin));
+                const y = padding + frac * graphSize;
+                ctx.fillText(value.toFixed(1), padding - 10, y + 5);
+            }
+
+            // X-axis labels (0.0 .. 1.0)
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 10; i += 2) {
+                const x = padding + (i / 10) * graphSize;
+                ctx.fillText((i / 10).toFixed(1), x, padding + graphSize + 28);
+            }
+
+            // Axis titles
+            ctx.font = '18px sans-serif';
+            ctx.fillStyle = '#374151';
+            ctx.textAlign = 'center';
+            ctx.fillText('Time →', canvasSize / 2, padding + graphSize + 56);
+
+            ctx.save();
+            ctx.translate(20, canvasSize / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Progress', 0, 0);
+            ctx.restore();
+        }
+
+        function drawBezierCurve() {
+            const x1 = parseFloat(inputs.x1.value);
+            const y1 = parseFloat(inputs.y1.value);
+            const x2 = parseFloat(inputs.x2.value);
+            const y2 = parseFloat(inputs.y2.value);
+
+            // Define the four points of the bezier curve (y values can now be outside 0..1)
+            const p0 = { x: 0, y: 0 };      // Start point (0)
+            const p1 = { x: x1, y: y1 };    // First control point
+            const p2 = { x: x2, y: y2 };    // Second control point
+            const p3 = { x: 1, y: 1 };      // End point (1)
+
+            // Draw control lines
+            ctx.strokeStyle = '#cbd5e0';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+
+            // Line from start to first control point
+            const startCanvas = graphToCanvas(p0.x, p0.y);
+            const cp1Canvas = graphToCanvas(p1.x, p1.y);
+            ctx.beginPath();
+            ctx.moveTo(startCanvas.x, startCanvas.y);
+            ctx.lineTo(cp1Canvas.x, cp1Canvas.y);
+            ctx.stroke();
+
+            // Line from second control point to end
+            const cp2Canvas = graphToCanvas(p2.x, p2.y);
+            const endCanvas = graphToCanvas(p3.x, p3.y);
+            ctx.beginPath();
+            ctx.moveTo(cp2Canvas.x, cp2Canvas.y);
+            ctx.lineTo(endCanvas.x, endCanvas.y);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            // Draw the bezier curve
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+
+            const steps = 200;
+            for (let i = 0; i <= steps; i++) {
+                const t = i / steps;
+                const point = cubicBezier(t, p0, p1, p2, p3);
+                const canvasPoint = graphToCanvas(point.x, point.y);
+
+                if (i === 0) {
+                    ctx.moveTo(canvasPoint.x, canvasPoint.y);
+                } else {
+                    ctx.lineTo(canvasPoint.x, canvasPoint.y);
+                }
+            }
+            ctx.stroke();
+
+            // Draw control points
+            ctx.fillStyle = '#e53e3e';
+            ctx.beginPath();
+            ctx.arc(cp1Canvas.x, cp1Canvas.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(cp2Canvas.x, cp2Canvas.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Draw start and end points
+            ctx.fillStyle = '#38a169';
+            ctx.beginPath();
+            ctx.arc(startCanvas.x, startCanvas.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(endCanvas.x, endCanvas.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Add point labels
+            ctx.fillStyle = '#374151';
+            ctx.font = '16px sans-serif';
+            ctx.textAlign = 'center';
+
+            ctx.fillText('(0, 0)', startCanvas.x, startCanvas.y - 15);
+            ctx.fillText('(1, 1)', endCanvas.x, endCanvas.y - 15);
+            ctx.fillText(`(${x1.toFixed(2)}, ${y1.toFixed(2)})`, cp1Canvas.x, cp1Canvas.y - 15);
+            ctx.fillText(`(${x2.toFixed(2)}, ${y2.toFixed(2)})`, cp2Canvas.x, cp2Canvas.y - 15);
+        }
+
+        function updateCSSValue() {
+            const x1 = parseFloat(inputs.x1.value);
+            const y1 = parseFloat(inputs.y1.value);
+            const x2 = parseFloat(inputs.x2.value);
+            const y2 = parseFloat(inputs.y2.value);
+
+            cssValue.textContent = `cubic-bezier(${x1}, ${y1}, ${x2}, ${y2})`;
+        }
+
+        function redraw() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+            // Draw everything
+            drawGrid();
+            drawBezierCurve();
+            updateCSSValue();
+        }
+
+        function setPreset(x1, y1, x2, y2) {
+            inputs.x1.value = x1;
+            inputs.y1.value = y1;
+            inputs.x2.value = x2;
+            inputs.y2.value = y2;
+            redraw();
+        }
+
+        // Add event listeners to all inputs
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', redraw);
+        });
+
+        // Initial draw
+        redraw();
+    </script>
+</body>
+
+</html>

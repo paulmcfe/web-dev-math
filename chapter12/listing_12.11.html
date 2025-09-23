@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 12.11 - Applying inertia to a draggable element</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            background: #222;
+            font-family: system-ui, sans-serif;
+        }
+
+        #draggable {
+            width: 100px;
+            height: 100px;
+            background: crimson;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px #0008;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: box-shadow 0.2s;
+        }
+
+        #draggable:active {
+            box-shadow: 0 8px 32px #000b;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #eee;
+            font-size: 1em;
+            background: #333c;
+            padding: 0.35em 1em;
+            border-radius: 8px;
+            pointer-events: none;
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 600px) {
+            #draggable {
+                width: 80px;
+                height: 80px;
+                font-size: 0.95em;
+            }
+
+            .hint {
+                font-size: 0.9em;
+                padding: 0.3em 0.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="draggable">Drag Me!</div>
+    <div class="hint">Drag the box and release &mdash; it will glide with inertia!</div>
+    <script>
+        const draggable = document.getElementById('draggable');
+
+        let isDragging = false;
+        let startX, startY;
+        let x = 0, y = 0;
+        let vx = 0, vy = 0;
+        let lastX, lastY;
+        const friction = 0.9;
+        let inertiaAnimation;
+
+        // Clamp within viewport (optional UX improvement)
+        function clampPosition(x, y) {
+            const boxW = draggable.offsetWidth;
+            const boxH = draggable.offsetHeight;
+            const winW = window.innerWidth;
+            const winH = window.innerHeight;
+            // Clamp so box stays visible
+            x = Math.max(0, Math.min(x, winW - boxW));
+            y = Math.max(0, Math.min(y, winH - boxH));
+            return [x, y];
+        }
+
+        draggable.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            draggable.style.cursor = 'grabbing';
+            startX = e.clientX - x;
+            startY = e.clientY - y;
+            vx = 0;
+            vy = 0;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            cancelAnimationFrame(inertiaAnimation);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            x = e.clientX - startX;
+            y = e.clientY - startY;
+            vx = e.clientX - lastX;
+            vy = e.clientY - lastY;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            // Optionally clamp position to viewport
+            [x, y] = clampPosition(x, y);
+            draggable.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            draggable.style.cursor = 'grab';
+            applyInertia();
+        });
+
+        function applyInertia() {
+            vx *= friction;
+            vy *= friction;
+            x += vx;
+            y += vy;
+            [x, y] = clampPosition(x, y);
+            draggable.style.transform = `translate(${x}px, ${y}px)`;
+            if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1) {
+                inertiaAnimation = requestAnimationFrame(applyInertia);
+            }
+        }
+
+        // On window resize, clamp box to viewport
+        window.addEventListener('resize', () => {
+            [x, y] = clampPosition(x, y);
+            draggable.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        // Touch support for mobile
+        draggable.addEventListener('touchstart', (e) => {
+            if (e.touches.length !== 1) return;
+            isDragging = true;
+            draggable.style.cursor = 'grabbing';
+            startX = e.touches[0].clientX - x;
+            startY = e.touches[0].clientY - y;
+            vx = 0;
+            vy = 0;
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+            cancelAnimationFrame(inertiaAnimation);
+        }, { passive: false });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            x = e.touches[0].clientX - startX;
+            y = e.touches[0].clientY - startY;
+            vx = e.touches[0].clientX - lastX;
+            vy = e.touches[0].clientY - lastY;
+            lastX = e.touches[0].clientX;
+            lastY = e.touches[0].clientY;
+            [x, y] = clampPosition(x, y);
+            draggable.style.transform = `translate(${x}px, ${y}px)`;
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            draggable.style.cursor = 'grab';
+            applyInertia();
+        });
+    </script>
+</body>
+
+</html>

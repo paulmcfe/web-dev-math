@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 11.4 - "Bouncing" a dialog onto screen</title>
+    <style>
+        .attention-grabbing {
+            animation: bounceIn 0.6s cubic-bezier(0.7, -0.5, 0.25, 1.5);
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+
+            60% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            80% {
+                transform: scale(0.95);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        body {
+            font-family: sans-serif;
+            padding: 40px;
+        }
+
+        .dialog {
+            width: 260px;
+            background: #4f8cff;
+            color: #fff;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px 16px 16px;
+            position: relative;
+        }
+
+        .dialog-message {
+            margin-bottom: 18px;
+        }
+
+        .dialog button {
+            background: #fff;
+            color: #4f8cff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .dialog button:hover {
+            background: #e0eaff;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Entrance Animation</h2>
+    <button onclick="showBox()">Click Me!</button>
+    <div id="container">
+        <div id="helloDialog" class="dialog" style="display:none;">
+            <div class="dialog-message">Thanks for clicking me!</div>
+            <button onclick="hideBox()">OK</button>
+        </div>
+    </div>
+    <script>
+        function showBox() {
+            const dialog = document.getElementById('helloDialog');
+            dialog.style.display = 'flex';
+            dialog.classList.add('attention-grabbing');
+        }
+
+        function hideBox() {
+            const dialog = document.getElementById('helloDialog');
+            dialog.style.display = 'none';
+            dialog.classList.remove('attention-grabbing');
+        }
+    </script>
+</body>
+
+</html>
