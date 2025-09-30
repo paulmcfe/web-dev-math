@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.5 - Creating a generative starfield background effect</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'system-ui', sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 400px;
+            pointer-events: none;
+        }
+
+        .crawl-text {
+            color: #ffd700;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            transform: rotateX(25deg) translateZ(0);
+            animation: crawl 20s linear infinite;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+
+        .crawl-text>h1,
+        .crawl-text>p {
+            margin-bottom: 1.5rem;
+            ;
+        }
+
+        @keyframes crawl {
+            0% {
+                transform: rotateX(25deg) translateY(80vh) translateZ(0);
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: rotateX(25deg) translateY(-50vh) translateZ(0);
+                opacity: 0;
+            }
+        }
+
+        .home-button {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .home-button:hover {
+            background: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .crawl-text {
+                font-size: 1.5rem;
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="starfield"></canvas>
+
+    <div class="text-overlay">
+        <div class="crawl-text">
+            <h1>ERROR 404</h1>
+            <p>A long time ago, in a galaxy far, far away...</p>
+            <p>The page you seek vanished into the void of cyberspace.</p>
+            <p>Perhaps it was destroyed by the Death Star, or maybe it was lost during a hyperspace jump.</p>
+            <p>Whatever.</p>
+            <p>Fear not, brave traveler! Use the button below to return to safety.</p>
+            <p>May the Force (and better URLs) be with you.</p>
+        </div>
+    </div>
+
+    <button class="home-button" onclick="window.location.href='/'">
+        Return to Home Base
+    </button>
+
+    <script>
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        // Make canvas full viewport
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const numStars = 800;
+        const maxDepth = 32;
+
+        // Create the star objects
+        for (let i = 0; i < numStars; i++) {
+            const z = Math.max(0.5, Math.random() * maxDepth);
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                z: z,
+                speed: 0.25 / z,
+                radius: (maxDepth - z) / maxDepth * 2,
+                opacity: (maxDepth - z) / maxDepth,
+            });
+        }
+
+        function animate() {
+            // Clear the canvas for the next frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            stars.forEach(star => {
+                // Update the star's x position using pre-calculated speed
+                star.x -= star.speed;
+
+                // If star moves off the left edge, wrap it to the right
+                if (star.x < 0) {
+                    star.x = canvas.width;
+                    star.y = Math.random() * canvas.height;
+                }
+
+                // Drawing the Star using pre-calculated values
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // Redistribute stars for new canvas size
+            stars.forEach(star => {
+                if (star.x > canvas.width) star.x = Math.random() * canvas.width;
+                if (star.y > canvas.height) star.y = Math.random() * canvas.height;
+            });
+        });
+
+        canvas.style.background = 'black';
+        animate();
+    </script>
+</body>
+
+</html>

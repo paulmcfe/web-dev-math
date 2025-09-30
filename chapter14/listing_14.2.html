@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.2 - Creating an interactive bar chart</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Average daily unique visitors for August</h1>
+    <canvas id="barChart" width="400" height="400"></canvas>
+    <script>
+        function createInteractiveBarChart(canvas, data) {
+            const ctx = canvas.getContext('2d');
+            const bars = [];  // Store bar boundaries for hit detection
+
+            // Create tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.style.position = 'absolute';
+            tooltip.style.background = 'hsl(322 100% 31%)';
+            tooltip.style.color = '#fff';
+            tooltip.style.padding = '8px 12px';
+            tooltip.style.borderRadius = '4px';
+            tooltip.style.fontSize = '14px';
+            tooltip.style.pointerEvents = 'none';
+            tooltip.style.display = 'none';
+            tooltip.style.zIndex = '1000';
+            document.body.appendChild(tooltip);
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+                const padding = 40;
+                const barWidth = (canvas.width - padding * 2)
+                    / data.length;
+                const maxValue = Math.max(...data.map(item =>
+                    item.value));
+                const chartHeight = canvas.height - padding * 2;
+
+                bars.length = 0;  // Clear previous boundaries
+
+                data.forEach((item, index) => {
+                    // Calculate bar dimensions
+                    const barHeight = (item.value / maxValue) * chartHeight;
+                    const x = padding + index * barWidth + barWidth * 0.1;
+                    const y = canvas.height - padding - barHeight;
+                    const width = barWidth * 0.8;
+
+                    // Store boundaries for hit detection
+                    bars.push({
+                        x: x,
+                        y: y,
+                        width: width,
+                        height: barHeight,
+                        data: item
+                    });
+
+                    // Draw the bar
+                    ctx.fillStyle = 'hsl(84 74% 44%)';
+                    ctx.fillRect(x, y, width, barHeight);
+
+                    // Add label at bottom of bar
+                    ctx.fillStyle = '#333';
+                    ctx.font = '14px system-ui, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'top';
+
+                    const labelX = x + width / 2;
+                    const labelY = canvas.height - padding + 5; // 5px below the bottom
+                    ctx.fillText(item.label, labelX, labelY);
+                });
+            }
+
+            function handleMouseMove(event) {
+                // Convert mouse coordinates to canvas space
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                let hoveredBar = null;
+
+                // Check each bar for a hit
+                for (let bar of bars) {
+                    if (x >= bar.x && x <= bar.x + bar.width &&
+                        y >= bar.y && y <= bar.y + bar.height) {
+                        hoveredBar = bar;
+                        break;
+                    }
+                }
+
+                if (hoveredBar) {
+                    // Show tooltip
+                    tooltip.textContent = `
+                        ${hoveredBar.data.label}: 
+                        ${hoveredBar.data.value}
+                    `;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = `${event.clientX + 10}px`;
+                    tooltip.style.top = `${event.clientY - 10}px`;
+                    canvas.style.cursor = 'pointer';
+                } else {
+                    // Hide tooltip
+                    tooltip.style.display = 'none';
+                    canvas.style.cursor = 'default';
+                }
+            }
+
+            function handleMouseLeave() {
+                // Hide tooltip when mouse leaves canvas
+                tooltip.style.display = 'none';
+                canvas.style.cursor = 'default';
+            }
+
+            // Initialize
+            canvas.addEventListener('mousemove', handleMouseMove);
+            canvas.addEventListener('mouseleave', handleMouseLeave);
+            draw();
+
+            return { draw, bars };
+        }
+
+        // Average daily unique visitors data
+        const uniqueVisitorData = [
+            { label: 'Mon', value: 2250 },
+            { label: 'Tue', value: 3570 },
+            { label: 'Wed', value: 3125 },
+            { label: 'Thu', value: 4060 },
+            { label: 'Fri', value: 5100 },
+            { label: 'Sat', value: 6275 },
+            { label: 'Sun', value: 5500 },
+        ];
+
+        let canvas = document.getElementById('barChart');
+        createInteractiveBarChart(canvas, uniqueVisitorData);
+    </script>
+</body>
+
+</html>

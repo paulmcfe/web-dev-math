@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 13.5 - Implementing a custom rotary control</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f7f7f7;
+            margin-left: 1rem;
+        }
+
+        #knob-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            max-width: 300px;
+        }
+
+        #knob {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #888;
+            border-radius: 50%;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            transition: box-shadow 0.2s;
+        }
+
+        #knob:active {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+            cursor: grabbing;
+        }
+
+        #knob-indicator {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 8px;
+            height: 50px;
+            background: #3476e6;
+            border-radius: 4px;
+            transform: translate(-50%, -90%);
+            box-shadow: 0 1px 4px rgba(52, 118, 230, 0.18);
+        }
+
+        #knob-value {
+            font-family: monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2653a6;
+            min-width: 32px;
+            display: inline-block;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Synthesizer Control</h1>
+    <div id="knob-container">
+        <div id="knob">
+            <div id="knob-indicator"></div>
+        </div>
+        <div>Volume: <span id="knob-value">50</span></div>
+    </div>
+    <script>
+        // Knob configuration
+        let knobValue = 50;
+        const knobMin = 0;
+        const knobMax = 100;
+
+        // Angle limits (in degrees)
+        const minAngle = -135;  // Lower left
+        const maxAngle = 135;   // Lower right
+        const angleRange = maxAngle - minAngle;
+
+        // Elements
+        const knob = document.getElementById('knob');
+        const knobDisplay = document.getElementById('knob-value');
+
+        // Convert value to rotation angle
+        function valueToAngle(value) {
+            const percentage = (value - knobMin) / (knobMax - knobMin);
+            return minAngle + angleRange * percentage;
+        }
+
+        // Convert angle to value
+        function angleToValue(angle) {
+            // Clamp angle to valid range
+            if (angle < minAngle) angle = minAngle;
+            if (angle > maxAngle) angle = maxAngle;
+
+            const percentage = (angle - minAngle) / angleRange;
+            return knobMin + (knobMax - knobMin) * percentage;
+        }
+
+        // Update knob rotation
+        function updateKnob() {
+            const angle = valueToAngle(knobValue);
+            knob.style.transform = `rotate(${angle}deg)`;
+            knobDisplay.textContent = Math.round(knobValue);
+        }
+
+        // Handle mouse interaction
+        let isRotating = false;
+
+        knob.addEventListener('mousedown', function (e) {
+            isRotating = true;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', function (e) {
+            if (!isRotating) return;
+
+            // Get knob center position
+            const rect = knob.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            // Calculate angle from center to mouse
+            const deltaX = e.clientX - centerX;
+            const deltaY = e.clientY - centerY;
+
+            // Math.atan2 returns angle in radians
+            let angleRadians = Math.atan2(deltaY, deltaX);
+
+            // Convert to degrees
+            let angleDegrees = angleRadians * (180 / Math.PI);
+
+            // Adjust so 0° is at the top (not the right)
+            angleDegrees += 90;
+
+            // Normalize to -180 to 180 range
+            if (angleDegrees > 180) angleDegrees -= 360;
+
+            // Convert angle to value
+            knobValue = angleToValue(angleDegrees);
+            updateKnob();
+        });
+
+        document.addEventListener('mouseup', function () {
+            isRotating = false;
+        });
+
+        updateKnob();
+    </script>
+</body>
+
+</html>

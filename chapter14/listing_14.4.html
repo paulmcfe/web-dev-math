@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.4 - Balloon Drop Animation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="balloons"></canvas>
+
+    <script>
+        const pCanvas = document.getElementById('balloons');
+        const pCtx = pCanvas.getContext('2d');
+
+        // Make canvas full viewport
+        pCanvas.width = window.innerWidth;
+        pCanvas.height = window.innerHeight;
+
+        const canvasWidth = pCanvas.width;
+        const canvasHeight = pCanvas.height;
+        const gravity = 0.08; // Reduced from 0.15 - lighter gravity for balloons
+        const balloons = [];
+
+        // Balloon colors
+        const balloonColors = [
+            'hsl(0, 85%, 60%)',    // Red
+            'hsl(30, 85%, 60%)',   // Orange
+            'hsl(60, 85%, 60%)',   // Yellow
+            'hsl(120, 85%, 60%)',  // Green
+            'hsl(210, 85%, 60%)',  // Blue
+            'hsl(270, 85%, 60%)',  // Purple
+            'hsl(300, 85%, 60%)',  // Pink
+        ];
+
+        // Create balloons starting at the top
+        for (let i = 0; i < 50; i++) {
+            balloons.push({
+                x: Math.random() * canvasWidth,
+                y: -20, // Start above the canvas
+                vx: (Math.random() - 0.5) * 1, // Small horizontal drift
+                vy: Math.random() * 1 + 0.5, // Slower initial fall speed
+                radius: Math.random() * 15 + 10, // Balloon size
+                color: balloonColors[Math.floor(Math.random() * balloonColors.length)],
+            });
+        }
+
+        function drawBalloon(p) {
+            // Draw balloon (circle)
+            pCtx.beginPath();
+            pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            pCtx.fillStyle = p.color;
+            pCtx.fill();
+
+            // Add balloon highlight
+            pCtx.beginPath();
+            pCtx.arc(p.x - p.radius * 0.3, p.y - p.radius * 0.3, p.radius * 0.3, 0, Math.PI * 2);
+            pCtx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            pCtx.fill();
+        }
+
+        function animateBalloons() {
+            // Create a gradient background (sky)
+            const gradient = pCtx.createLinearGradient(0, 0, 0, canvasHeight);
+            gradient.addColorStop(0, 'hsl(203 57% 65%)');
+            gradient.addColorStop(1, 'hsl(203 57% 85%)');
+            pCtx.fillStyle = gradient;
+            pCtx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            balloons.forEach(p => {
+                p.vy += gravity; // Apply  gravity
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Check for floor collision
+                if (p.y + p.radius > canvasHeight) {
+                    p.y = canvasHeight - p.radius;
+                    p.vy *= -0.6; // Reduce energy on bounce
+                }
+
+                // Check for left wall collision
+                if (p.x <= p.radius) {
+                    p.x = p.radius;
+                    p.vx *= -0.75; // Reduce energy on bounce
+                }
+                // Check for right wall collision
+                if (p.x >= canvasWidth - p.radius) {
+                    p.x = canvasWidth - p.radius;
+                    p.vx *= -0.75; // Reduce energy on bounce
+                }
+
+                drawBalloon(p);
+            });
+
+            requestAnimationFrame(animateBalloons);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+        });
+
+        animateBalloons();
+    </script>
+</body>
+
+</html>

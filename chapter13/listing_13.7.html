@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 13.7 - Making UI changes with an intersection observer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito&family=Poppins&display=swap');
+
+        /* General settings */
+        body {
+            background-color: mintcream;
+            margin: 0;
+            font-size: 1.25rem;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        /* Header */
+        header {
+            background-color: coral;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 64px;
+            font-family: 'Poppins', sans-serif;
+            padding-left: 16px;
+        }
+
+        /* Main */
+        main {
+            text-align: center;
+            margin: 24px;
+        }
+
+        main h2 {
+            font-size: 30px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .welcome {
+            max-width: 50vw;
+            margin: 0 auto;
+        }
+
+        /* Portfolio */
+        .portfolio {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+
+        /* Card */
+        .card {
+            min-width: 200px;
+            max-width: 700px;
+            box-shadow: 8px 8px 4px rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card h2,
+        .card p {
+            padding: 0 16px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: coral;
+            padding: 16px;
+            text-align: center;
+        }
+
+        /* Scroll animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <img src="images/logo.png" alt="Cover Me Book Design Logo">
+        <h1>Cover Me Book Design</h1>
+    </header>
+
+    <main>
+        <div class="welcome">
+            <p>
+                Welcome to my portfolio site! I design book covers for a living and this site is a way of showing off my
+                latest and (if it's not too immodest to say) greatest creations.
+            </p>
+            <p>
+                Please scroll down to check out my most recent designs.
+            </p>
+        </div>
+        <h2>My Latest Book Designs</h2>
+        <div class="portfolio">
+            <!-- Card 1 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio01.jpg" alt="I Fell In Love with ChatGPT" class="card-image">
+                <h2>I Fell In Love with ChatGPT</h2>
+                <p>I designed this book for Moughton-Hifflin's new
+                    line of AI-themed romance books.
+                </p>
+            </div>
+            <!-- Card 2 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio02.jpg" alt="The Shakespeare Time Machine" class="card-image">
+                <h2>The Shakespeare Time Machine</h2>
+                <p>Maggie O'Farrell meets H.G. Wells in this historical
+                    fiction book I designed for Juxtaposition Publishing.
+                </p>
+            </div>
+            <!-- Card 3 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio03.jpg" alt="Our New ChatBot Overlords" class="card-image">
+                <h2>Our New ChatBot Overlords</h2>
+                <p>A dystopian AI future awaits us all in this science
+                    fiction title I designed for H. J. Simpson Press.
+                </p>
+            </div>
+            <!-- Card 4 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio04.jpg" alt="Yo, Yossarian!" class="card-image">
+                <h2>Yo, Yossarian!</h2>
+                <p>A biography of the character John Yossarian from
+                    Joseph Heller's novel Catch-22; designed for
+                    Hyperbole Editions.
+                </p>
+            </div>
+            <!-- Card 5 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio05.jpg" alt="The Mystery of the Missing Sock" class="card-image">
+                <h2>The Mystery of the Missing Sock</h2>
+                <p>A perennial mystery gets solved in this whodunit,
+                    which I designed for The Butler Did It Publications.
+                </p>
+            </div>
+            <!-- Card 6 -->
+            <div class="card scroll-animate">
+                <img src="images/portfolio06.jpg" alt="The Old Person's Guide to TikTok" class="card-image">
+                <h2>The Old Person's Guide to TikTok</h2>
+                <p>I designed the cover of this TikTok how-to guide for
+                    Old People Are People, Too Press.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; Cover Me Book Design</p>
+    </footer>
+
+    <script>
+        function setupScrollAnimations() {
+            const options = {
+                root: null, // Use viewport
+                rootMargin: '0px',
+                threshold: Array.from({ length: 101 }, (_, i) => i / 100) // 0 to 1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const element = entry.target;
+                    const ratio = entry.intersectionRatio;
+
+                    // Calculate animation values based on visibility
+                    const opacity = ratio;
+                    const scale = 0.8 + (ratio * 0.2); // 0.8 to 1.0
+                    const translateY = (1 - ratio) * 30; // 30px to 0px
+
+                    element.style.opacity = opacity;
+                    element.style.transform = `
+                        translateY(${translateY}px) 
+                        scale(${scale})
+                    `;
+                });
+            }, options);
+
+            // Observe all animatable elements
+            document.querySelectorAll('.scroll-animate')
+                .forEach(element => {
+                    observer.observe(element);
+                });
+        }
+
+        // Initialize the animations when the page loads
+        setupScrollAnimations();
+    </script>
+</body>
+
+</html>

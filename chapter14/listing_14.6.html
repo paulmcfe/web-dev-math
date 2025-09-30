@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.6 - Creating a shower of confetti </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: system-ui, sans-serif;
+        }
+
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            z-index: 1;
+        }
+
+        #ui {
+            position: fixed;
+            top: 2rem;
+            left: 0;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #submitBtn {
+            pointer-events: auto;
+            padding: 0.7rem 2rem;
+            font-size: 1.1rem;
+            background: #2bc7a0;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0.75rem 0;
+            transition: background 0.2s;
+        }
+
+        #submitBtn:hover {
+            background: #1e9a78;
+        }
+
+        .info {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="confettiCanvas"></canvas>
+    <div id="ui">
+        <h2>Step 42: Submit Your Email</h2>
+        <div class="info">You made it! All that's left is to submit your email so we can send you the results.</div>
+        <label for="email">Email:
+            <input id="email" type="email" size="30" value="user@example.com">
+        </label>
+        <button id="submitBtn">Complete the Task</button>
+    </div>
+    <script>
+        function createConfettiCelebration(canvas) {
+            const ctx = canvas.getContext('2d');
+            const confettiPieces = [];
+            const gravity = 0.15;
+            const drag = 0.005; // gentle drag for drifting
+            let isAnimating = false;
+
+            function createConfetti(x, y) {
+                return {
+                    x: x,
+                    y: y,
+                    vx: Math.random() * 7 - 3.5, // random drift left/right
+                    vy: Math.random() * -7 - 5,  // shoot upward, then fall
+                    width: Math.random() * 10 + 5,
+                    height: Math.random() * 5 + 3,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotationSpeed: Math.random() * 0.2 - 0.1,
+                    color: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                };
+            }
+
+            function burst(centerX, centerY, count = 100) {
+                for (let i = 0; i < count; i++) {
+                    const offsetX = Math.random() * 60 - 30;
+                    const offsetY = Math.random() * 60 - 30;
+                    confettiPieces.push(createConfetti(
+                        centerX + offsetX,
+                        centerY + offsetY
+                    ));
+                }
+            }
+
+            function updateConfetti(confetti) {
+                confetti.vy += gravity;
+                confetti.vx *= (1 - drag);
+
+                confetti.x += confetti.vx;
+                confetti.y += confetti.vy;
+
+                confetti.rotation += confetti.rotationSpeed;
+
+                // Remove if out of bounds
+                return (
+                    confetti.y < canvas.height + 20 &&
+                    confetti.x > -40 &&
+                    confetti.x < canvas.width + 40
+                );
+            }
+
+            function drawConfetti(confetti) {
+                ctx.save();
+                ctx.translate(confetti.x, confetti.y);
+                ctx.rotate(confetti.rotation);
+                ctx.fillStyle = confetti.color;
+                ctx.fillRect(
+                    -confetti.width / 2,
+                    -confetti.height / 2,
+                    confetti.width,
+                    confetti.height
+                );
+                ctx.restore();
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = confettiPieces.length - 1; i >= 0; i--) {
+                    if (!updateConfetti(confettiPieces[i])) {
+                        confettiPieces.splice(i, 1);
+                    } else {
+                        drawConfetti(confettiPieces[i]);
+                    }
+                }
+                if (confettiPieces.length > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    isAnimating = false;
+                }
+            }
+
+            function celebrate(x, y) {
+                burst(canvas.width / 2, canvas.height / 2);
+
+                if (!isAnimating) {
+                    isAnimating = true;
+                    animate();
+                }
+            }
+
+            return { celebrate, confettiPieces };
+        }
+
+        // --- DOM and resizing logic ---
+
+        const canvas = document.getElementById('confettiCanvas');
+        const confetti = createConfettiCelebration(canvas);
+
+        function resizeCanvas() {
+            // Set canvas to full viewport size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        document.getElementById('submitBtn').addEventListener('click', (e) => {
+            confetti.celebrate();
+            e.target.textContent = "Woo hoo! Thanks!";
+        });
+
+    </script>
+</body>
+
+</html>

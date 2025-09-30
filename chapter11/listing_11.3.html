@@ -63,11 +63,11 @@
 
 <body>
     <h2>Entrance Animation</h2>
-    <button onclick="showBox()">Click Me!</button>
+    <button id="showBoxBtn">Click Me!</button>
     <div id="container">
         <div id="helloDialog" class="dialog" style="display:none;">
             <div class="dialog-message">Thanks for clicking me!</div>
-            <button onclick="hideBox()">OK</button>
+            <button id="hideBoxBtn">OK</button>
         </div>
     </div>
     <script>
@@ -82,6 +82,11 @@
             dialog.style.display = 'none';
             dialog.classList.remove('enter-animation');
         }
+
+        document.getElementById('showBoxBtn')
+            .addEventListener('click', showBox);
+        document.getElementById('hideBoxBtn')
+            .addEventListener('click', hideBox);
     </script>
 </body>
 

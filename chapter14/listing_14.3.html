@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.3 - Creating an interactive donut chart</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 1rem;
+        }
+
+        #chart-container {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        #seawater-chart {
+            border-radius: 50%;
+        }
+
+        #description-box {
+            width: 300px;
+            padding: 0.75rem;
+            background: #f4f4f4;
+            border-left: 3px solid #007acc;
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        #description-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        #description-text {
+            color: #222;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>The Composition of Seawater</h1>
+    <div id="chart-container">
+        <canvas id="seawater-chart" width="400" height="400"></canvas>
+        <div id="description-box">
+            <div id="description-title"></div>
+            <div id="description-text">Hover over a slice for details.</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('seawater-chart');
+        const ctx = canvas.getContext('2d');
+        const descriptionTitle = document.getElementById('description-title');
+        const descriptionText = document.getElementById('description-text');
+
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const outerRadius = 180;
+        const innerRadius = 90;
+
+        const seawaterData = [
+            { label: 'Oxygen', value: 85.84, color: 'hsl(203 57% 40%)', desc: 'Oxygen is the most abundant element in seawater by mass, primarily as part of the water molecule (H₂O).' },
+            { label: 'Hydrogen', value: 10.82, color: 'hsl(203 57% 60%)', desc: 'Hydrogen is the second most abundant element, also a key component of water (H₂O).' },
+            { label: 'Chloride', value: 1.94, color: 'hsl(203 57% 85%)', desc: 'Chloride is a major component of dissolved salts, making the ocean salty.' },
+            { label: 'Sodium', value: 1.08, color: 'hsl(203 57% 50%)', desc: 'Sodium is the other element in table salt (sodium chloride) and is a major ion in seawater.' },
+            { label: 'Other', value: 0.32, color: 'hsl(203 57% 90%)', desc: 'Includes magnesium, sulfate, calcium, potassium, and many other trace elements.' }
+        ];
+
+        const totalValue = 100;
+        let activeSlice = null;
+
+        // Pre-calculate angles for each slice
+        let currentAngle = -0.5 * Math.PI; // Start at the top
+        seawaterData.forEach(slice => {
+            const sliceAngle = (slice.value / totalValue) * 2 * Math.PI;
+            slice.startAngle = currentAngle;
+            slice.endAngle = currentAngle + sliceAngle;
+            currentAngle = slice.endAngle;
+        });
+
+        function drawChart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw all slices
+            seawaterData.forEach((slice) => {
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, outerRadius, slice.startAngle, slice.endAngle);
+                ctx.closePath();
+                ctx.fillStyle = slice.color;
+                ctx.fill();
+            });
+
+            // Cut out the center to make it a donut
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, innerRadius, 0, 2 * Math.PI);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const dx = mouseX - centerX;
+            const dy = mouseY - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            let currentSliceIndex = null;
+            if (distance > innerRadius && distance < outerRadius) {
+                let mouseAngle = Math.atan2(dy, dx);
+                if (mouseAngle < -0.5 * Math.PI) {
+                    mouseAngle += 2 * Math.PI; // Normalize angle
+                }
+
+                seawaterData.forEach((slice, index) => {
+                    if (mouseAngle > slice.startAngle && mouseAngle < slice.endAngle) {
+                        currentSliceIndex = index;
+                    }
+                });
+            }
+
+            if (activeSlice !== currentSliceIndex) {
+                activeSlice = currentSliceIndex;
+                if (activeSlice !== null) {
+                    const s = seawaterData[activeSlice];
+                    descriptionTitle.textContent = `${s.label} (${s.value}%)`;
+                    descriptionText.textContent = s.desc;
+                } else {
+                    descriptionTitle.textContent = '';
+                    descriptionText.textContent = 'Hover over a slice for details.';
+                }
+            }
+        });
+
+        // Initial draw
+        drawChart();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 14.1 - Drawing a pie chart from data</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Site browser stats for August</h1>
+    <canvas id="pieChart" width="400" height="400"></canvas>
+    <script>
+        function drawPieChart(canvas, data) {
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = Math.min(centerX, centerY) - 20;
+
+            // Calculate the total to determine percentages
+            const total = data.reduce((sum, item) =>
+                sum + item.value, 0);
+
+            // Starting angle (12 o'clock position)
+            let currentAngle = -Math.PI / 2;
+
+            data.forEach(item => {
+                // Calculate this slice's angle in radians
+                const sliceAngle = (item.value / total) * 2 * Math.PI;
+
+                // Draw the slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, currentAngle,
+                    currentAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = item.color;
+                ctx.fill();
+
+                // Add label in the center of the slice
+                const labelAngle = currentAngle + sliceAngle / 2;
+                const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+
+                ctx.fillStyle = '#000';
+                ctx.font = '1rem system-ui';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Draw label and percentage
+                ctx.fillText(`${item.label}`, labelX, labelY - 8);
+                ctx.fillText(`${item.value}%`, labelX, labelY + 8);
+
+                // Move to the next slice
+                currentAngle += sliceAngle;
+            });
+        }
+
+        // Browser usage data
+        const browserData = [
+            { value: 55, color: 'hsl(203 57% 85%)', label: 'Chrome' },
+            { value: 22, color: 'hsl(84 74% 44%)', label: 'Safari' },
+            { value: 15, color: 'hsl(23 100% 60%)', label: 'Edge' },
+            { value: 8, color: 'hsl(322 100% 61%)', label: 'Other' }
+        ];
+
+        let canvas = document.getElementById('pieChart');
+        drawPieChart(canvas, browserData);
+    </script>
+</body>
+
+</html>

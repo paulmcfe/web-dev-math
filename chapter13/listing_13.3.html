@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 13.3 - Creating an interactive color picker based on element coordinates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #222;
+            color: #fff;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+        }
+
+        #gradient {
+            width: 360px;
+            height: 180px;
+            border-radius: 12px;
+            border: 2px solid #444;
+            margin: 0 auto 24px auto;
+            background: linear-gradient(to right, red, yellow, lime,
+                    cyan, blue, magenta, red),
+                linear-gradient(to top, #000 0%, transparent 100%);
+            position: relative;
+            cursor: crosshair;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+        }
+
+        #color-value {
+            background-color: white;
+            color: black;
+            font-family: monospace;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 12px;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Gradient Color Picker</h1>
+    <div id="gradient"></div>
+    <div id="color-value">Click the gradient to pick a color</div>
+    <script>
+        const colorPicker = document.getElementById('gradient');
+        const colorValue = document.getElementById('color-value');
+
+        colorPicker.addEventListener('click', (event) => {
+            const rect = colorPicker.getBoundingClientRect();
+
+            // Get click position within element
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // Normalize to 0-1 range
+            const normalizedX = x / rect.width;
+            const normalizedY = y / rect.height;
+
+            // Clamp values to handle edge cases
+            const clampedX = Math.max(0, Math.min(1, normalizedX));
+            const clampedY = Math.max(0, Math.min(1, normalizedY));
+
+            // Calculate hue based on horizontal position (0-360 degrees)
+            const hue = Math.round(clampedX * 360);
+
+            // Calculate lightness based on vertical position (0-100%)
+            const lightness = Math.round((1 - clampedY) * 100);
+
+            // Use full saturation for vivid colors
+            const hsl = `hsl(${hue}, 100%, ${lightness}%)`;
+            document.body.style.background = hsl;
+
+            colorValue.textContent = `Selected: ${hsl}`;
+            const hslText = `hsl(${hue}, 100%, ${100 - lightness}%)`;
+            colorValue.style.color = hslText;
+        });
+    </script>
+</body>
+
+</html>

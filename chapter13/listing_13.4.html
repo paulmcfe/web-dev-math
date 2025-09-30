@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing 13.4 - Implementing a custom linear slider</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f7f7f7;
+            margin: 1rem;
+        }
+
+        .editor {
+            border: 1px solid black;
+            border-radius: 10px;
+            box-shadow: 3px 3px 3px #ccc;
+            padding: 0.5rem 1rem 1rem 1rem;
+            max-width: max-content;
+        }
+
+        .slider-label {
+            margin-bottom: 0.25rem;
+        }
+
+        .control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .slider-track {
+            width: 300px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .slider-handle {
+            width: 20px;
+            height: 20px;
+            background: hsl(322 100% 31%);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            cursor: grab;
+        }
+
+        .brightness-output,
+        .saturation-output,
+        .contrast-output {
+            width: 2rem;
+            text-align: right;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Photo Editor</h1>
+    <div class="editor">
+        <p class="slider-label">Brightness:</p>
+        <div class="control">
+            <div class="slider-track" id="brightness-slider">
+                <div class="slider-handle" id="brightness-handle"></div>
+            </div>
+            <div id="brightness-value" class="brightness-output">0</div>
+        </div>
+        <p class="slider-label">Saturation:</p>
+        <div class="control">
+            <div class="slider-track" id="saturation-slider">
+                <div class="slider-handle" id="saturation-handle"></div>
+            </div>
+            <div id="saturation-value" class="saturation-output">0</div>
+        </div>
+        <p class="slider-label">Contrast:</p>
+        <div class="control">
+            <div class="slider-track" id="contrast-slider">
+                <div class="slider-handle" id="contrast-handle"></div>
+            </div>
+            <div id="contrast-value" class="contrast-output">0</div>
+        </div>
+    </div>
+
+    <script>
+        function setupSlider(trackId, handleId, valueId, minValue, maxValue) {
+            const slider = document.getElementById(trackId);
+            const handle = document.getElementById(handleId);
+            const valueDisplay = document.getElementById(valueId);
+
+            let isDragging = false;
+            let value = 0;
+            let progress = (value - minValue) / (maxValue - minValue);
+            handle.style.left = `${progress * 100}%`;
+            valueDisplay.textContent = value;
+
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                isDragging = true;
+                handle.style.cursor = 'grabbing';
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                handle.style.cursor = 'grab';
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const rect = slider.getBoundingClientRect();
+                let offsetX = e.clientX - rect.left;
+                offsetX = Math.max(0, Math.min(offsetX, rect.width));
+                const progress = offsetX / rect.width;
+                value = Math.round(minValue + progress * (maxValue - minValue));
+                handle.style.left = `${progress * 100}%`;
+                valueDisplay.textContent = value;
+            });
+        }
+
+        setupSlider('brightness-slider', 'brightness-handle', 'brightness-value', -100, 100);
+        setupSlider('saturation-slider', 'saturation-handle', 'saturation-value', 0, 100);
+        setupSlider('contrast-slider', 'contrast-handle', 'contrast-value', -50, 50);
+    </script>
+</body>
+
+</html>
