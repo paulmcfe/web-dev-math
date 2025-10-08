@@ -83,7 +83,7 @@
         const friction = 0.9;
         let inertiaAnimation;
 
-        // Clamp within viewport (optional UX improvement)
+        // Clamp within viewport
         function clampPosition(x, y) {
             const boxW = draggable.offsetWidth;
             const boxH = draggable.offsetHeight;
@@ -115,7 +115,7 @@
             vy = e.clientY - lastY;
             lastX = e.clientX;
             lastY = e.clientY;
-            // Optionally clamp position to viewport
+            // Clamp position to viewport
             [x, y] = clampPosition(x, y);
             draggable.style.transform = `translate(${x}px, ${y}px)`;
         });
