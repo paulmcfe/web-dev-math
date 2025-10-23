@@ -121,8 +121,8 @@
                 // Remove if out of bounds
                 return (
                     confetti.y < canvas.height + 20 &&
-                    confetti.x > -40 &&
-                    confetti.x < canvas.width + 40
+                    confetti.x > -20 &&
+                    confetti.x < canvas.width + 20
                 );
             }
 
@@ -156,7 +156,7 @@
                 }
             }
 
-            function celebrate(x, y) {
+            function celebrate() {
                 burst(canvas.width / 2, canvas.height / 2);
 
                 if (!isAnimating) {

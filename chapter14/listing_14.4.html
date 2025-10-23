@@ -33,8 +33,8 @@
         pCanvas.width = window.innerWidth;
         pCanvas.height = window.innerHeight;
 
-        const canvasWidth = pCanvas.width;
-        const canvasHeight = pCanvas.height;
+        let canvasWidth = pCanvas.width;
+        let canvasHeight = pCanvas.height;
         const gravity = 0.08; // Reduced from 0.15 - lighter gravity for balloons
         const balloons = [];
 
@@ -115,6 +115,8 @@
         window.addEventListener('resize', () => {
             pCanvas.width = window.innerWidth;
             pCanvas.height = window.innerHeight;
+            canvasWidth = pCanvas.width;
+            canvasHeight = pCanvas.height;
         });
 
         animateBalloons();

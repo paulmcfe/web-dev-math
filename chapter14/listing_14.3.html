@@ -108,24 +108,24 @@
             ctx.fill();
         }
 
-        canvas.addEventListener('mousemove', (e) => {
+        canvas.addEventListener('pointermove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
+            const pointerX = e.clientX - rect.left;
+            const pointerY = e.clientY - rect.top;
 
-            const dx = mouseX - centerX;
-            const dy = mouseY - centerY;
+            const dx = pointerX - centerX;
+            const dy = pointerY - centerY;
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             let currentSliceIndex = null;
-            if (distance > innerRadius && distance < outerRadius) {
-                let mouseAngle = Math.atan2(dy, dx);
-                if (mouseAngle < -0.5 * Math.PI) {
-                    mouseAngle += 2 * Math.PI; // Normalize angle
+            if (distance >= innerRadius && distance <= outerRadius) {
+                let pointerAngle = Math.atan2(dy, dx);
+                if (pointerAngle < -0.5 * Math.PI) {
+                    pointerAngle += 2 * Math.PI; // Normalize angle
                 }
 
                 seawaterData.forEach((slice, index) => {
-                    if (mouseAngle > slice.startAngle && mouseAngle < slice.endAngle) {
+                    if (pointerAngle > slice.startAngle && pointerAngle < slice.endAngle) {
                         currentSliceIndex = index;
                     }
                 });

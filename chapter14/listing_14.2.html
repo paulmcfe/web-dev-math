@@ -84,8 +84,8 @@
                 });
             }
 
-            function handleMouseMove(event) {
-                // Convert mouse coordinates to canvas space
+            function handlePointerMove(event) {
+                // Convert pointer coordinates to canvas space
                 const rect = canvas.getBoundingClientRect();
                 const x = event.clientX - rect.left;
                 const y = event.clientY - rect.top;
@@ -118,15 +118,15 @@
                 }
             }
 
-            function handleMouseLeave() {
+            function handlePointerLeave() {
                 // Hide tooltip when mouse leaves canvas
                 tooltip.style.display = 'none';
                 canvas.style.cursor = 'default';
             }
 
             // Initialize
-            canvas.addEventListener('mousemove', handleMouseMove);
-            canvas.addEventListener('mouseleave', handleMouseLeave);
+            canvas.addEventListener('pointermove', handlePointerMove);
+            canvas.addEventListener('pointerleave', handlePointerLeave);
             draw();
 
             return { draw, bars };
