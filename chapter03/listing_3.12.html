@@ -1,44 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.12</title>
+    <title>Listing 3.12 - An exponential typographic scale using pow()</title>
     <style>
         :root {
             --base-size: 1rem;
-            --scale-ratio: 1.25; /* Initial ratio */
+            --scale-ratio: 1.25;
+            /* Initial ratio */
         }
+
         body {
             font-family: system-ui, sans-serif;
             padding: 2rem;
             background: ghostwhite;
             color: #333;
         }
+
         .scale {
             font-size: calc(var(--base-size) * pow(var(--scale-ratio), var(--step)));
             margin: 0 0 1rem;
         }
-        .step-3 { --step: 3; }
-        .step-2 { --step: 2; }
-        .step-1 { --step: 1; }
-        .step-0 { --step: 0; }
-        .step--1 { --step: -1; }
-        .step--2 { --step: -2; }
+
+        .step-3 {
+            --step: 3;
+        }
+
+        .step-2 {
+            --step: 2;
+        }
+
+        .step-1 {
+            --step: 1;
+        }
+
+        .step-0 {
+            --step: 0;
+        }
+
+        .step--1 {
+            --step: -1;
+        }
+
+        .step--2 {
+            --step: -2;
+        }
 
         .slider-container {
             margin-top: 3rem;
         }
+
         input[type="range"] {
             width: 100%;
             margin-top: 1rem;
         }
+
         .label {
             font-size: 1rem;
             margin-bottom: 0.5rem;
         }
     </style>
 </head>
+
 <body>
 
     <h1 class="scale step-3">Heading (Step 3)</h1>
@@ -68,4 +93,5 @@
     </script>
 
 </body>
+
 </html>

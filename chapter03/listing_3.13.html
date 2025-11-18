@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.13</title>
+    <title>Listing 3.13 - Generating alternating index values</title>
     <style>
         body {
             font-family: sans-serif;
@@ -30,6 +31,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <div class="timeline" id="timeline"></div>
@@ -54,15 +56,16 @@
             item.textContent = text;
 
             // For odd indexes, change the offset direction
-            if(i % 2 !== 0) { offsetDirection *= -1; }
+            if (i % 2 !== 0) { offsetDirection *= -1; }
 
             // Set the --index property for this item
             // Value will be negative if offsetDirection = -1
-            item.style.setProperty('--index', 
-                                  (i + 1) * offsetDirection);
+            item.style.setProperty('--index',
+                (i + 1) * offsetDirection);
             timeline.appendChild(item);
         });
     </script>
 
 </body>
+
 </html>

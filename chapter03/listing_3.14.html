@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.14</title>
+    <title>Listing 3.14 - Scaling a circle’s width and height using sqrt()</title>
     <style>
         :root {
             --primary-color: #3498db;
@@ -73,14 +74,14 @@
         .circle {
             /* Base size varies with responsive design */
             --base-size: var(--circle-size-base);
-            
+
             /* Use sqrt() to calculate circle sizes that maintain proper area proportions */
             /* As radius increases, we want circle size to increase proportionally */
             /* But we want the increase to be less dramatic as we move outward */
             /* sqrt() creates a balanced scaling that looks natural */
             width: calc(var(--base-size) * sqrt(var(--distance-factor)));
             height: calc(var(--base-size) * sqrt(var(--distance-factor)));
-            
+
             /* Position circles based on their angle and distance from center */
             top: calc(50% + sin(var(--angle)) * var(--distance) - (var(--base-size) * sqrt(var(--distance-factor))) / 2);
             left: calc(50% + cos(var(--angle)) * var(--distance) - (var(--base-size) * sqrt(var(--distance-factor))) / 2);
@@ -173,6 +174,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="controls">
@@ -220,12 +222,12 @@
         const centerScaleDisplay = document.getElementById('centerScaleDisplay');
         const radiusDisplay = document.getElementById('radiusDisplay');
         const baseSizeDisplay = document.getElementById('baseSizeDisplay');
-        
+
         // Initialize display values
         centerScaleDisplay.textContent = centerScale.value;
         radiusDisplay.textContent = radius.value;
         baseSizeDisplay.textContent = baseSize.value;
-        
+
         // Update circle layout based on controls
         function updateLayout() {
             // Update the CSS variables
@@ -233,24 +235,25 @@
             circularLayout.style.setProperty('--radius', `${radius.value}px`);
             circularLayout.style.width = `${radius.value * 2}px`;
             circularLayout.style.height = `${radius.value * 2}px`;
-            
+
             // Update the central circle's distance factor
             const circles = document.querySelectorAll('.circle');
             circles[0].style.setProperty('--distance-factor', centerScale.value);
-            
+
             // Update display values
             centerScaleDisplay.textContent = centerScale.value;
             radiusDisplay.textContent = radius.value;
             baseSizeDisplay.textContent = baseSize.value;
         }
-        
+
         // Add event listeners
         centerScale.addEventListener('input', updateLayout);
         radius.addEventListener('input', updateLayout);
         baseSize.addEventListener('input', updateLayout);
-        
+
         // Initial update
         updateLayout();
     </script>
 </body>
+
 </html>

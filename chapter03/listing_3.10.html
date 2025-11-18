@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 3.10</title>
+    <title>Listing 3.10 - Creating a font size scale with log()</title>
     <style>
         body {
             font-family: system-ui, sans-serif;
@@ -12,29 +13,76 @@
             line-height: 1.5;
             color: #333;
         }
-        h1, h2, h3, h4, h5, h6 {
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             margin: 0 0 1rem;
             font-weight: bold;
         }
+
         /* Logarithmic scale: font-size = log(step + 1) + 1 * base size */
         .log-scale {
             font-size: calc((log(var(--step) + 1) + 1) * 1rem);
         }
-        .log-scale.step-0 { --step: 0; }
-        .log-scale.step-1 { --step: 1; }
-        .log-scale.step-2 { --step: 2; }
-        .log-scale.step-3 { --step: 3; }
-        .log-scale.step-4 { --step: 4; }
-        .log-scale.step-5 { --step: 5; }
-        .log-scale.step-6 { --step: 6; }
-        .log-scale.step-7 { --step: 7; }
-        .log-scale.step-8 { --step: 8; }
-        .log-scale.step-9 { --step: 9; }
-        .log-scale.step-10 { --step: 10; }
-        .log-scale.step-11 { --step: 11; }
-        .log-scale.step-12 { --step: 12; }
+
+        .log-scale.step-0 {
+            --step: 0;
+        }
+
+        .log-scale.step-1 {
+            --step: 1;
+        }
+
+        .log-scale.step-2 {
+            --step: 2;
+        }
+
+        .log-scale.step-3 {
+            --step: 3;
+        }
+
+        .log-scale.step-4 {
+            --step: 4;
+        }
+
+        .log-scale.step-5 {
+            --step: 5;
+        }
+
+        .log-scale.step-6 {
+            --step: 6;
+        }
+
+        .log-scale.step-7 {
+            --step: 7;
+        }
+
+        .log-scale.step-8 {
+            --step: 8;
+        }
+
+        .log-scale.step-9 {
+            --step: 9;
+        }
+
+        .log-scale.step-10 {
+            --step: 10;
+        }
+
+        .log-scale.step-11 {
+            --step: 11;
+        }
+
+        .log-scale.step-12 {
+            --step: 12;
+        }
     </style>
 </head>
+
 <body>
     <h1 class="log-scale step-12">Step 12</h1>
     <h2 class="log-scale step-10">Step 10</h2>
@@ -44,4 +92,5 @@
     <h6 class="log-scale step-2">Step 2</h6>
     <p class="log-scale step-0">Step 0 (base size)</p>
 </body>
+
 </html>
