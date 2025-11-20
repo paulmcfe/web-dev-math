@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.8 - Calculating Contrast Ratios</title>
+    <title>Listing 7.10 - Calculating Contrast Ratios</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
             padding: 1rem;
         }
+
         label {
             display: inline-block;
             margin-top: 1rem;
             width: max-content;
         }
+
         .swatches-container {
             display: flex;
             flex-wrap: wrap;
             gap: 2rem;
         }
+
         .swatch-container {
             display: flex;
             flex-direction: column;
             margin-top: 1rem;
             max-width: max-content;
         }
+
         .swatch {
             width: 320px;
             height: 200px;
@@ -43,20 +49,25 @@
             padding: 0.75rem;
             text-align: center;
         }
+
         #mainColorSwatch {
             background-color: var(--main-color);
         }
+
         #splitCompColor1Swatch {
             background-color: var(--split-comp-color-1);
         }
+
         #splitCompColor2Swatch {
             background-color: var(--split-comp-color-2);
         }
+
         .function-text {
             margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
     <h1>Contrast Ratio Calculator</h1>
     <label for="text-color-picker">Pick a text color:</label>
@@ -67,7 +78,8 @@
     <div class="swatches-container">
         <div class="swatch-container">
             <div class="swatch" id="swatch">
-                <span class="swatch-text">“The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect.” –Tim Berners-Lee</span>
+                <span class="swatch-text">“The power of the Web is in its universality. Access by everyone regardless of
+                    disability is an essential aspect.” –Tim Berners-Lee</span>
             </div>
             <div class="function-text" id="text-color-text"></div>
             <div class="function-text" id="bg-color-text"></div>
@@ -88,11 +100,11 @@
             const min = Math.min(r, g, b);
             const diff = max - min;
             const l = (max + min) / 2;
-            
+
             if (diff === 0) {
-                return {h: 0, s: 0, l: Math.round(l * 100)};
+                return { h: 0, s: 0, l: Math.round(l * 100) };
             }
-            
+
             const s = diff / (1 - Math.abs(2 * l - 1));
 
             let h;
@@ -109,14 +121,14 @@
             }
             h *= 60;
             if (h < 0) h += 360;
-            
+
             return {
                 h: Math.round(h),
                 s: Math.round(s * 100),
                 l: Math.round(l * 100)
             };
         }
-        
+
         // Convert a hex color code to an {r,g,b} object
         function hexToRgb(hex) {
             hex = hex.replace(/^#/, "");
@@ -136,10 +148,10 @@
             // Normalize to [0,1]
             let R_n = r / 255, G_n = g / 255, B_n = b / 255;
             // Linearize each component
-            const toLinear = (c) => 
-                c <= 0.04045 ? 
-                c / 12.92 : 
-                ((c + 0.055) / 1.055) ** 2.4;
+            const toLinear = (c) =>
+                c <= 0.04045 ?
+                    c / 12.92 :
+                    ((c + 0.055) / 1.055) ** 2.4;
             const R_l = toLinear(R_n);
             const G_l = toLinear(G_n);
             const B_l = toLinear(B_n);
@@ -168,9 +180,9 @@
                 aa: { normal: 4.5, large: 3.0 },
                 aaa: { normal: 7.0, large: 4.5 }
             };
-            
+
             const textType = isLargeText ? 'large' : 'normal';
-            
+
             return {
                 aa: cr >= thresholds.aa[textType],
                 aaa: cr >= thresholds.aaa[textType]
@@ -212,4 +224,5 @@
         updateSwatch();
     </script>
 </body>
+
 </html>

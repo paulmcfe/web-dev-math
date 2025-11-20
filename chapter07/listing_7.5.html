@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.3 - Converting HSL to RGB</title>
+    <title>Listing 7.5 - Converting HSL to RGB</title>
     <style>
         * {
             box-sizing: border-box;
@@ -15,27 +16,32 @@
             font-family: Arial, sans-serif;
             padding: 1rem;
         }
+
         label {
             display: inline-block;
             margin-top: 1rem;
             width: max-content;
         }
+
         input[type="number"] {
             width: 3.5rem;
             padding: 0.3rem;
             margin-right: 0.5rem;
         }
+
         .swatches-container {
             display: flex;
             flex-wrap: wrap;
             gap: 2rem;
         }
+
         .swatch-container {
             display: flex;
             flex-direction: column;
             margin-top: 1rem;
             max-width: max-content;
         }
+
         .swatch {
             width: 150px;
             height: 150px;
@@ -46,16 +52,19 @@
             flex-direction: column;
             font-size: 0.9rem;
         }
+
         .swatch-text {
             display: inline-block;
             background-color: hsl(0 0 100% / 0.25);
             padding: 0.25rem;
         }
+
         .function-text {
             margin-top: 10px;
             text-align: center;
             font-family: monospace;
         }
+
         @media (max-width: 450px) {
             .input-group {
                 display: flex;
@@ -65,6 +74,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>HSL to RGB Converter</h1>
     <div class="input-group">
@@ -165,4 +175,5 @@
         updateSwatches();
     </script>
 </body>
+
 </html>

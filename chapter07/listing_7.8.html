@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.6 - Triadic Color Scheme</title>
+    <title>Listing 7.8 - Triadic Color Scheme</title>
     <style>
         :root {
             --base-hue: 30;
@@ -11,32 +12,38 @@
             --triadic-color-1: hsl(calc(var(--base-hue) + 120) 100% 50%);
             --triadic-color-2: hsl(calc(var(--base-hue) - 120) 100% 50%);
         }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
             font-family: Arial, sans-serif;
             margin-top: 1rem;
             padding-left: 1rem;
         }
+
         label {
             display: inline-block;
             margin-top: 1rem;
             width: max-content;
         }
+
         .swatches-container {
             display: flex;
             flex-wrap: wrap;
             gap: 2rem;
         }
+
         .swatch-container {
             display: flex;
             flex-direction: column;
             margin-top: 1rem;
             max-width: max-content;
         }
+
         .swatch {
             width: 150px;
             height: 150px;
@@ -47,20 +54,25 @@
             flex-direction: column;
             font-size: 0.9rem;
         }
+
         #mainColorSwatch {
             background-color: var(--main-color);
         }
+
         #triadicColor1Swatch {
             background-color: var(--triadic-color-1);
         }
+
         #triadicColor2Swatch {
             background-color: var(--triadic-color-2);
         }
+
         .swatch-text {
             display: inline-block;
             background-color: hsl(0 0 100% / 0.25);
             padding: 0.25rem;
         }
+
         .function-text {
             margin-top: 10px;
             text-align: center;
@@ -68,6 +80,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1>Triadic Colors</h1>
     <label for="color-picker">Pick a color:</label>
@@ -113,11 +126,11 @@
             const min = Math.min(r, g, b);
             const diff = max - min;
             const l = (max + min) / 2;
-            
+
             if (diff === 0) {
-                return {h: 0, s: 0, l: Math.round(l * 100)};
+                return { h: 0, s: 0, l: Math.round(l * 100) };
             }
-            
+
             const s = diff / (1 - Math.abs(2 * l - 1));
 
             let h;
@@ -134,7 +147,7 @@
             }
             h *= 60;
             if (h < 0) h += 360;
-            
+
             return {
                 h: Math.round(h),
                 s: Math.round(s * 100),
@@ -165,11 +178,11 @@
             mainColorText.textContent = hslString;
 
             const triadic1H = (h + 120) % 360;
-            const triadicColor1String = `hsl(${triadic1H} ${s} ${l})`;
+            const triadicColor1String = `hsl(${triadic1H} ${s}% ${l}%)`;
             triadicColor1Swatch.style.backgroundColor = triadicColor1String;
             triadicColor1Text.textContent = triadicColor1String;
             const triadic2H = mod(h - 120, 360);
-            const triadicColor2String = `hsl(${triadic2H} ${s} ${l})`;
+            const triadicColor2String = `hsl(${triadic2H} ${s}% ${l}%)`;
             triadicColor2Swatch.style.backgroundColor = triadicColor2String;
             triadicColor2Text.textContent = triadicColor2String;
         }
@@ -181,4 +194,5 @@
         updateSwatches();
     </script>
 </body>
+
 </html>

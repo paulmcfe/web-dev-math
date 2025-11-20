@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.9 - Switching between light mode and dark mode</title>
+    <title>Listing 7.11 - Switching between light mode and dark mode</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         :root {
             --bg-light: hsl(240, 20%, 95%);
             --text-light: hsl(240, 30%, 20%);
@@ -17,6 +19,7 @@
             --bg-dark: hsl(240, 10%, 10%);
             --text-dark: hsl(240, 20%, 90%);
         }
+
         body {
             font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro, sans-serif;
             padding: 1rem;
@@ -24,10 +27,12 @@
             color: var(--text-light);
             transition: background-color 0.3s, color 0.3s;
         }
+
         body.dark-mode {
             background-color: var(--bg-dark);
             color: var(--text-dark);
         }
+
         .accent-box {
             display: flex;
             flex-direction: column;
@@ -41,20 +46,24 @@
             padding: 1rem;
             transition: background-color 0.3s;
         }
+
         .toggle {
             background-color: var(--bg-light);
             color: var(--text-light);
-            border-radius: 0.5rem;;
+            border-radius: 0.5rem;
+            ;
             margin-top: 1rem;
             padding: 0.5rem;
             transition: background-color 0.3s, color 0.3s;
         }
+
         .toggle.dark-mode {
             background-color: var(--bg-dark);
             color: var(--text-dark);
         }
     </style>
 </head>
+
 <body>
     <h1>HSL Dark Mode Tester</h1>
     <div class="accent-box" id="accent-box">
@@ -67,7 +76,7 @@
     <script>
         function mod(dividend, divisor) {
             return ((dividend % divisor) + divisor) % divisor;
-        } 
+        }
 
         function shiftHue(hue, amount) {
             return mod(hue + amount, 360);
@@ -109,4 +118,5 @@
         });
     </script>
 </body>
+
 </html>

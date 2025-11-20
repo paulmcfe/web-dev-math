@@ -17,16 +17,21 @@
             overflow: hidden;
             background-color: #111;
         }
-        /* ✨ THE ONLY ADDITION: Tell CSS about the --angle custom property */
+
         @property --angle {
             syntax: "<angle>";
             initial-value: 0deg;
-            inherits: true;  /* ← This was the key! Child elements need to inherit the animated value */
+            inherits: true;
         }
 
         @keyframes orbit {
-            from { --angle: 0deg; }
-            to   { --angle: 360deg; }
+            from {
+                --angle: 0deg;
+            }
+
+            to {
+                --angle: 360deg;
+            }
         }
 
         .orbiting {
@@ -46,7 +51,7 @@
             border-radius: 50%;
 
             left: calc(50% + var(--radius) * cos(var(--angle)) - 10px);
-            top:  calc(50% + var(--radius) * sin(var(--angle)) - 10px);
+            top: calc(50% + var(--radius) * sin(var(--angle)) - 10px);
         }
 
         #center-point {
@@ -61,10 +66,12 @@
         }
     </style>
 </head>
+
 <body>
     <div id="center-point"></div>
     <div class="orbiting">
         <div class="orbiting-element"></div>
     </div>
 </body>
+
 </html>

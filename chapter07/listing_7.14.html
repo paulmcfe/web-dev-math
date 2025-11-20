@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listing 7.12 - Using the multiply blend mode to apply a sepia tone</title>
+    <title>Listing 7.14 - Using the multiply blend mode to apply a sepia tone</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         .sepia-image {
             position: relative;
             display: inline-block;
         }
+
         .sepia-image img {
             display: block;
             width: 100%;
             height: auto;
         }
+
         .sepia-image::after {
             content: "";
             position: absolute;
@@ -28,13 +32,16 @@
             height: 100%;
             background-color: hsl(30 60% 50%);
             mix-blend-mode: multiply;
-            opacity: 0.4; /* adjust to control intensity */
+            opacity: 0.4;
+            /* adjust to control intensity */
         }
     </style>
 </head>
+
 <body>
     <div class="sepia-image">
         <img src="/images/old-bicycle.png" alt="Photo of an old-style bicycle" class="sepia-image">
     </div>
 </body>
+
 </html>
