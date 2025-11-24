@@ -30,10 +30,10 @@
             height: 20px;
             background-color: #f00;
             border-radius: 50%;
-            offset-path: polygon(50% 0%,
-                    100% 50%,
-                    50% 100%,
-                    0% 50%);
+            offset-path: polygon(50% 10px,
+                    calc(100% - 10px) 50%,
+                    50% calc(100% - 10px),
+                    10px 50%);
             animation: move 4s infinite linear;
         }
 
